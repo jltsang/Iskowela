@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'main.apps.MainConfig',
     'chatbot.apps.ChatbotConfig',
     'interactive_map.apps.InteractiveMapConfig',
     'django.contrib.admin',
