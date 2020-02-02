@@ -1,4 +1,40 @@
 {% extends "main/base.html" %}
 {% block content %}
-Interactive Map placeholder
+	{% for suggestion in suggestions %}
+		<article class="media content-section">
+		  <div class="media-body">
+		    <div class="article-metadata">
+		      <a class="mr-2" href="#">{{ suggestion.desc }}</a>
+		      <small class="text-muted">{{ suggestion.date_posted|date:"F d, Y" }}</small>
+		    </div>
+		    
+		    {% if suggestion.cud == 1 %}
+		    		Create
+	    	{% elif suggestion.cud == 2 %}
+	    		Update
+	    	{% else %}
+	    		Delete
+	    	{% endif %}
+
+	    	{% if suggestion.stype == 1 %}
+	    		Event
+	    	{% else %}
+	    		Place
+	    	{% endif %} <br>
+
+		    {% if suggestion.cud == 2 %}
+		    	Previous Name: {{ suggestion.prev_name }} <br>
+		    {% endif %}
+		    	
+		    Name: {{ suggestion.name }} <br>
+
+		    {% if suggestion.cud == 2 %}
+	    		Previous Coordinates: [{{ suggestion.prev_latitude }}, {{ suggestion.prev_longitude }}] <br>
+	    	{% endif %}
+
+		    Coordinates: [{{ suggestion.latitude }}, {{ suggestion.longitude }}]
+		    
+		  </div>
+		</article>
+	{% endfor %}
 {% endblock content %}

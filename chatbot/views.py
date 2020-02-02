@@ -1,4 +1,4 @@
 from django.shortcuts import render
 
 def index(request):
-	return render(request, 'chatbot/index.html')
+	return render(request, 'chatbot/index.html', {'title': 'Chatbot'})

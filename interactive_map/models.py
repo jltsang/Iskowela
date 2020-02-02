@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class Suggestion(models.Model):
 	class EventPlace(models.IntegerChoices):
@@ -17,6 +18,7 @@ class Suggestion(models.Model):
 	longitude = models.DecimalField(default=0, decimal_places=6, max_digits=9)
 	latitude = models.DecimalField(default=0, decimal_places=6, max_digits=8)
 	cud = models.IntegerField(choices=Action.choices)
+	date_posted = models.DateTimeField(default=timezone.now)
 
 	def __str__(self):
 		return self.desc
