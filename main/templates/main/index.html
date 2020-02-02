@@ -1,4 +1,17 @@
 {% extends "main/base.html" %}
 {% block content %}
-BLOCMAN
+<div class="row row-cols-3">
+  <div class="col"></div>
+  <div class="col"><div class="text-center"><div class="content-section">
+  		{% load static %}
+  		<img src="{% static "images/logofront.png" %}" alt="Hi!" />
+	    <h3>Roosevelt College</h3>
+	      <ul class="list-group">
+	        <li class="list-group-item list-group-item-light"><a class="btn btn-primary" href="#" role="button">GET STARTED</a></li>
+	      </ul>
+	      <small class="text-muted">
+				<a class="ml-2" href="/register/">Sign In as Admin</a>
+			</small>
+	  </div></div></div>
+</div>
 {% endblock content %}
