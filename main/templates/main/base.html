@@ -19,18 +19,28 @@
 </head>
 <body>
 	<header class="site-header">
-	  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+	  <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
 	    <div class="container">
-	      <a class="navbar-brand mr-4" href="{% url 'main-index' %}">SrSeA</a>
+	      <a class="navbar-brand mr-4" href="{% url 'main-index' %}">Roosevelt College CRM</a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
 	      <span class="navbar-toggler-icon"></span>
 	      </button>
 	      <div class="collapse navbar-collapse" id="navbarToggle">
-	        <div class="navbar-nav mr-auto">
-	          <a class="nav-item nav-link" href="{% url 'imap-index' %}">Interactive Map</a>
-	          <a class="nav-item nav-link" href="{% url 'chatbot-index' %}">Chatbot</a>
-	          <a class="nav-item nav-link" href="#">Social Listening</a>
-	        </div>
+		    {% if title != 'Menu' %}
+		        <div class="navbar-nav mr-auto">
+		        {% if title == 'Interactive Map' %}
+		          <a class="nav-item nav-link disabled" href="{% url 'imap-index' %}">Interactive Map</a>
+		        {% else %}
+		        	<a class="nav-item nav-link" href="{% url 'imap-index' %}">Interactive Map</a>
+		        {% endif %}
+		        {% if title == 'Chatbot' %}
+		        	<a class="nav-item nav-link disabled" href="{% url 'chatbot-index' %}">Chatbot</a>
+		        {% else %}
+		        	<a class="nav-item nav-link" href="{% url 'chatbot-index' %}">Chatbot</a>
+		        {% endif %}
+		          <a class="nav-item nav-link" href="#">Social Listening</a>
+		        </div>
+		    {% endif %}
 	        <!-- Navbar Right Side -->
 	        <div class="navbar-nav">
 	          	<a class="nav-item nav-link" href="#">Sign In as Admin</a>

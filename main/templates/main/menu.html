@@ -1,0 +1,33 @@
+{% extends "main/base.html" %}
+{% block content %}
+{% load static %}
+  <div class="row">
+    <div class="col">
+      <div class="text-center">
+        <div class="content-section">
+          <img class="rounded-circle" src="{% static "images/mapbox.png" %}" alt="Generic placeholder image" width="140" height="140">
+          <h2><a href="{% url 'imap-index' %}">Interactive Map</a></h2>
+          <p>View nearby places and events, or view an animation of the registration process.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="text-center">
+        <div class="content-section">
+          <img class="rounded-circle" src="{% static "images/snatchbot.png" %}" alt="Generic placeholder image" width="140" height="140">
+          <h2><a href="{% url 'chatbot-index' %}">Chatbot</a></h2>
+          <p>Feel free to chat with Roosevelt CRM's Chatbot.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="text-center">
+        <div class="content-section">
+          <img class="rounded-circle" src="{% static "images/mention.png" %}" alt="Generic placeholder image" width="140" height="140">
+          <h2><a href="#">Social Listening</a></h2>
+          <p>Info placeholder.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
