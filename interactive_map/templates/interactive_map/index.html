@@ -1,9 +1,21 @@
 {% extends "main/base.html" %}
 {% block content %}
 	<div>
-      <a class="btn btn-primary mt-1 mb-1" href="{% url 'imap-index' 3 %}" role="button">All</a>
-      <a class="btn btn-primary mt-1 mb-1" href="{% url 'imap-index' 1 %}" role="button">Event</a>
-      <a class="btn btn-primary mt-1 mb-1" href="{% url 'imap-index' 2 %}" role="button">Place</a>
+		{% if arg == 3 %}
+		<a class="btn btn-primary disabled mt-1 mb-1" href="{% url 'imap-index' 3 %}" role="button">All</a>
+		{% else %}
+     	<a class="btn btn-primary mt-1 mb-1" href="{% url 'imap-index' 3 %}" role="button">All</a>
+      	{% endif %}
+      	{% if arg ==  1 %}
+		<a class="btn btn-primary disabled mt-1 mb-1" href="{% url 'imap-index' 1 %}" role="button">Event</a>
+		{% else %}
+     	<a class="btn btn-primary mt-1 mb-1" href="{% url 'imap-index' 1 %}" role="button">Event</a>
+      	{% endif %}
+      	{% if arg == 2 %}
+		<a class="btn btn-primary disabled mt-1 mb-1" href="{% url 'imap-index' 2 %}" role="button">Place</a>
+		{% else %}
+     	<a class="btn btn-primary mt-1 mb-1" href="{% url 'imap-index' 2 %}" role="button">Place</a>
+      	{% endif %}
   	</div>
 	{% for suggestion in suggestions %}
 		<article class="media content-section">

@@ -30,6 +30,12 @@ class SuggestionListView(ListView):
 		else:
 			return Suggestion.objects.order_by('-date_posted')
 
+	def get_context_data(self, **kwargs):
+	    context = super().get_context_data(**kwargs)
+	    context['title'] = 'Interactive Map'
+	    context['arg'] = self.kwargs.get('stype')
+	    return context
+
 class SuggestionDetailView(DetailView):
 	model = Suggestion
 
