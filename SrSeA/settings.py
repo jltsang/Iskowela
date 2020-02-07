@@ -25,12 +25,13 @@ SECRET_KEY = '1)%0!vgz6(pn*bmwz=r12a%)s!o3qj*b_!ss1bw!drhl$0q+q$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost","192.168.1.16"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'crispy_forms',
     'main.apps.MainConfig',
     'chatbot.apps.ChatbotConfig',
     'interactive_map.apps.InteractiveMapConfig',
@@ -124,3 +125,5 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

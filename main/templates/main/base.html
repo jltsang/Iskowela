@@ -29,9 +29,9 @@
 		    {% if title != 'Menu' %}
 		        <div class="navbar-nav mr-auto">
 		        {% if title == 'Interactive Map' %}
-		          <a class="nav-item nav-link disabled" href="{% url 'imap-index' %}">Interactive Map</a>
+		          <a class="nav-item nav-link disabled" href="{% url 'imap-index' 3 %}">Interactive Map</a>
 		        {% else %}
-		        	<a class="nav-item nav-link" href="{% url 'imap-index' %}">Interactive Map</a>
+		        	<a class="nav-item nav-link" href="{% url 'imap-index' 3 %}">Interactive Map</a>
 		        {% endif %}
 		        {% if title == 'Chatbot' %}
 		        	<a class="nav-item nav-link disabled" href="{% url 'chatbot-index' %}">Chatbot</a>

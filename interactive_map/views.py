@@ -1,6 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Suggestion
-from django.views.generic import ListView
+from django.urls import reverse
+from django.views.generic import (
+	ListView, 
+	DetailView, 
+	CreateView, 
+	UpdateView, 
+	DeleteView
+)
+from django.core.paginator import Paginator
 
 def index(request):
 	context = {
@@ -13,4 +21,26 @@ class SuggestionListView(ListView):
 	model = Suggestion
 	template_name = 'interactive_map/index.html'
 	context_object_name = 'suggestions'
-	ordering = ['-date_posted']
+	paginate_by = 3
+
+	def get_queryset(self):
+		arg = self.kwargs.get('stype')
+		if (arg == 1 or arg == 2):
+			return Suggestion.objects.filter(stype=arg).order_by('-date_posted')
+		else:
+			return Suggestion.objects.order_by('-date_posted')
+
+class SuggestionDetailView(DetailView):
+	model = Suggestion
+
+class SuggestionCreateView(CreateView):
+	model = Suggestion
+	fields = ['desc', 'cud', 'stype', 'prev_name', 'name', 'prev_latitude', 'prev_longitude', 'latitude', 'longitude']
+
+class SuggestionUpdateView(UpdateView):
+	model = Suggestion
+	fields = ['desc', 'cud', 'stype', 'prev_name', 'name', 'prev_latitude', 'prev_longitude', 'latitude', 'longitude']
+
+class SuggestionDeleteView(DeleteView):
+	model = Suggestion
+	success_url = "/imap/"

@@ -1,0 +1,38 @@
+{% extends "main/base.html" %}
+{% block content %}
+	<article class="media content-section">
+	  <div class="media-body">
+	    <div class="article-metadata">
+	      <a class="mr-2" href="#">{{ object.desc }}</a>
+	      <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+	    </div>
+	    
+	    {% if object.cud == 1 %}
+	    		Create
+    	{% elif object.cud == 2 %}
+    		Update
+    	{% else %}
+    		Delete
+    	{% endif %}
+
+    	{% if object.stype == 1 %}
+    		Event
+    	{% else %}
+    		Place
+    	{% endif %} <br>
+
+	    {% if object.cud == 2 %}
+	    	Previous Name: {{ object.prev_name }} <br>
+	    {% endif %}
+	    	
+	    Name: {{ object.name }} <br>
+
+	    {% if object.cud == 2 %}
+    		Previous Coordinates: [{{ object.prev_latitude }}, {{ object.prev_longitude }}] <br>
+    	{% endif %}
+
+	    Coordinates: [{{ object.latitude }}, {{ object.longitude }}]
+	    
+	  </div>
+	</article>
+{% endblock content %}

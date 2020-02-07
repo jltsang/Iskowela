@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
 class Suggestion(models.Model):
 	class EventPlace(models.IntegerChoices):
@@ -22,3 +23,6 @@ class Suggestion(models.Model):
 
 	def __str__(self):
 		return self.desc
+
+	def get_absolute_url(self):
+		return reverse('imap-index', kwargs={'stype': '3'})
