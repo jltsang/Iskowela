@@ -17,6 +17,12 @@ def index(request):
 	}
 	return render(request, 'interactive_map/index.html', context)
 
+def newgame(request):
+	context = {
+		'title': 'Interactive Map'
+	}
+	return render(request, 'interactive_map/newgame.html', context)
+
 class SuggestionListView(ListView):
 	model = Suggestion
 	template_name = 'interactive_map/index.html'

@@ -28,10 +28,10 @@
 	      <div class="collapse navbar-collapse" id="navbarToggle">
 		    {% if title != 'Menu' %}
 		        <div class="navbar-nav mr-auto">
-		        {% if title == 'Interactive Map' %}
-		          <a class="nav-item nav-link disabled" href="{% url 'imap-index' 3 %}">Interactive Map</a>
+		        {% if title == 'Interactive Map' or title == 'Interactive Map Menu'%}
+		          <a class="nav-item nav-link disabled" href="{% url 'imap-menu' %}">Interactive Map</a>
 		        {% else %}
-		        	<a class="nav-item nav-link" href="{% url 'imap-index' 3 %}">Interactive Map</a>
+		        	<a class="nav-item nav-link" href="{% url 'imap-menu' %}">Interactive Map</a>
 		        {% endif %}
 		        {% if title == 'Chatbot' %}
 		        	<a class="nav-item nav-link disabled" href="{% url 'chatbot-index' %}">Chatbot</a>

@@ -5,3 +5,6 @@ def index(request):
 
 def menu(request):
 	return render(request, 'main/menu.html', {'title': 'Menu'})
+
+def imap_menu(request):
+	return render(request, 'main/imap_menu.html', {'title': 'Interactive Map Menu'})

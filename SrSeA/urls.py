@@ -26,5 +26,6 @@ urlpatterns = [
     path('imap/<int:pk>', interactive_map_views.SuggestionDetailView.as_view(), name='suggestion-detail'), #Deletable / Not really
     path('imap/new', interactive_map_views.SuggestionCreateView.as_view(), name='suggestion-create'),
     path('imap/<int:pk>/update/', interactive_map_views.SuggestionUpdateView.as_view(), name='suggestion-update'),
-    path('imap/<int:pk>/delete/', interactive_map_views.SuggestionDeleteView.as_view(), name='suggestion-delete') 
+    path('imap/<int:pk>/delete/', interactive_map_views.SuggestionDeleteView.as_view(), name='suggestion-delete') ,
+    path('imap/newgame', interactive_map_views.newgame, name='imap-newgame')
 ]

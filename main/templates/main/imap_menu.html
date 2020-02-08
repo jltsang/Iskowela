@@ -1,0 +1,32 @@
+{% extends "main/base.html" %}
+{% block content %}
+{% load static %}
+  <div class="row">
+    <div class="col">
+      <div class="text-center">
+        <div class="content-section">
+          <img src="{% static "images/note.png" %}" alt="Generic placeholder image" width="140" height="140">
+          <h2><a href="{% url 'imap-newgame' %}">New Game</a></h2>
+          <p>Learn the registration process here!</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="text-center">
+        <div class="content-section">
+          <img class="rounded-circle" src="{% static "images/marker.png" %}" alt="Generic placeholder image" width="140" height="140">
+          <h2><a href="{% url 'imap-index' 3 %}">Markers</a></h2>
+          <p>Curious about nearby places and events? Check them out here.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div><small class="text-muted">
+    <a class="ml-2" href="{% url 'main-menu' %}">Back to the Main Menu</a>
+  </small></div>
+  <div class="text-muted">
+    <small>
+      Icons made by <a href="https://www.flaticon.com/authors/turkkub" title="turkkub">turkkub</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+    <small>
+  </div>
+{% endblock content %}
