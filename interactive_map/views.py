@@ -10,16 +10,21 @@ from django.views.generic import (
 )
 from django.core.paginator import Paginator
 
+mapbox_access_token = 'pk.eyJ1IjoiZWdyZWxheXNvbiIsImEiOiJjazJ0emZ4ZncxMGdhM25udDY5bGp6cTR1In0._Cr83Dvy7I4yZHkDd_aIAw'
+
 def index(request):
+	# mapbox_access_token = 'pk.my_mapbox_access_token'
 	context = {
 		'title': 'Interactive Map',
-		'suggestions': Suggestion.objects.all()
+		'suggestions': Suggestion.objects.all(),
 	}
 	return render(request, 'interactive_map/index.html', context)
 
 def newgame(request):
+	# mapbox_access_token = 'pk.my_mapbox_access_token'
 	context = {
-		'title': 'Interactive Map'
+		'title': 'Interactive Map',
+		'mapbox_access_token': mapbox_access_token
 	}
 	return render(request, 'interactive_map/newgame.html', context)
 
@@ -40,6 +45,7 @@ class SuggestionListView(ListView):
 	    context = super().get_context_data(**kwargs)
 	    context['title'] = 'Interactive Map'
 	    context['arg'] = self.kwargs.get('stype')
+	    context['mapbox_access_token'] = mapbox_access_token
 	    return context
 
 class SuggestionDetailView(DetailView):
