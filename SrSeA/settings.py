@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ["localhost","192.168.1.16", "srsea.herokuapp.com"]
 
 INSTALLED_APPS = [
     'crispy_forms',
+    'users.apps.UsersConfig',
     'main.apps.MainConfig',
     'chatbot.apps.ChatbotConfig',
     'interactive_map.apps.InteractiveMapConfig',
@@ -130,6 +131,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGIN_URL = 'login'
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())

@@ -6,9 +6,11 @@
   		{% load static %}
   		<img src="{% static "images/logofront.png" %}" height="200" width="200" alt="Hi!" />
 	    <h3>Roosevelt College CRM</h3><a class="btn btn-primary btn-lg" href="{% url 'main-menu' %}" role="button">GET STARTED</a><br>
+	    {% if not user.is_authenticated %}
       	<small class="text-muted">
-			<a class="ml-2" href="#">Sign In as Admin</a>
+			<a class="ml-2" href="{% url 'login' %}">Sign In as Admin</a>
 		</small>
+		{% endif %}
 	  </div></div></div>
 </div>
 {% endblock content %}

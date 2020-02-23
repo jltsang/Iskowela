@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import include, path
 from chatbot import views as chatbot_views
 from interactive_map import views as interactive_map_views
+from users import views as user_views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 	path('', include('main.urls')),
@@ -26,6 +28,10 @@ urlpatterns = [
     path('imap/<int:pk>', interactive_map_views.SuggestionDetailView.as_view(), name='suggestion-detail'), #Deletable / Not really
     path('imap/new', interactive_map_views.SuggestionCreateView.as_view(), name='suggestion-create'),
     path('imap/<int:pk>/update/', interactive_map_views.SuggestionUpdateView.as_view(), name='suggestion-update'),
-    path('imap/<int:pk>/delete/', interactive_map_views.SuggestionDeleteView.as_view(), name='suggestion-delete') ,
-    path('imap/newgame', interactive_map_views.newgame, name='imap-newgame')
+    path('imap/<int:pk>/delete/', interactive_map_views.SuggestionDeleteView.as_view(), name='suggestion-delete'),
+    path('imap/newgame', interactive_map_views.newgame, name='imap-newgame'),
+    path('register/', user_views.register, name='register'), #To be hidden by default
+    path('profile/', user_views.profile, name='profile'), #To be hidden by default
+    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
 ]
