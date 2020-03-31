@@ -8,6 +8,18 @@
           <img class="rounded-circle" src="{% static "images/mapbox.png" %}" alt="Generic placeholder image" width="140" height="140">
           <h2><a href="{% url 'imap-menu' %}">Interactive Map</a></h2>
           <p>View nearby places and events, or view an animation of the registration process.</p>
+          {% if user.is_authenticated %}
+          <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Configure
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" target="_blank" href="https://studio.mapbox.com/datasets/egrelayson/ck6g734ei15gc2ppl4vm2cs15/edit/">New Game Dataset</a>
+              <a class="dropdown-item" target="_blank" href="https://studio.mapbox.com/datasets/egrelayson/ck6rwn9f91iox2lo3ioq14hn5/edit/">Event Markers Dataset</a>
+              <a class="dropdown-item" target="_blank" href="https://studio.mapbox.com/datasets/egrelayson/ck6ep6skh2gah2lmer5ct7s8b/edit/">Place Markers Dataset</a>
+            </div>
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -17,6 +29,17 @@
           <img class="rounded-circle" src="{% static "images/snatchbot.png" %}" alt="Generic placeholder image" width="140" height="140">
           <h2><a href="{% url 'chatbot-index' %}">Chatbot</a></h2>
           <p>Have any questions about the college? Inquire with Roosevelt CRM's Chatbot.</p>
+          {% if user.is_authenticated %}
+          <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Configure
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" target="_blank" href="https://account.snatchbot.me/conversation">Manage Live Chat</a>
+              <a class="dropdown-item" target="_blank" href="https://account.snatchbot.me/edit/78018">Chatbot Tree</a>
+            </div>
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>
