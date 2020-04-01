@@ -1,14 +1,6 @@
 {% extends "main/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<!--   <h1>{{ user.username }}</h1>
-  {{ user.profile.mapbox_key }}
-  {{ user.profile.new_game_dataset_link }}
-  {{ user.profile.event_markers_dataset_link }}
-  {{ user.profile.place_markers_dataset_link }}
-  {{ user.profile.live_chat_link }}
-  {{ user.profile.chatbot_tree_link }} -->
-
 
   <div class="content-section">
     <div class="media">
@@ -18,6 +10,14 @@
         <p class="text-secondary">{{ user.profile.contact_details }}</p>
       </div>
     </div>
-    <!-- FORM HERE -->
-  </div>
+      {% if user.is_authenticated %}
+      <h1>{{ user.username }}</h1>
+      <p>Mapbox key: {{ user.profile.mapbox_key }}</p>
+      <p>New Game Dataset: {{ user.profile.new_game_dataset_link }}</p>
+      <p>Event Markers Dataset: {{ user.profile.event_markers_dataset_link }}</p>
+      <p>Place Markers Dataset: {{ user.profile.place_markers_dataset_link }}</p>
+      <p>Live Chat: {{ user.profile.live_chat_link }}</p>
+      <p>Chatbot Tree: {{ user.profile.chatbot_tree_link }}</p>
+      {% endif %}
+    </div>
 {% endblock content %}
