@@ -46,6 +46,13 @@ class SuggestionListView(ListView):
 	    context['title'] = 'Interactive Map'
 	    context['arg'] = self.kwargs.get('stype')
 	    context['mapbox_access_token'] = mapbox_access_token
+	    if self.kwargs.get('stype') == 1:
+	    	context['layer'] = 'roosevelt-events'
+	    	context['html'] = "'<p>Name: ' + feature.properties.name + '</p><p>Schedule: ' + feature.properties.date + '</p><p>Time:: ' + feature.properties.time + '</p><p>Target Population: ' + feature.properties.target_population"
+	    else:
+	    	context['layer'] = ['roosevelt-food', 'roosevelt-health', 'roosevelt-finance', 'roosevelt-store']
+	    	context['html'] = "'<p>' + feature.properties.Name + '</p><p>' + feature.properties.Address + '</p><p>' + feature.properties.Contact + '</p><p>' + feature.properties.Hours"
+
 	    return context
 
 class SuggestionDetailView(DetailView):

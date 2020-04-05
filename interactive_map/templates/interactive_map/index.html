@@ -3,82 +3,138 @@
 	{% if arg == 3 %}
 
 	{% elif arg == 1 %}
-	<!-- Event -->
-	<div id='map' style='width: 100%; height: 500px;'></div>
-	<script>
-	mapboxgl.accessToken = "{{ user.profile.mapbox_key }}";
-	var map = new mapboxgl.Map({
-	container: 'map',
-	style: 'mapbox://styles/egrelayson/ck6rwpu6d05jp1iozilcm20oc',
-	center: [121.098434, 14.648697], // starting position
-	zoom: 19, // starting zoom
-	pitch: 40,
-	bearing: 20,
-	antialias: true,
-	});
+		<!-- Event -->
+		<div id='map' style='width: 100%; height: 500px;'></div>
+<!-- 		<div id="menu">
+		<input
+		id="streets-v11"
+		type="radio"
+		name="rtoggle"
+		value="streets"
+		checked="checked"
+		/>
+		<label for="3d">3D</label>
+		<input id="egrelayson/ck6g46xh90e581imre9to3w6h" type="radio" name="rtoggle" value="3d" />
+		<label for="streets">streets</label>
+		<input id="mapbox/light-v10" type="radio" name="rtoggle" value="light" />
+		<label for="light">light</label>
+		<input id="mapbox/dark-v10" type="radio" name="rtoggle" value="dark" />
+		<label for="dark">dark</label>
+		<input id="mapbox/outdoors-v11" type="radio" name="rtoggle" value="outdoors" />
+		<label for="outdoors">outdoors</label>
+		<input id="mapbox/satellite-v9" type="radio" name="rtoggle" value="satellite" />
+		<label for="satellite">satellite</label>
+		</div> -->
+		<script>
+		mapboxgl.accessToken = "{{ user.profile.mapbox_key }}";
+		var map = new mapboxgl.Map({
+		container: 'map',
+		style: 'mapbox://styles/egrelayson/ck8n618dc0acb1imqcnm6vi92',
+		center: [121.098434, 14.648697], // starting position
+		zoom: 18, // starting zoom
+		pitch: 40,
+		bearing: 20,
+		antialias: true,
+		});
 
-	// Add zoom and rotation controls to the map.
-	map.addControl(new mapboxgl.NavigationControl());
-
-	map.on('click', function(e) {
-	  var features = map.queryRenderedFeatures(e.point, {
-	    layers: ['roosevelt-events'] // replace this with the name of the layer
-	  });
-
-	  if (!features.length) {
-	    return;
-	  }
-
-	  var feature = features[0];
-
-	  var popup = new mapboxgl.Popup({ offset: [0, -15] })
-		    .setLngLat(feature.geometry.coordinates)
-		    .setHTML('<p>Name: ' + feature.properties.name + '</p><p>Schedule: ' + feature.properties.date + '</p><p>Time:: ' + feature.properties.time + '</p><p>Target Population: ' + feature.properties.target_population)
-		    .addTo(map);
-	});
-
-	// // The 'building' layer in the mapbox-streets vector source contains building-height
-	// // data from OpenStreetMap.
-	map.on('load', function() {
-	// // Insert the layer beneath any symbol layer.
-		var layers = map.getStyle().layers;
+		// Layerswitch
+		// var layerList = document.getElementById('menu');
+		// var inputs = layerList.getElementsByTagName('input');
 		 
-		var labelLayerId;
-		for (var i = 0; i < layers.length; i++) {
-			if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
-				labelLayerId = layers[i].id;
-				break;
-			}
-		}
+		// function switchLayer(layer) {
+		// var layerId = layer.target.id;
+		// map.setStyle('mapbox://styles/' + layerId);
+		// }
+		 
+		// for (var i = 0; i < inputs.length; i++) {
+		// inputs[i].onclick = switchLayer;
+		// }
 
-		map.addLayer({
-			'id': '3d-buildings',
-			'source': 'composite',
-			'source-layer': 'building',
-			'filter': ['==', 'extrude', 'true'],
-			'type': 'fill-extrusion',
-			'minzoom': 15,
-			'paint': {
-				'fill-extrusion-color': '#aaa',
-				 
-				// use an 'interpolate' expression to add a smooth transition effect to the
-				// buildings as the user zooms in
-				'fill-extrusion-height': [
-				"interpolate", ["linear"], ["zoom"],
-				15, 0,
-				15.05, ["get", "height"]
-				],
-				'fill-extrusion-base': [
-				"interpolate", ["linear"], ["zoom"],
-				15, 0,
-				15.05, ["get", "min_height"]
-				],
-				'fill-extrusion-opacity': .6
-			}
-		}, labelLayerId);
-	});
+		// Add scale bar to map
+		map.addControl(new mapboxgl.ScaleControl({maxWidth:100}));
 
-	</script>
+		var geocoder = new MapboxGeocoder({ // Initialize the geocoder
+			  accessToken: mapboxgl.accessToken, // Set the access token
+			  mapboxgl: mapboxgl, // Set the mapbox-gl instance
+			  marker: false, // Do not use the default marker style
+			});
+
+		// Add the geocoder to the map
+		map.addControl(geocoder);
+
+		// Add geolocate control to the map.
+		map.addControl(
+			new mapboxgl.GeolocateControl({
+				positionOptions: {
+					enableHighAccuracy: true
+				},
+				trackUserLocation: true
+			})
+		);
+
+		// Add zoom and rotation controls to the map.
+		map.addControl(new mapboxgl.NavigationControl());
+
+		// Markers layer
+		map.on('click', function(e) {
+		  var features = map.queryRenderedFeatures(e.point, {
+		    layers: ['roosevelt-events'] // replace this with the name of the layer
+		  });
+
+		  if (!features.length) {
+		    return;
+		  }
+
+		  var feature = features[0];
+
+		  var popup = new mapboxgl.Popup({ offset: [0, -15] })
+			    .setLngLat(feature.geometry.coordinates)
+			    .setHTML('<p>Name: ' + feature.properties.name + '</p><p>Schedule: ' + feature.properties.date + '</p><p>Time:: ' + feature.properties.time + '</p><p>Target Population: ' + feature.properties.target_population)
+			    .addTo(map);
+		});
+
+		// // The 'building' layer in the mapbox-streets vector source contains building-height
+		// // data from OpenStreetMap.
+		map.on('load', function() {
+		// // Insert the layer beneath any symbol layer.
+			var layers = map.getStyle().layers;
+			 
+			var labelLayerId;
+			for (var i = 0; i < layers.length; i++) {
+				if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+					labelLayerId = layers[i].id;
+					break;
+				}
+			}
+
+			map.addLayer({
+				'id': '3d-buildings',
+				'source': 'composite',
+				'source-layer': 'building',
+				'filter': ['==', 'extrude', 'true'],
+				'type': 'fill-extrusion',
+				'minzoom': 15,
+				'paint': {
+					'fill-extrusion-color': '#aaa',
+					 
+					// use an 'interpolate' expression to add a smooth transition effect to the
+					// buildings as the user zooms in
+					'fill-extrusion-height': [
+					"interpolate", ["linear"], ["zoom"],
+					15, 0,
+					15.05, ["get", "height"]
+					],
+					'fill-extrusion-base': [
+					"interpolate", ["linear"], ["zoom"],
+					15, 0,
+					15.05, ["get", "min_height"]
+					],
+					'fill-extrusion-opacity': .6
+				}
+			}, labelLayerId);
+		});
+
+		</script>
 
 	{% elif arg == 2 %}
 	<!-- Place -->
@@ -87,20 +143,42 @@
 		mapboxgl.accessToken = "{{ user.profile.mapbox_key }}";
 		var map = new mapboxgl.Map({
 		container: 'map',
-		style: 'mapbox://styles/egrelayson/ck6ephwv416or1in5q9jom97r',
+		style: 'mapbox://styles/egrelayson/ck8n5mk6j09ad1ipalerogr60',
 		center: [121.098434, 14.648697], // starting position
-		zoom: 19, // starting zoom
+		zoom: 18, // starting zoom
 		pitch: 40,
 		bearing: 20,
 		antialias: true,
 		});
+
+		// Add scale bar to map
+		map.addControl(new mapboxgl.ScaleControl({maxWidth:100}));
+
+		var geocoder = new MapboxGeocoder({ // Initialize the geocoder
+		  accessToken: mapboxgl.accessToken, // Set the access token
+		  mapboxgl: mapboxgl, // Set the mapbox-gl instance
+		  marker: false, // Do not use the default marker style
+		});
+
+		// Add the geocoder to the map
+		map.addControl(geocoder);
+
+		// Add geolocate control to the map.
+		map.addControl(
+			new mapboxgl.GeolocateControl({
+				positionOptions: {
+					enableHighAccuracy: true
+				},
+				trackUserLocation: true
+			})
+		);
 
 		// Add zoom and rotation controls to the map.
 		map.addControl(new mapboxgl.NavigationControl());
 
 		map.on('click', function(e) {
 		  var features = map.queryRenderedFeatures(e.point, {
-		    layers: ['roosevelt-places'] // replace this with the name of the layer
+		    layers: ['roosevelt-food', 'roosevelt-health', 'roosevelt-finance', 'roosevelt-store'] // replace this with the name of the layer
 		  });
 
 		  if (!features.length) {
@@ -111,7 +189,7 @@
 
 		  var popup = new mapboxgl.Popup({ offset: [0, -15] })
 		    .setLngLat(feature.geometry.coordinates)
-		    .setHTML('<p>Name: ' + feature.properties.Name + '</p><p>Type: ' + feature.properties.Type + '</p>')
+		    .setHTML('<p>' + feature.properties.Name + '</p><p>' + feature.properties.Address + '</p><p>' + feature.properties.Contact + '</p><p>' + feature.properties.Hours)
 		    .addTo(map);
 		});
 
