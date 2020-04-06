@@ -4,7 +4,7 @@
 
 	{% elif arg == 1 %}
 		<!-- Event -->
-		<div id='map' style='width: 100%; height: 500px;'></div>
+		<div id='map' style="position:fixed; top:56px; left:0; width:75%; height:93%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></div>
 <!-- 		<div id="menu">
 		<input
 		id="streets-v11"
@@ -141,7 +141,7 @@
 
 	{% elif arg == 2 %}
 	<!-- Place -->
-		<div id='map' style='width: 100%; height: 500px;'></div>
+		<div id='map' style="position:fixed; top:56px; left:0; width:75%; height:93%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></div>
 		<script>
 		mapboxgl.accessToken = "{{ user.profile.mapbox_key }}";
 		var map = new mapboxgl.Map({
@@ -243,100 +243,107 @@
 		</script>
 	{% endif %}
 
-	<div>
-		{% if arg == 3 %}
-		<!-- <a class="btn btn-primary disabled mt-1 mb-1" href="{% url 'imap-index' 3 %}" role="button">All</a> -->
-		{% else %}
-     	<!-- <a class="btn btn-primary mt-1 mb-1" href="{% url 'imap-index' 3 %}" role="button">All</a> -->
-      	{% endif %}
-      	{% if arg ==  1 %}
-		<a class="btn btn-primary disabled mt-1 mb-1" href="{% url 'imap-index' 1 %}" role="button">Event</a>
-		{% else %}
-     	<a class="btn btn-primary mt-1 mb-1" href="{% url 'imap-index' 1 %}" role="button">Event</a>
-      	{% endif %}
-      	{% if arg == 2 %}
-		<a class="btn btn-primary disabled mt-1 mb-1" href="{% url 'imap-index' 2 %}" role="button">Place</a>
-		{% else %}
-     	<a class="btn btn-primary mt-1 mb-1" href="{% url 'imap-index' 2 %}" role="button">Place</a>
-      	{% endif %}
-  	</div>
-	{% for suggestion in suggestions %}
-		<article class="media content-section">
-		  <div class="media-body">
-		    <div class="article-metadata">
-		      <a class="mr-2" href="#">{{ suggestion.desc }}</a>
-		      <small class="text-muted">{{ suggestion.date_posted|date:"F d, Y" }}</small>
-		      <div>
-			      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'suggestion-update' suggestion.id %}" role="button">Edit</a>
-			      <a class="btn btn-outline-danger btn-sm mt-1 mb-1" href="{% url 'suggestion-delete' suggestion.id %}" role="button">Delete</a>
-		  	  </div>
-		    </div>
-		    
-		    {% if suggestion.cud == 1 %}
-		    		Create
-	    	{% elif suggestion.cud == 2 %}
-	    		Update
-	    	{% else %}
-	    		Delete
-	    	{% endif %}
+	{% if arg == 3 %}
+	<!-- <a class="btn btn-primary disabled mt-1 mb-1" href="{% url 'imap-index' 3 %}" role="button">All</a> -->
+	{% else %}
+ 	<!-- <a class="btn btn-primary mt-1 mb-1" href="{% url 'imap-index' 3 %}" role="button">All</a> -->
+  	{% endif %}
 
-	    	{% if suggestion.stype == 1 %}
-	    		Event
-	    	{% else %}
-	    		Place
-	    	{% endif %} <br>
+  	<div class="row">
+	  <div class="col">w</div>
+	  <div class="col">h</div>
+	  <div class="col">a</div>
+	  <div class="col">
+	    <div>
+	      	{% if arg ==  1 %}
+			<a class="btn btn-primary disabled mt-1 mb-1" href="{% url 'imap-index' 1 %}" role="button">Event</a>
+			{% else %}
+	     	<a class="btn btn-primary mt-1 mb-1" href="{% url 'imap-index' 1 %}" role="button">Event</a>
+	      	{% endif %}
+	      	{% if arg == 2 %}
+			<a class="btn btn-primary disabled mt-1 mb-1" href="{% url 'imap-index' 2 %}" role="button">Place</a>
+			{% else %}
+	     	<a class="btn btn-primary mt-1 mb-1" href="{% url 'imap-index' 2 %}" role="button">Place</a>
+	      	{% endif %}
+	  	</div>
+		{% for suggestion in suggestions %}
+			<article class="media content-section">
+			  <div class="media-body">
+			    <div class="article-metadata">
+			      <a class="mr-2" href="#">{{ suggestion.desc }}</a>
+			      <small class="text-muted">{{ suggestion.date_posted|date:"F d, Y" }}</small>
+			      <div>
+				      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'suggestion-update' suggestion.id %}" role="button">Edit</a>
+				      <a class="btn btn-outline-danger btn-sm mt-1 mb-1" href="{% url 'suggestion-delete' suggestion.id %}" role="button">Delete</a>
+			  	  </div>
+			    </div>
+			    
+			    {% if suggestion.cud == 1 %}
+			    		Create
+		    	{% elif suggestion.cud == 2 %}
+		    		Update
+		    	{% else %}
+		    		Delete
+		    	{% endif %}
 
-		    {% if suggestion.cud == 2 %}
-		    	Previous Name: {{ suggestion.prev_name }} <br>
-		    {% endif %}
-		    	
-		    Name: {{ suggestion.name }} <br>
+		    	{% if suggestion.stype == 1 %}
+		    		Event
+		    	{% else %}
+		    		Place
+		    	{% endif %} <br>
 
-		    {% if suggestion.cud == 2 %}
-	    		Previous Coordinates: [{{ suggestion.prev_latitude }}, {{ suggestion.prev_longitude }}] <br>
-	    	{% endif %}
+			    {% if suggestion.cud == 2 %}
+			    	Previous Name: {{ suggestion.prev_name }} <br>
+			    {% endif %}
+			    	
+			    Name: {{ suggestion.name }} <br>
 
-		    Coordinates: [{{ suggestion.latitude }}, {{ suggestion.longitude }}]
-		  </div>
-		</article>
-	{% endfor %}
+			    {% if suggestion.cud == 2 %}
+		    		Previous Coordinates: [{{ suggestion.prev_latitude }}, {{ suggestion.prev_longitude }}] <br>
+		    	{% endif %}
 
-	<div class="container">
-		<div class="row">
-			<div class="col-sm">
+			    Coordinates: [{{ suggestion.latitude }}, {{ suggestion.longitude }}]
+			  </div>
+			</article>
+		{% endfor %}
 
-				<a class="btn btn-primary btn-lg" href="{% url 'suggestion-create' %}" role="button">Add Suggestion</a>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm">
 
-			</div>
-			<div class="col-sm"></div>
-			<div class="col-sm-left">
-				{% if is_paginated %}
+					<a class="btn btn-primary btn-lg" href="{% url 'suggestion-create' %}" role="button">Add Suggestion</a>
 
-					{% if page_obj.has_previous %}
-						<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
-						<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-					{% endif %}
+				</div>
+				<div class="col-sm"></div>
+				<div class="col-sm-left">
+					{% if is_paginated %}
 
-					{% for num in page_obj.paginator.page_range %}
-						{% if page_obj.number == num %}
-							<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
-						{% elif  num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'%}
-							<a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+						{% if page_obj.has_previous %}
+							<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+							<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
 						{% endif %}
-					{% endfor %}
 
-					{% if page_obj.has_next %}
-						<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-						<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+						{% for num in page_obj.paginator.page_range %}
+							{% if page_obj.number == num %}
+								<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+							{% elif  num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'%}
+								<a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+							{% endif %}
+						{% endfor %}
+
+						{% if page_obj.has_next %}
+							<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+							<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+						{% endif %}
+
 					{% endif %}
-
-				{% endif %}
+				</div>
 			</div>
 		</div>
+
+		<div><small class="text-muted">
+		  <a class="ml-2" href="{% url 'imap-menu' %}">Back to the Interactive Map Menu</a>
+		</small></div>
 	</div>
-
-	<div><small class="text-muted">
-	  <a class="ml-2" href="{% url 'imap-menu' %}">Back to the Interactive Map Menu</a>
-	</small></div>
-
+</div>
 {% endblock content %}

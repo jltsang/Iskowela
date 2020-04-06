@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
 {% block content %}
 {% load static %}
+<div class="container">
   <div class="row">
     <div class="col">
       <div class="text-center">
@@ -21,12 +22,11 @@
       </div>
     </div>
   </div>
-  <div><small class="text-muted">
-    <a class="ml-2" href="{% url 'main-menu' %}">Back to the Main Menu</a>
-  </small></div>
-  <div class="text-muted">
-    <small>
+  <div>
+    <small class="text-muted">
+      <a class="ml-2" href="{% url 'main-menu' %}">Back to the Main Menu</a><br>
       Icons made by <a href="https://www.flaticon.com/authors/turkkub" title="turkkub">turkkub</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-    <small>
+    </small>
   </div>
+</small>
 {% endblock content %}
