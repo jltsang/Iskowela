@@ -75,6 +75,9 @@
 		// Add zoom and rotation controls to the map.
 		map.addControl(new mapboxgl.NavigationControl());
 
+		// Add fullscreen control
+		map.addControl(new mapboxgl.FullscreenControl());
+
 		// Markers layer
 		map.on('click', function(e) {
 		  var features = map.queryRenderedFeatures(e.point, {
@@ -89,7 +92,7 @@
 
 		  var popup = new mapboxgl.Popup({ offset: [0, -15] })
 			    .setLngLat(feature.geometry.coordinates)
-			    .setHTML('<p>Name: ' + feature.properties.name + '</p><p>Schedule: ' + feature.properties.date + '</p><p>Time:: ' + feature.properties.time + '</p><p>Target Population: ' + feature.properties.target_population)
+			    .setHTML('<p>' + feature.properties.name + '</p><p>' + feature.properties.date + ', ' + feature.properties.time + '</p><p>Target Population: ' + feature.properties.target_population)
 			    .addTo(map);
 		});
 
@@ -175,6 +178,9 @@
 
 		// Add zoom and rotation controls to the map.
 		map.addControl(new mapboxgl.NavigationControl());
+
+		// Add fullscreen control
+		map.addControl(new mapboxgl.FullscreenControl());
 
 		map.on('click', function(e) {
 		  var features = map.queryRenderedFeatures(e.point, {
