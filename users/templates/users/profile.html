@@ -7,7 +7,7 @@
       <img class="rounded-circle account-img" src="{{ active_profile.logo.url }}">
       <div class="media-body">
         <h2 class="account-heading">{{ active_profile.school_name }}</h2>
-        <p class="text-secondary">{{ active_profile.contact_details }}</p>
+        <p class="text-secondary">{{ active_profile.contact_details|linebreaks }}</p>
       </div>
     </div>
       {% if user.is_authenticated %}

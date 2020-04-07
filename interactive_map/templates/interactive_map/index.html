@@ -1,29 +1,60 @@
 {% extends "main/base.html" %}
 {% block content %}
+	<!-- Toggle layer button style -->
+	<style>
+		#menu {
+		background: #fff;
+		position: absolute;
+		z-index: 1;
+		top: 82px;
+		right: 8px;
+		border-radius: 3px;
+		width: 60px;
+		border: 1px solid rgba(0, 0, 0, 0.4);
+		font-family: 'Open Sans', sans-serif;
+		}
+		 
+		#menu a {
+		font-size: 13px;
+		color: #404040;
+		display: block;
+		margin: 0;
+		padding: 0;
+		padding: 10px;
+		text-decoration: none;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+		text-align: center;
+		}
+		 
+		#menu a:last-child {
+		border: none;
+		}
+		 
+		#menu a:hover {
+		background-color: #f8f8f8;
+		color: #404040;
+		}
+		 
+		#menu a.active {
+		background-color: #007bff;
+		color: #ffffff;
+		}
+		 
+		#menu a.active:hover {
+		background: #3074a4;
+		}
+	</style>
+	<nav id="menu"></nav>
 	{% if arg == 3 %}
 
 	{% elif arg == 1 %}
 		<!-- Event -->
 		<div id='map' style="position:fixed; top:56px; left:0; width:75%; height:93%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></div>
 <!-- 		<div id="menu">
-		<input
-		id="streets-v11"
-		type="radio"
-		name="rtoggle"
-		value="streets"
-		checked="checked"
-		/>
-		<label for="3d">3D</label>
-		<input id="egrelayson/ck6g46xh90e581imre9to3w6h" type="radio" name="rtoggle" value="3d" />
-		<label for="streets">streets</label>
-		<input id="mapbox/light-v10" type="radio" name="rtoggle" value="light" />
-		<label for="light">light</label>
-		<input id="mapbox/dark-v10" type="radio" name="rtoggle" value="dark" />
-		<label for="dark">dark</label>
-		<input id="mapbox/outdoors-v11" type="radio" name="rtoggle" value="outdoors" />
-		<label for="outdoors">outdoors</label>
-		<input id="mapbox/satellite-v9" type="radio" name="rtoggle" value="satellite" />
-		<label for="satellite">satellite</label>
+			<input id="egrelayson/ck6g46xh90e581imre9to3w6h" type="radio" name="rtoggle" value="3D" />
+			<label for="3D">3D</label>
+			<input id="mapbox/satellite-v9" type="radio" name="rtoggle" value="satellite" />
+			<label for="satellite">satellite</label>
 		</div> -->
 		<script>
 		mapboxgl.accessToken = "{{ active_profile.mapbox_key }}";
@@ -111,7 +142,7 @@
 			}
 
 			map.addLayer({
-				'id': '3d-buildings',
+				'id': '3D',
 				'source': 'composite',
 				'source-layer': 'building',
 				'filter': ['==', 'extrude', 'true'],
@@ -136,6 +167,37 @@
 				}
 			}, labelLayerId);
 		});
+
+		//Toggle 3D
+		var toggleableLayerIds = ['3D'];
+ 
+		for (var i = 0; i < toggleableLayerIds.length; i++) {
+			var id = toggleableLayerIds[i];
+			 
+			var link = document.createElement('a');
+			link.href = '#';
+			link.className = 'active';
+			link.textContent = id;
+			 
+			link.onclick = function(e) {
+				var clickedLayer = this.textContent;
+				e.preventDefault();
+				e.stopPropagation();
+				 
+				var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+				 
+				if (visibility === 'visible') {
+					map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+					this.className = '';
+				} else {
+					this.className = 'active';
+					map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+				}
+			};
+			 
+			var layers = document.getElementById('menu');
+			layers.appendChild(link);
+		}
 
 		</script>
 
@@ -184,7 +246,7 @@
 
 		map.on('click', function(e) {
 		  var features = map.queryRenderedFeatures(e.point, {
-		    layers: ['roosevelt-food', 'roosevelt-health', 'roosevelt-finance', 'roosevelt-store'] // replace this with the name of the layer
+		    layers: ['roosevelt-food', 'roosevelt-health', 'roosevelt-finance', 'roosevelt-store', 'roosevelt-etc'] // replace this with the name of the layer
 		  });
 
 		  if (!features.length) {
@@ -214,7 +276,7 @@
 			}
 
 			map.addLayer({
-				'id': '3d-buildings',
+				'id': '3D',
 				'source': 'composite',
 				'source-layer': 'building',
 				'filter': ['==', 'extrude', 'true'],
@@ -239,6 +301,37 @@
 				}
 			}, labelLayerId);
 		});
+
+		//Toggle 3D
+		var toggleableLayerIds = ['3D'];
+ 
+		for (var i = 0; i < toggleableLayerIds.length; i++) {
+			var id = toggleableLayerIds[i];
+			 
+			var link = document.createElement('a');
+			link.href = '#';
+			link.className = 'active';
+			link.textContent = id;
+
+			link.onclick = function(e) {
+				var clickedLayer = this.textContent;
+				e.preventDefault();
+				e.stopPropagation();
+				 
+				var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+				 
+				if (visibility === 'visible') {
+					map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+					this.className = '';
+				} else {
+					this.className = 'active';
+					map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+				}
+			};
+			 
+			var layers = document.getElementById('menu');
+			layers.appendChild(link);
+		}
 
 		</script>
 	{% endif %}
