@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm
 from django.contrib.auth.decorators import login_required
+from .models import Profile
 
 @login_required #Must be signed in (as admin) in order to create new admin accounts
 def register(request):
@@ -17,4 +18,8 @@ def register(request):
 	return render(request, 'users/register.html', {'form': form})
 
 def profile(request):
-	return render(request, 'users/profile.html')
+	context = {
+		'title': 'About',
+		'active_profile': Profile.objects.get(school_name="Roosevelt College Marikina"),
+	}
+	return render(request, 'users/profile.html', context)

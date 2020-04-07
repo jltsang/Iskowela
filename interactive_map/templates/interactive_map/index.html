@@ -26,7 +26,7 @@
 		<label for="satellite">satellite</label>
 		</div> -->
 		<script>
-		mapboxgl.accessToken = "{{ user.profile.mapbox_key }}";
+		mapboxgl.accessToken = "{{ active_profile.mapbox_key }}";
 		var map = new mapboxgl.Map({
 		container: 'map',
 		style: 'mapbox://styles/egrelayson/ck8n618dc0acb1imqcnm6vi92',
@@ -143,7 +143,7 @@
 	<!-- Place -->
 		<div id='map' style="position:fixed; top:56px; left:0; width:75%; height:93%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></div>
 		<script>
-		mapboxgl.accessToken = "{{ user.profile.mapbox_key }}";
+		mapboxgl.accessToken = "{{ active_profile.mapbox_key }}";
 		var map = new mapboxgl.Map({
 		container: 'map',
 		style: 'mapbox://styles/egrelayson/ck8n5mk6j09ad1ipalerogr60',
@@ -250,9 +250,9 @@
   	{% endif %}
 
   	<div class="row">
-	  <div class="col">w</div>
-	  <div class="col">h</div>
-	  <div class="col">a</div>
+	  <div class="col"></div>
+	  <div class="col"></div>
+	  <div class="col"></div>
 	  <div class="col">
 	    <div>
 	      	{% if arg ==  1 %}
@@ -272,10 +272,12 @@
 			    <div class="article-metadata">
 			      <a class="mr-2" href="#">{{ suggestion.desc }}</a>
 			      <small class="text-muted">{{ suggestion.date_posted|date:"F d, Y" }}</small>
+			      {% if user.is_authenticated %}
 			      <div>
 				      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'suggestion-update' suggestion.id %}" role="button">Edit</a>
 				      <a class="btn btn-outline-danger btn-sm mt-1 mb-1" href="{% url 'suggestion-delete' suggestion.id %}" role="button">Delete</a>
 			  	  </div>
+			  	  {% endif %}
 			    </div>
 			    
 			    {% if suggestion.cud == 1 %}

@@ -2,7 +2,7 @@
 {% block content %}
 	<div id='map' style="position:fixed; top:56px; left:0; width:80%; height:93%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></div>
 	<script>
-	mapboxgl.accessToken = "{{ user.profile.mapbox_key }}";
+	mapboxgl.accessToken = "{{ active_profile.mapbox_key }}";
 	var map = new mapboxgl.Map({
 	container: 'map',
 	style: 'mapbox://styles/egrelayson/ck6g7arh20ixk1inz309nbnh8',

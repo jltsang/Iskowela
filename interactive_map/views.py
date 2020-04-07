@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Suggestion
 from django.urls import reverse
+from users.models import Profile
 from django.views.generic import (
 	ListView, 
 	DetailView, 
@@ -10,10 +11,7 @@ from django.views.generic import (
 )
 from django.core.paginator import Paginator
 
-mapbox_access_token = 'pk.eyJ1IjoiZWdyZWxheXNvbiIsImEiOiJjazJ0emZ4ZncxMGdhM25udDY5bGp6cTR1In0._Cr83Dvy7I4yZHkDd_aIAw'
-
 def index(request):
-	# mapbox_access_token = 'pk.my_mapbox_access_token'
 	context = {
 		'title': 'Interactive Map',
 		'suggestions': Suggestion.objects.all(),
@@ -21,10 +19,9 @@ def index(request):
 	return render(request, 'interactive_map/index.html', context)
 
 def newgame(request):
-	# mapbox_access_token = 'pk.my_mapbox_access_token'
 	context = {
 		'title': 'Interactive Map',
-		'mapbox_access_token': mapbox_access_token
+		'active_profile': Profile.objects.get(school_name="Roosevelt College Marikina"),
 	}
 	return render(request, 'interactive_map/newgame.html', context)
 
@@ -45,7 +42,7 @@ class SuggestionListView(ListView):
 	    context = super().get_context_data(**kwargs)
 	    context['title'] = 'Interactive Map'
 	    context['arg'] = self.kwargs.get('stype')
-	    context['mapbox_access_token'] = mapbox_access_token
+	    context['active_profile'] = Profile.objects.get(school_name="Roosevelt College Marikina")
 	    if self.kwargs.get('stype') == 1:
 	    	context['layer'] = 'roosevelt-events'
 	    	context['html'] = "'<p>Name: ' + feature.properties.name + '</p><p>Schedule: ' + feature.properties.date + '</p><p>Time:: ' + feature.properties.time + '</p><p>Target Population: ' + feature.properties.target_population"

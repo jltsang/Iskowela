@@ -4,10 +4,10 @@
 <div class="container">
   <div class="content-section">
     <div class="media">
-      <img class="rounded-circle account-img" src="{{ user.profile.logo.url }}">
+      <img class="rounded-circle account-img" src="{{ active_profile.logo.url }}">
       <div class="media-body">
-        <h2 class="account-heading">{{ user.profile.school_name }}</h2>
-        <p class="text-secondary">{{ user.profile.contact_details }}</p>
+        <h2 class="account-heading">{{ active_profile.school_name }}</h2>
+        <p class="text-secondary">{{ active_profile.contact_details }}</p>
       </div>
     </div>
       {% if user.is_authenticated %}
