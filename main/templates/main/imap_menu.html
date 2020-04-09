@@ -8,7 +8,12 @@
         <div class="content-section">
           <img src="{% static "images/note.png" %}" alt="Generic placeholder image" width="140" height="140">
           <h2><a href="{% url 'imap-newgame' %}">New Game</a></h2>
-          <p>Learn the registration process here!</p>
+          <p>Learn about the school and registration process here!</p>
+          {% if user.is_authenticated %}
+            <a class="btn" target="_blank" href="{{ active_profile.newgame_markers_dataset_link }}">
+              Configure
+            </a>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -18,6 +23,21 @@
           <img class="rounded-circle" src="{% static "images/marker.png" %}" alt="Generic placeholder image" width="140" height="140">
           <h2><a href="{% url 'imap-index' 3 %}">Markers</a></h2>
           <p>Curious about nearby places and events? Check them out here.</p>
+          {% if user.is_authenticated %}
+          <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Configure
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" target="_blank" href="{{ active_profile.event_markers_dataset_link }}">Event Markers</a>
+              <a class="dropdown-item" target="_blank" href="{{ active_profile.health_markers_dataset_link }}">Health Markers</a>
+              <a class="dropdown-item" target="_blank" href="{{ active_profile.food_markers_dataset_link }}">Food Markers</a>
+              <a class="dropdown-item" target="_blank" href="{{ active_profile.finance_markers_dataset_link }}">Finance Markers</a>
+              <a class="dropdown-item" target="_blank" href="{{ active_profile.store_markers_dataset_link }}">Store Markers</a>
+              <a class="dropdown-item" target="_blank" href="{{ active_profile.etc_markers_dataset_link }}">Etc Markers</a>
+            </div>
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>
