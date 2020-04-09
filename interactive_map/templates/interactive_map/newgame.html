@@ -45,7 +45,7 @@
 		}
 	</style>
 	<nav id="menu"></nav>
-	<div id='map' style="position:fixed; top:56px; left:0; width:80%; height:93%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></div>
+	<div id='map' style="position:fixed; top:56px; left:0; width:75%; height:93%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></div>
 	<script>
 	mapboxgl.accessToken = "{{ active_profile.mapbox_key }}";
 	var map = new mapboxgl.Map({
@@ -176,7 +176,23 @@
 	}
 
 	</script>
-	<div><small class="text-muted">
-		<a class="ml-2" href="{% url 'imap-menu' %}">Back to the Interactive Map Menu</a>
-	</small></div>
+
+	<!-- Admission Guide textarea -->
+	<div class="row">
+	  <div class="col"></div>
+	  <div class="col"></div>
+	  <div class="col"></div>
+	  <div class="col">
+	  		{% if user.is_authenticated %}
+	  		<a class="btn btn-secondary mt-1 mb-1" href="#" role="button">Edit</a>
+	  		{% endif %}
+		  	<br><br>
+		<div class="content-section">
+		  	<p>{{ active_profile.newgame_textfield|linebreaks }}</p>
+		</div>
+		<small class="text-muted">
+			<a class="ml-2" href="{% url 'imap-menu' %}">Back to the Interactive Map Menu</a>
+		</small>
+	  </div>
+	</div>
 {% endblock content %}

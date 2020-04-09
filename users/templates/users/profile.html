@@ -13,9 +13,13 @@
       {% if user.is_authenticated %}
       <h1>{{ user.username }}</h1>
       <p>Mapbox key: {{ user.profile.mapbox_key }}</p>
-      <p>New Game Dataset: {{ user.profile.new_game_dataset_link }}</p>
+      <p>New Game Markers Dataset: {{ user.profile.newgame_markers_dataset_link }}</p>
       <p>Event Markers Dataset: {{ user.profile.event_markers_dataset_link }}</p>
-      <p>Place Markers Dataset: {{ user.profile.place_markers_dataset_link }}</p>
+      <p>Health Markers Dataset: {{ user.profile.health_markers_dataset_link }}</p>
+      <p>Food Markers Dataset: {{ user.profile.food_markers_dataset_link }}</p>
+      <p>Finance Markers Dataset: {{ user.profile.finance_markers_dataset_link }}</p>
+      <p>Store Markers Dataset: {{ user.profile.store_markers_dataset_link }}</p>
+      <p>Etc Markers Dataset: {{ user.profile.etc_markers_dataset_link }}</p>
       <p>Live Chat: {{ user.profile.live_chat_link }}</p>
       <p>Chatbot Tree: {{ user.profile.chatbot_tree_link }}</p>
       {% endif %}
