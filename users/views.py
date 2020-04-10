@@ -18,6 +18,14 @@ def register(request):
 	return render(request, 'users/register.html', {'form': form})
 
 def profile(request):
+	context = {
+		'title': 'About',
+		'active_profile': Profile.objects.get(school_name="Roosevelt College Marikina"),
+	}
+	return render(request, 'users/profile.html', context)
+
+# Profile Update
+def pupdate(request):
 	if request.method == 'POST':
 		u_form = UserUpdateForm(request.POST, instance=request.user)
 		p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
@@ -34,7 +42,6 @@ def profile(request):
 	context = {
 		'u_form': u_form,
 		'p_form': p_form,
-		'title': 'About',
-		'active_profile': Profile.objects.get(school_name="Roosevelt College Marikina"),
+		'title': 'Profile Update',
 	}
-	return render(request, 'users/profile.html', context)
+	return render(request, 'users/pupdate.html', context)

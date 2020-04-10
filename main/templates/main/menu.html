@@ -8,7 +8,7 @@
         <div class="content-section">
           <img class="rounded-circle" src="{% static "images/mapbox.png" %}" alt="Generic placeholder image" width="140" height="140">
           <h2><a href="{% url 'imap-menu' %}">Interactive Map</a></h2>
-          <p>View nearby places and events, or view an animation of the registration process.</p>
+          <p>View nearby places and events, or learn about the school and its registration process.</p>
         </div>
       </div>
     </div>
@@ -17,15 +17,15 @@
         <div class="content-section">
           <img class="rounded-circle" src="{% static "images/snatchbot.png" %}" alt="Generic placeholder image" width="140" height="140">
           <h2><a href="{% url 'chatbot-index' %}">Chatbot</a></h2>
-          <p>Have any questions about the college? Inquire with Roosevelt CRM's Chatbot.</p>
+          <p>Have any questions about the school? Inquire with Roosevelt CRM's Chatbot.</p>
           {% if user.is_authenticated %}
           <div class="dropdown">
             <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Configure
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" target="_blank" href="https://account.snatchbot.me/conversation">Manage Live Chat</a>
-              <a class="dropdown-item" target="_blank" href="https://account.snatchbot.me/edit/78018">Chatbot Tree</a>
+              <a class="dropdown-item" target="_blank" href="{{ active_profile.live_chat_link }}">Manage Live Chat</a>
+              <a class="dropdown-item" target="_blank" href="{{ active_profile.chatbot_tree_link }}">Chatbot Tree</a>
             </div>
           </div>
           {% endif %}

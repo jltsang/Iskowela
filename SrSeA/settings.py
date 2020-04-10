@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ["localhost","192.168.1.16", "srsea.herokuapp.com"]
 
 INSTALLED_APPS = [
     'crispy_forms',
+    'ssr.apps.SsrConfig',
     'users.apps.UsersConfig',
     'main.apps.MainConfig',
     'chatbot.apps.ChatbotConfig',
