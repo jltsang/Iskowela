@@ -22,6 +22,7 @@ from users import views as user_views
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
 	path('', include('main.urls')),
@@ -35,16 +36,16 @@ urlpatterns = [
     path('imap/<int:pk>/delete/', interactive_map_views.SuggestionDeleteView.as_view(), name='suggestion-delete'),
     path('imap/newgame', interactive_map_views.newgame, name='imap-newgame'),
 
-    path('register/', user_views.register, name='register'), #To be hidden by default
-    path('profile/', user_views.profile, name='profile'), #To be hidden by default
-    path('pupdate/', user_views.pupdate, name='pupdate'),
+    path('register/', user_views.register, name='register'), #Link to (create new admin)
+    path('profile/', user_views.profile, name='profile'),
+    path('pupdate/', login_required(user_views.pupdate), name='pupdate'), #Admin only
 
-    path('ssr/', ssr_views.SSRListView.as_view(), name='ssr-index'),
+    path('ssr/', login_required(ssr_views.SSRListView.as_view()), name='ssr-index'), #Admin only
     path('ssr/new', ssr_views.SSRCreateView.as_view(), name='ssr-create'),
-    path('ssr/<int:pk>/delete/', ssr_views.SSRDeleteView.as_view(), name='ssr-delete'),
+    path('ssr/<int:pk>/delete/', login_required(ssr_views.SSRDeleteView.as_view()), name='ssr-delete'), #Admin only
 
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
+    path('logout/', login_required(auth_views.LogoutView.as_view(template_name='users/logout.html')), name='logout'), #Signed in only
 ]
 
 if settings.DEBUG:

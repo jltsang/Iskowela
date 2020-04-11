@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+<div class="container">
 	<div class="content-section">
 		<form method="POST">
 			{% csrf_token %}
@@ -16,4 +17,5 @@
 	<small class="text-muted">
 		<a class="ml-2" href="{% url 'imap-index' 3 %}">Back to the Interactive Map</a>
 	</small>
+</div>
 {% endblock content %}

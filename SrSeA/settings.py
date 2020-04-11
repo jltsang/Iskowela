@@ -139,3 +139,5 @@ LOGIN_URL = 'login'
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+
+GOOGLE_RECAPTCHA_SECRET_KEY = '6LcaregUAAAAACDoxbU_uPkGay47a1SdbP6XpxUx'

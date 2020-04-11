@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+<div class="container">
 	<div class="content-section">
 		<form method="POST">
 			{% csrf_token %}
@@ -9,8 +10,11 @@
 				{{ form|crispy }}
 			</fieldset>
 			<div class="form-group">
+				<script src='https://www.google.com/recaptcha/api.js'></script>
+   	 			<div class="g-recaptcha" data-sitekey="6LcaregUAAAAAHQd7sOZVLNu94YP-IOenZcI5UBF"></div>
 				<button class="btn btn-outline-info" type="submit">Submit</button>
 			</div>
 		</form>
 	</div>
+</div>
 {% endblock content %}

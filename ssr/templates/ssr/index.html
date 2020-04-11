@@ -16,9 +16,7 @@
 		      <a class="mr-2" href="#">{{ ssr.email }}</a>
 		      <small class="text-muted">{{ ssr.date_posted|date:"F d, Y" }}</small>
 		      {% if user.is_authenticated %}
-		      <div>
-			      <a class="btn btn-outline-danger btn-sm mt-1 mb-1" href="{% url 'ssr-delete' ssr.id %}" role="button">Delete</a>
-		  	  </div>
+			      <!-- <a class="btn btn-outline-danger btn-sm mt-1 mb-1" href="{% url 'ssr-delete' ssr.id %}" role="button">Delete</a> -->
 		  	  {% endif %}
 		    </div>
 		    
@@ -30,7 +28,8 @@
 			   <span class="fa fa-star checked"></span>
 			{% endfor %}
 			{% endwith %}<br>
-		    {{ ssr.interactive_map_comment }}<br>
+			<p class="text-muted">
+		    {{ ssr.interactive_map_comment }}</p>
 
 	    	Chatbot:
 
@@ -40,7 +39,8 @@
 			   <span class="fa fa-star checked"></span>
 			{% endfor %}
 			{% endwith %}<br>
-	    	{{ ssr.chatbot_comment }}<br>
+			<p class="text-muted">
+	    	{{ ssr.chatbot_comment }}</p>
 
 		   	Overall:
 
@@ -50,7 +50,8 @@
 			   <span class="fa fa-star checked"></span>
 			{% endfor %}
 			{% endwith %}<br>
-		   	{{ ssr.overall_comment }}<br>
+			<p class="text-muted">
+		   	{{ ssr.overall_comment }}</p>
 		  </div>
 		</article>
 	{% endfor %}

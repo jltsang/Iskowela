@@ -15,7 +15,9 @@
       </div>
       <div class="col">
         <p align="right">
-          <a class="btn" href="{% url 'pupdate' %}"><i class="icon-edit"></i> Configure</a>
+          {% if user.is_authenticated %}
+            <a class="btn" href="{% url 'pupdate' %}"><i class="icon-edit"></i> Configure</a>
+          {% endif %}
         </p>
       </div>
     </div>
