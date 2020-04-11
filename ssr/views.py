@@ -52,24 +52,17 @@ class SSRCreateView(CreateView):
 		    'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
 		    'response': recaptcha_response
 		}
-		# print(values)
 		data = urllib.parse.urlencode(values).encode()
-		print(data)
 		req =  urllib.request.Request(url, data=data)
-		print(req)
 		response = urllib.request.urlopen(req)
-		print(response)
 		result = json.loads(response.read().decode())
-		print(result)
 		''' End reCAPTCHA validation '''
 
 		if result['success']:
 		    form.save()
 		    messages.success(request, 'New comment added with success!')
-		    print("Succ")
 		else:
 		    messages.error(request, 'Invalid reCAPTCHA. Please try again.')
-		    print("Inv")
 
 		return HttpResponseRedirect(reverse('ssr-create'))
 
