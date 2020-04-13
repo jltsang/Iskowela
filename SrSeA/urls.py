@@ -37,8 +37,8 @@ urlpatterns = [
     path('imap/newgame', interactive_map_views.newgame, name='imap-newgame'),
 
     path('register/', user_views.register, name='register'), #Link to (create new admin)
-    path('profile/', user_views.profile, name='profile'),
-    path('pupdate/', login_required(user_views.pupdate), name='pupdate'), #Admin only
+    # path('profile/', user_views.profile, name='profile'),
+    # path('pupdate/', login_required(user_views.pupdate), name='pupdate'), #Admin only
 
     path('ssr/', login_required(ssr_views.SSRListView.as_view()), name='ssr-index'), #Admin only
     path('ssr/new', ssr_views.SSRCreateView.as_view(), name='ssr-create'),
