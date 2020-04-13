@@ -5,7 +5,11 @@ from django.urls import reverse
 class Suggestion(models.Model):
 	class EventPlace(models.IntegerChoices):
 		EVENT = 1
-		PLACE = 2
+		HEALTH = 2
+		FOOD = 3
+		FINANCE = 4
+		STORE = 5
+		ETC = 6
 	class Action(models.IntegerChoices):
 		CREATE = 1
 		UPDATE = 2

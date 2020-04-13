@@ -383,9 +383,17 @@
 
 		    	{% if suggestion.stype == 1 %}
 		    		Event
-		    	{% else %}
-		    		Place
-		    	{% endif %} <br>
+		    	{% elif suggestion.stype == 2 %}
+		    		Health
+		    	{% elif suggestion.stype == 3 %}
+		    		Food
+		    	{% elif suggestion.stype == 4 %}
+		    		Finance
+		    	{% elif suggestion.stype == 5 %}
+		    		Store
+		    	{% elif suggestion.stype == 6 %}
+		    		Etc
+		    	{% endif %} Marker<br>
 
 			    {% if suggestion.cud == 2 %}
 			    	Previous Name: {{ suggestion.prev_name }} <br>
@@ -402,39 +410,38 @@
 			</article>
 		{% endfor %}
 
-		<div class="container">
-			<div class="row">
-				<div class="col-sm">
+		<!-- <div class="container"> -->
+			<!-- <div class="row"> -->
+				<!-- <div class="col-sm"> -->
 
-					<a class="btn btn-primary btn-lg" href="{% url 'suggestion-create' %}" role="button">Add Suggestion</a>
+					<a class="btn btn-primary" href="{% url 'suggestion-create' %}" role="button">Add Suggestion</a><br><br>
 
-				</div>
-				<div class="col-sm"></div>
-				<div class="col-sm-left">
+				<!-- </div> -->
+				<!-- <div class="col-sm"> -->
 					{% if is_paginated %}
 
 						{% if page_obj.has_previous %}
-							<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
-							<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+							<a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
+							<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
 						{% endif %}
 
 						{% for num in page_obj.paginator.page_range %}
 							{% if page_obj.number == num %}
-								<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+								<a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
 							{% elif  num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'%}
-								<a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+								<a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
 							{% endif %}
 						{% endfor %}
 
 						{% if page_obj.has_next %}
-							<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-							<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+							<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+							<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
 						{% endif %}
 
 					{% endif %}
-				</div>
-			</div>
-		</div>
+				<!-- </div> -->
+			<!-- </div> -->
+		<!-- </div> -->
 
 		<div><small class="text-muted">
 		  <a class="ml-2" href="{% url 'imap-menu' %}">Back to the Interactive Map Menu</a>

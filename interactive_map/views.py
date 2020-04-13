@@ -15,6 +15,7 @@ import urllib
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.db.models import Q
 
 def index(request):
 	context = {
@@ -38,8 +39,10 @@ class SuggestionListView(ListView):
 
 	def get_queryset(self):
 		arg = self.kwargs.get('stype')
-		if (arg == 1 or arg == 2):
+		if arg == 1:
 			return Suggestion.objects.filter(stype=arg).order_by('-date_posted')
+		elif arg == 2:
+			return Suggestion.objects.filter(~Q(stype = 1)).order_by('-date_posted')
 		else:
 			return Suggestion.objects.order_by('-date_posted')
 

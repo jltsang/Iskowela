@@ -21,8 +21,10 @@
         </p>
       </div>
     </div>
+  </div>
+  <div class="content-section">
       {% if user.is_authenticated %}
-      <h1>{{ user.username }}</h1>
+      <!-- <h1>{{ user.username }}</h1> -->
       <p>Mapbox key: {{ user.profile.mapbox_key }}</p>
       <p>New Game Markers Dataset: {{ user.profile.newgame_markers_dataset_link }}</p>
       <p>Event Markers Dataset: {{ user.profile.event_markers_dataset_link }}</p>
