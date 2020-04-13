@@ -5,7 +5,7 @@ from PIL import Image
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	school_name = models.CharField(max_length=40)
-	logo = models.ImageField(blank=True, upload_to='logo_pics')
+	logo = models.ImageField(default='default.jpg', upload_to='logo_pics')
 	contact_details = models.TextField()
 	mapbox_key = models.CharField(max_length=100)
 	event_markers_dataset_link = models.CharField(max_length=80)
@@ -28,8 +28,7 @@ class Profile(models.Model):
 
 		img = Image.open(self.logo.path)
 
-		if img != None:
-			if img.height > 300 or img.width > 300:
-				output_size = (300, 300)
-				img.thumbnail(output_size)
-				img.save(self.logo.path)
+		if img.height > 300 or img.width > 300:
+			output_size = (300, 300)
+			img.thumbnail(output_size)
+			img.save(self.logo.path)
