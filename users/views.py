@@ -4,7 +4,7 @@ from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
 
-@login_required #Must be signed in (as admin) in order to create new admin accounts
+# @login_required #Must be signed in (as admin) in order to create new admin accounts
 def register(request):
 	if request.method == 'POST':
 		form = UserRegisterForm(request.POST)
