@@ -22,8 +22,8 @@
       </div>
     </div>
   </div>
-  <div class="content-section">
-      {% if user.is_authenticated %}
+  {% if user.is_authenticated %}
+    <div class="content-section">
       <!-- <h1>{{ user.username }}</h1> -->
       <p>Mapbox key: {{ user.profile.mapbox_key }}</p>
       <p>New Game Markers Dataset: {{ user.profile.newgame_markers_dataset_link }}</p>
@@ -35,7 +35,7 @@
       <p>Etc Markers Dataset: {{ user.profile.etc_markers_dataset_link }}</p>
       <p>Live Chat: {{ user.profile.live_chat_link }}</p>
       <p>Chatbot Tree: {{ user.profile.chatbot_tree_link }}</p>
-      {% endif %}
     </div>
+  {% endif %}
 </div>
 {% endblock content %}
