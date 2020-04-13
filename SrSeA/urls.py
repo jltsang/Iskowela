@@ -44,7 +44,7 @@ urlpatterns = [
     # path('ssr/new', ssr_views.SSRCreateView.as_view(), name='ssr-create'),
     # path('ssr/<int:pk>/delete/', login_required(ssr_views.SSRDeleteView.as_view()), name='ssr-delete'), #Admin only
 
-    # path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     # path('logout/', login_required(auth_views.LogoutView.as_view(template_name='users/logout.html')), name='logout'), #Signed in only
 ]
 
