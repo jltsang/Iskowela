@@ -23,8 +23,8 @@ class Profile(models.Model):
 		return f'{self.user.username} Profile'
 
 	# Resize the logo
-	def save(self):
-		super().save()
+	def save(self, *args, **kwargs):
+		super(Profile, self).save(*args, **kwargs)
 
 		img = Image.open(self.logo.path)
 
