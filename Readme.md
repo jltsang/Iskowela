@@ -6,9 +6,12 @@
 
 ## Installation
 
-1. Clone or donwload repository at https://github.com/linocrusher/SrSeA
+1. Clone repository at https://github.com/linocrusher/SrSeA
+``` sh
+$ git clone https://github.com/linocrusher/SrSeA.git
+```
 2. Open terminal and locate the project directory
-3. Start the Django server with
+3. Start the Django server
    
 ```sh
 $ python manage.py runserver
