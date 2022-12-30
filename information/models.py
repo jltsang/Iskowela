@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
 # Create your models here.
 
@@ -11,6 +12,9 @@ class ProcessGuide(models.Model):
     
     def __str__(self):
         return self.process
+    
+    def get_absolute_url(self):
+        return reverse('processguides')
 
 class Courses(models.Model):
     schoolid = models.TextField()

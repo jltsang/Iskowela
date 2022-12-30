@@ -31,6 +31,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('processguides/', information_views.processguides, name='processguides'),
+    path('processguides/new', login_required(information_views.ProcessGuidesCreateView.as_view()), name='processguide-create'),
+    path('processguides/update/<pk>/', login_required(information_views.ProcessGuidesUpdateView.as_view()), name='processguide-update'),
+    path('processguides/delete/<pk>/', login_required(information_views.ProcessGuidesDeleteView.as_view()), name='processguide-delete'),
     path('courses/', information_views.courses, name='courses'),
     path('scholarships/', information_views.scholarships, name='scholarships'),
 
