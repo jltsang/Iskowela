@@ -6,7 +6,7 @@ from django.urls import reverse
 
 class ProcessGuide(models.Model):
     school_name = models.TextField()
-    process = models.TextField(default='')
+    process_name = models.TextField(default='')
     description = models.TextField(default='')
     last_updated = models.DateTimeField(default=timezone.now)
     

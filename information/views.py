@@ -29,12 +29,12 @@ def scholarships(request):
 
 class ProcessGuidesCreateView(CreateView):
 	model = ProcessGuide
-	fields = ['process', 'description']
+	fields = ['process_name', 'description']
 	success_url = "/processguides/"
 
 class ProcessGuidesUpdateView(UpdateView):
 	model = ProcessGuide
-	fields = ['process', 'description']
+	fields = ['process_name', 'description']
 
 class ProcessGuidesDeleteView(DeleteView):
 	model = ProcessGuide

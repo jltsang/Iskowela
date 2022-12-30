@@ -1,16 +1,23 @@
 {% extends "main/base.html" %}
 {% block content %}
-	<div class="content-section">
+
+<div class="container">
+	<div class="infoform">
 		<form method="POST">
 			{% csrf_token %}
-			<fieldset class="form-group">
-				<legend class="border-bottom mb-4">Delete Suggestion</legend>
-				<h2>Are you sure you want to delete the suggestion "{{ object.desc }}"</h2>
-			</fieldset>
-			<div class="form-group">
-				<button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
-				<a class="btn btn-outline-secondary" href="{% url 'imap-index' 3 %}">Cancel</a>
-			</div>
+            <div class="d-flex border-bottom pb-4">
+                <h2>Deleting "{{ object.process_name }}"</h2>
+            </div>
+			<div class="pt-4">
+				Are you sure you want to delete this process? 
+				<br><br>
+				Please note that this action <b style="color: #F9594A;">cannot be reverted</b>.</div>
+            <div class="mt-4 d-flex">
+                <input type="submit" value="Delete Process" class="btn neg-btn mr-3"> 
+                <a class="btn add-btn" href="{% url 'processguides' %}">Cancel</a>
+            </div>
 		</form>
 	</div>
+</div>
+
 {% endblock content %}

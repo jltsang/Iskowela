@@ -2,6 +2,10 @@ ul {
   margin: 0;
 }
 
+h2 {
+  margin-bottom: 0;
+}
+
 .login {
   background: #007BFF;
   color: #FFFFFF;
@@ -51,6 +55,15 @@ ul {
   font-weight: 600;
 }
 
+.neg-btn {
+  background: #F9594A;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: #000000;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
 .card {
   border-radius: 20px;
 }
@@ -86,6 +99,13 @@ ul {
   border: 1px solid #dddddd;
   border-radius: 3px;
   margin-bottom: 20px;
+}
+
+.infoform {
+  background: #ffffff;
+  padding: 3vh 5vh;
+  border: 1px solid #dddddd;
+  border-radius: 10px;
 }
 
 .article-title {
