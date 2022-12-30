@@ -31,13 +31,13 @@ class SSRListView(ListView):
 		return SSR.objects.order_by('-date_posted')
 
 	def get_context_data(self, **kwargs):
-	    context = super().get_context_data(**kwargs)
-	    context['title'] = 'Stats'
-	    context['average_imap'] = round(list(SSR.objects.aggregate(Avg('interactive_map_rating')).values())[0], 2)
-	    context['average_chatbot'] = round(list(SSR.objects.aggregate(Avg('chatbot_rating')).values())[0], 2)
-	    context['average_overall'] = round(list(SSR.objects.aggregate(Avg('overall_rating')).values())[0], 2)
-	    context['count'] = SSR.objects.count()
-	    return context
+		context = super().get_context_data(**kwargs)
+		context['title'] = 'Stats'
+		context['average_imap'] = round(list(SSR.objects.aggregate(Avg('interactive_map_rating')).values())[0], 2)
+		context['average_chatbot'] = round(list(SSR.objects.aggregate(Avg('chatbot_rating')).values())[0], 2)
+		context['average_overall'] = round(list(SSR.objects.aggregate(Avg('overall_rating')).values())[0], 2)
+		context['count'] = SSR.objects.count()
+		return context
 
 class SSRCreateView(CreateView):
 	model = SSR
@@ -59,10 +59,10 @@ class SSRCreateView(CreateView):
 		''' End reCAPTCHA validation '''
 
 		if result['success']:
-		    form.save()
-		    messages.success(request, 'New comment added with success!')
+			form.save()
+			messages.success(request, 'New comment added with success!')
 		else:
-		    messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+			messages.error(request, 'Invalid reCAPTCHA. Please try again.')
 
 		return HttpResponseRedirect(reverse('ssr-create'))
 

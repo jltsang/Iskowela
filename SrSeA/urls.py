@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from chatbot import views as chatbot_views
+from information import views as information_views
 from interactive_map import views as interactive_map_views
 from ssr import views as ssr_views
 from users import views as user_views
@@ -28,6 +29,10 @@ urlpatterns = [
 	path('', include('main.urls')),
     path('chatbot/', chatbot_views.index, name='chatbot-index'),
     path('admin/', admin.site.urls),
+
+    path('processguides/', information_views.processguides, name='processguides'),
+    path('courses/', information_views.courses, name='courses'),
+    path('scholarships/', information_views.scholarships, name='scholarships'),
 
     path('imap/<int:stype>', interactive_map_views.SuggestionListView.as_view(), name='imap-index'),
     # path('imap/<int:pk>', interactive_map_views.SuggestionDetailView.as_view(), name='suggestion-detail'), #Deletable / Not really

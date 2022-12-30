@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'main.apps.MainConfig',
     'chatbot.apps.ChatbotConfig',
+    'information.apps.InformationConfig',
     'interactive_map.apps.InteractiveMapConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -113,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Manila'
 
 USE_I18N = True
 

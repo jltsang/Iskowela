@@ -1,15 +1,66 @@
-body {
-  background: #fafafa;
-  color: #333333;
-  margin-top: 5rem;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  color: #444444;
-}
-
 ul {
   margin: 0;
+}
+
+.login {
+  background: #007BFF;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mainsite {
+  background: #fafafa;
+  color: #333333;
+}
+
+.infobox {
+  background: #FFFFFF;
+  height: 85vh;
+  margin-left: 4vw;
+  margin-right: 4vw;
+  border-radius: 10px;
+  padding-top: 3vh;
+}
+
+.infolist {
+  height: 67vh;
+  margin-left: 15vw;
+  margin-right: 15vw;
+  border-radius: 10px;
+  padding-top: 3vh;
+  padding-bottom: 3vh;
+  overflow-y: scroll;
+}
+
+.infoadd {
+  padding-top: 3vh;
+}
+
+.infolist::-webkit-scrollbar {
+  display: none;
+}
+
+.add-btn {
+  background: #49DFC6;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: #000000;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.card {
+  border-radius: 20px;
+}
+
+.card-header {
+  background: #007BFF;
+}
+
+.card-header:first-child {
+  border-radius: 20px;
 }
 
 .bg-steel {
@@ -17,14 +68,15 @@ ul {
 }
 
 .site-header .navbar-nav .nav-link {
-  color: #cbd5db;
-}
-
-.site-header .navbar-nav .nav-link:hover {
   color: #ffffff;
 }
 
+.site-header .navbar-nav .nav-link:hover {
+  color: #49DFC6;
+}
+
 .site-header .navbar-nav .nav-link.active {
+  color: #49DFC6;
   font-weight: 500;
 }
 
@@ -81,4 +133,8 @@ a.article-title:hover {
 
 .account-heading {
   font-size: 2.5rem;
+}
+
+.asteriskField {
+  display: none;
 }

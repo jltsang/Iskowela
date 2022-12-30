@@ -1,4 +1,5 @@
 {% extends "main/base.html" %}
+
 {% block content %}
 	<!-- Toggle layer button style -->
 	<style>
@@ -49,7 +50,7 @@
 
 	{% elif arg == 1 %}
 		<!-- Event -->
-		<div id='map' style="position:fixed; top:56px; left:0; width:75%; height:93%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></div>
+		<div id='map' style="position:fixed; top:56px; left:0; width:75%; height:94%; border:none; margin:0; padding:0; overflow:hidden; z-index:1;"></div>
 <!-- 		<div id="menu">
 			<input id="egrelayson/ck6g46xh90e581imre9to3w6h" type="radio" name="rtoggle" value="3D" />
 			<label for="3D">3D</label>
@@ -203,7 +204,7 @@
 
 	{% elif arg == 2 %}
 	<!-- Place -->
-		<div id='map' style="position:fixed; top:56px; left:0; width:75%; height:93%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></div>
+		<div id='map' style="position:fixed; top:56px; left:0; width:75%; height:93%; border:none; margin:0; padding:0; overflow:hidden; z-index:1;"></div>
 		<script>
 		mapboxgl.accessToken = "{{ active_profile.mapbox_key }}";
 		var map = new mapboxgl.Map({
