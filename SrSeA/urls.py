@@ -30,12 +30,18 @@ urlpatterns = [
     path('chatbot/', chatbot_views.index, name='chatbot-index'),
     path('admin/', admin.site.urls),
 
-    path('processguides/', information_views.processguides, name='processguides'),
+    path('processguides/', information_views.processguide_list, name='processguides'),
     path('processguides/new', login_required(information_views.ProcessGuidesCreateView.as_view()), name='processguide-create'),
     path('processguides/update/<pk>/', login_required(information_views.ProcessGuidesUpdateView.as_view()), name='processguide-update'),
     path('processguides/delete/<pk>/', login_required(information_views.ProcessGuidesDeleteView.as_view()), name='processguide-delete'),
-    path('courses/', information_views.courses, name='courses'),
-    path('scholarships/', information_views.scholarships, name='scholarships'),
+    path('courses/', information_views.course_list, name='courses'),
+    path('courses/new', login_required(information_views.CoursesCreateView.as_view()), name='courses-create'),
+    path('courses/update/<pk>/', login_required(information_views.CoursesUpdateView.as_view()), name='courses-update'),
+    path('courses/delete/<pk>/', login_required(information_views.CoursesDeleteView.as_view()), name='courses-delete'),
+    path('scholarships/', information_views.scholarship_list, name='scholarships'),
+    path('scholarships/new', login_required(information_views.ScholarshipsCreateView.as_view()), name='scholarship-create'),
+    path('scholarships/update/<pk>/', login_required(information_views.ScholarshipsUpdateView.as_view()), name='scholarship-update'),
+    path('scholarships/delete/<pk>/', login_required(information_views.ScholarshipsDeleteView.as_view()), name='scholarship-delete'),
 
     path('imap/<int:stype>', interactive_map_views.SuggestionListView.as_view(), name='imap-index'),
     # path('imap/<int:pk>', interactive_map_views.SuggestionDetailView.as_view(), name='suggestion-detail'), #Deletable / Not really

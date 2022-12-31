@@ -5,13 +5,13 @@ from django.urls import reverse
 # Create your models here.
 
 class ProcessGuide(models.Model):
-    school_name = models.TextField()
+    school_name = models.TextField(default='Roosevelt College Marikina')
     process_name = models.TextField(default='')
     description = models.TextField(default='')
     last_updated = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
-        return self.process
+        return self.process_name
     
     def get_absolute_url(self):
         return reverse('processguides')
@@ -19,17 +19,23 @@ class ProcessGuide(models.Model):
 class Courses(models.Model):
     schoolid = models.TextField()
     college_group = models.TextField(default='')
-    course_list = models.TextField(default='')
+    course_list = models.JSONField(default=[])
     last_updated = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.process
+        return self.college_group
+
+    def get_absolute_url(self):
+        return reverse('courses')
 
 class Scholarships(models.Model):
     schoolid = models.TextField()
-    scholarship = models.TextField(default='')
+    scholarship_name = models.TextField(default='')
     description = models.TextField(default='')
     last_updated = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
-        return self.process
+        return self.scholarship_name
+
+    def get_absolute_url(self):
+        return reverse('scholarships')

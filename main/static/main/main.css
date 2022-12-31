@@ -64,6 +64,14 @@ h2 {
   font-weight: 600;
 }
 
+.course-card {
+  background: #F6F6F6;
+  padding: 15px;
+  border-radius: 10px;
+  font-weight: 600;
+  margin: 0 1vw;
+}
+
 .card {
   border-radius: 20px;
 }

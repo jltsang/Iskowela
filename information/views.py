@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from .models import ProcessGuide, Courses, Scholarships
 from django.urls import reverse
 from django.views.generic import (
@@ -8,22 +7,24 @@ from django.views.generic import (
 	DeleteView
 )
 
-def processguides(request):
+def processguide_list(request):
 	context = {
 		'title': 'Process Guides',
 		'processguides': ProcessGuide.objects.all(),
 	}
 	return render(request, 'information/processguides.html', context)
 
-def courses(request):
+def course_list(request):
 	context = {
 		'title': 'Course List',
+		'courses': Courses.objects.all(),
 	}
 	return render(request, 'information/courses.html', context)
 
-def scholarships(request):
+def scholarship_list(request):
 	context = {
 		'title': 'Scholarships',
+		'scholarships': Scholarships.objects.all(),
 	}
 	return render(request, 'information/scholarships.html', context)
 
@@ -40,4 +41,28 @@ class ProcessGuidesDeleteView(DeleteView):
 	model = ProcessGuide
 	success_url = "/processguides/"
 
-# Create your views here.
+class ScholarshipsCreateView(CreateView):
+	model = Scholarships
+	fields = ['scholarship_name', 'description']
+	success_url = "/scholarships/"
+
+class ScholarshipsUpdateView(UpdateView):
+	model = Scholarships
+	fields = ['scholarship_name', 'description']
+
+class ScholarshipsDeleteView(DeleteView):
+	model = Scholarships
+	success_url = "/scholarships/"
+
+class CoursesCreateView(CreateView):
+	model = Courses
+	fields = ['college_group', 'course_list']
+	success_url = "/courses/"
+
+class CoursesUpdateView(UpdateView):
+	model = Courses
+	fields = ['college_group', 'course_list']
+
+class CoursesDeleteView(DeleteView):
+	model = Courses
+	success_url = "/courses/"
