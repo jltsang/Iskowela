@@ -6,9 +6,9 @@
 
 ## Installation
 
-1. Clone repository at https://github.com/linocrusher/SrSeA
+1. Clone repository at https://github.com/jltsang/Iskowela
 ``` sh
-$ git clone https://github.com/linocrusher/SrSeA.git
+$ git clone https://github.com/jltsang/Iskowela
 ```
 2. Open terminal and locate the project directory
 3. Start the Django server
