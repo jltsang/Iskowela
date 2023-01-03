@@ -36,51 +36,73 @@
 			<div class="navbar-nav">
 				{% if title != 'Menu' %}
 					{% if title == 'Process Guides' or title == 'Course List' or title == 'Scholarships' %}
-					<a class="nav-item dropdown">
-						<div class="btn-group" role="group" style="margin: 0px; padding: 0px">
-						<a class="nav-link active dropdown-toggle px-3" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-							Information
+						{% if toggles.processguides_toggle == True or toggles.courses_toggle == True or toggles.scholarships_toggle == True%}
+						<a class="nav-item dropdown">
+							<div class="btn-group" role="group" style="margin: 0px; padding: 0px">
+							<a class="nav-link active dropdown-toggle px-3" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+								Information
+							</a>
+							<ul class="dropdown-menu">
+								{% if toggles.processguides_toggle == True %}
+								<li><a class="dropdown-item" href="{% url 'processguides' %}">Process Guides</a></li>
+								{% endif %}
+								{% if toggles.courses_toggle == True %}
+								<li><a class="dropdown-item" href="{% url 'courses' %}">Courses</a></li>
+								{% endif %}
+								{% if toggles.scholarships_toggle == True %}
+								<li><a class="dropdown-item" href="{% url 'scholarships' %}">Scholarships</a></li>
+								{% endif %}
+							</ul>
+							</div>
 						</a>
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="{% url 'processguides' %}">Process Guides</a></li>
-							<li><a class="dropdown-item" href="{% url 'courses' %}">Courses</a></li>
-							<li><a class="dropdown-item" href="{% url 'scholarships' %}">Scholarships</a></li>
-						</ul>
-						</div>
-					</a>
+						{% endif %}
 					{% else %}
-					<a class="nav-item dropdown">
-						<div class="btn-group" role="group" style="margin: 0px; padding: 0px">
-						<a class="nav-link dropdown-toggle px-3" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-							Information
+						{% if toggles.processguides_toggle == True or toggles.courses_toggle == True or toggles.scholarships_toggle == True%}
+						<a class="nav-item dropdown">
+							<div class="btn-group" role="group" style="margin: 0px; padding: 0px">
+								<a class="nav-link dropdown-toggle px-3" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+									Information
+								</a>
+								<ul class="dropdown-menu">
+									{% if toggles.processguides_toggle == True %}
+									<li><a class="dropdown-item" href="{% url 'processguides' %}">Process Guides</a></li>
+									{% endif %}
+									{% if toggles.courses_toggle == True %}
+									<li><a class="dropdown-item" href="{% url 'courses' %}">Courses</a></li>
+									{% endif %}
+									{% if toggles.scholarships_toggle == True %}
+									<li><a class="dropdown-item" href="{% url 'scholarships' %}">Scholarships</a></li>
+									{% endif %}
+								</ul>
+								</div>
 						</a>
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="{% url 'processguides' %}">Process Guides</a></li>
-							<li><a class="dropdown-item" href="{% url 'courses' %}">Courses</a></li>
-							<li><a class="dropdown-item" href="{% url 'scholarships' %}">Scholarships</a></li>
-						</ul>
-						</div>
-					</a>
+						{% endif %}
 					{% endif %}
-					{% if title == 'Interactive Map' or title == 'Interactive Map Menu'%}
-					<a class="nav-item nav-link active px-3" href="{% url 'imap-index' 1 %}">Events/Places</a>
-					{% else %}
-						<a class="nav-item nav-link px-3" href="{% url 'imap-index' 1 %}">Events/Places</a>
+					{% if toggles.markers_toggle == True %}
+						{% if title == 'Interactive Map' or title == 'Interactive Map Menu'%}
+						<a class="nav-item nav-link active px-3" href="{% url 'imap-index' 1 %}">Events/Places</a>
+						{% else %}
+							<a class="nav-item nav-link px-3" href="{% url 'imap-index' 1 %}">Events/Places</a>
+						{% endif %}
 					{% endif %}
-					{% if title == 'Chatbot' %}
-						<a class="nav-item nav-link active px-3" href="{% url 'chatbot-index' %}">Chatbot</a>
-					{% else %}
-						<a class="nav-item nav-link px-3" href="{% url 'chatbot-index' %}">Chatbot</a>
+					{% if toggles.chatbot_toggle == True %}
+						{% if title == 'Chatbot' %}
+							<a class="nav-item nav-link active px-3" href="{% url 'chatbot-index' %}">Chatbot</a>
+						{% else %}
+							<a class="nav-item nav-link px-3" href="{% url 'chatbot-index' %}">Chatbot</a>
+						{% endif %}
 					{% endif %}
-					<a class="nav-item nav-link px-3" href="#">Website Analytics</a>
+					{% if toggles.web_analytics_toggle == True %}
+						<a class="nav-item nav-link px-3" href="#">Website Analytics</a>
+					{% endif %}
 				{% endif %}
 			</div>
 
 			<div class="mx-auto"></div>
 
 			<div class="navbar-nav">
-				<a class="nav-item nav-link px-3" href="#">Settings</a>
 				{% if user.is_authenticated %}
+					<a class="nav-item nav-link px-3" href="#">Settings</a>
 					<a class="nav-item nav-link px-3" href="{% url 'logout' %}">Logout</a>
 					<a class="nav-item nav-link px-3" href="{% url 'ssr-index' %}">Stats</a>
 				{% else %}

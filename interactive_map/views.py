@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Suggestion
 from django.urls import reverse
 from users.models import Profile
+from main.models import Toggles
 from django.views.generic import (
 	ListView, 
 	DetailView, 
@@ -21,6 +22,7 @@ def index(request):
 	context = {
 		'title': 'Interactive Map',
 		'suggestions': Suggestion.objects.all(),
+		'toggles': Toggles.objects.get(school_name="Roosevelt College Marikina")
 	}
 	return render(request, 'interactive_map/index.html', context)
 
@@ -28,6 +30,7 @@ def newgame(request):
 	context = {
 		'title': 'Interactive Map',
 		'active_profile': Profile.objects.get(school_name="Roosevelt College Marikina"),
+		'toggles': Toggles.objects.get(school_name="Roosevelt College Marikina")
 	}
 	return render(request, 'interactive_map/newgame.html', context)
 
@@ -51,6 +54,8 @@ class SuggestionListView(ListView):
 		context['title'] = 'Interactive Map'
 		context['arg'] = self.kwargs.get('stype')
 		context['active_profile'] = Profile.objects.get(school_name="Roosevelt College Marikina")
+		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+
 		if self.kwargs.get('stype') == 1:
 			context['layer'] = 'roosevelt-events'
 			context['html'] = "'<p>Name: ' + feature.properties.name + '</p><p>Schedule: ' + feature.properties.date + '</p><p>Time:: ' + feature.properties.time + '</p><p>Target Population: ' + feature.properties.target_population"
@@ -89,11 +94,31 @@ class SuggestionCreateView(CreateView):
 			messages.error(request, 'Invalid reCAPTCHA. Please try again.')
 			return HttpResponseRedirect(reverse('suggestion-create'))
 
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['title'] = 'Interactive Map'
+		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+
+		return context
 
 class SuggestionUpdateView(UpdateView):
 	model = Suggestion
 	fields = ['desc', 'cud', 'stype', 'prev_name', 'name', 'prev_latitude', 'prev_longitude', 'latitude', 'longitude']
 
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['title'] = 'Interactive Map'
+		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+		
+		return context
+
 class SuggestionDeleteView(DeleteView):
 	model = Suggestion
 	success_url = "/imap/"
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['title'] = 'Interactive Map'
+		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+		
+		return context
