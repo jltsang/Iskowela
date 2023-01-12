@@ -18,6 +18,8 @@ class Profile(models.Model):
 	newgame_textfield = models.TextField(default='')
 	live_chat_link = models.CharField(max_length=50)
 	chatbot_tree_link = models.CharField(max_length=50)
+	banner = models.ImageField(upload_to='media', default='banner.jpg')
+
 
 	def __str__(self):
 		return f'{self.user.username} Profile'

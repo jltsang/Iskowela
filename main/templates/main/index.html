@@ -1,16 +1,154 @@
 {% extends "main/base.html" %}
 {% block content %}
-<div class="row row-cols-3">
-  <div class="col"></div>
-  <div class="col"><div class="text-center"><div class="content-section">
-  		{% load static %}
-  		<!-- <img src="{{ active_profile.logo.url }}" height="200" width="200" alt="Hi!" /> -->
-	    <h3>Roosevelt College CRM</h3><a class="btn btn-primary btn-lg" href="{% url 'main-menu' %}" role="button">GET STARTED</a><br>
-	    {% if not user.is_authenticated %}
-      	<small class="text-muted">
-			<a class="ml-2" href="{% url 'login' %}">Sign In as Admin</a>
-		</small>
-		{% endif %}
-	  </div></div></div>
-</div>
+
+	
+	<div
+	class=" text-center bg-image mb-5 w-100"
+    style="
+      background-image: url({{active_profile.banner.url}}); 
+      width: 100%; height: 300px;"
+	  position: relative>
+	  
+  	</div>
+	  
+	
+	<div class=" d-flex justify-content-center">
+
+		<img  class="profile rounded-circle position-relative " src={{ active_profile.logo.url }}  style ="width: 168px; margin-top:-140px">
+			{% comment %} {% comment %} <div class="col">
+				<p align="right">
+				{% if user.is_authenticated %}
+					<a class="btn" href="{% url 'pupdate' %}"><i class="icon-edit"></i> Configure</a>
+				{% endif %}
+				</p>
+			</div> {% endcomment %} 
+		
+	</div>
+
+	<div class="container mt-5">
+		<div class="row">
+
+		  <div class="col-md-3">
+			<a class="text-dark text-decoration-none" href="#">
+			<div class="card card-1">
+			  <h4>Information</h4>
+			  <br>
+			  <p>View the list of available Process Guides, Courses, and Scholarships.</p>
+			</div>
+			</a>
+		  </div>
+
+		  <div class="col-md-3">
+			<a class="text-dark text-decoration-none" href="{% url 'imap-index' 1 %}">
+			<div class="card card-2">
+			  <h5>Events/Places</h5>
+			  <br>
+			  <p>Explore the school using the map and discover interesting events hosted by the HEI.</p>
+			</div>
+			</a>
+		  </div>
+
+		  <div class="col-md-3">
+			<a class="text-dark text-decoration-none" href="{% url 'chatbot-index'  %}">
+			<div class="card card-3">
+			  <h4>Chatbot</h3>
+			  <p>Inquire about basic information about the HEI or request for a live chat with school administratiors.</p>
+			</div>
+			</a>
+		  </div>
+
+		  <div class="col-md-3">
+			<div class="card card-4">
+			  <a class="text-dark text-decoration-none" href="#">
+			  <h4 >Web Analytics </h4>
+			  <p>Identify and analyze website traffic and visitor behavior for
+				respective school pages.</p>
+			</div>
+			</a>
+		  </div>
+
+		</div>
+	  </div>
+
+	
+	  
+	  <div class="container mt-5">
+		<div class="row">
+		  <div class="span4"></div>
+		  <div class="span4"></div>
+		  <div class="span4"><img class="center-block img-responsive" src="/media/news.png" /></div>
+		  <div class="span4"></div>
+		</div>
+	  </div>
+	
+<style>
+	
+
+.card{
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+    transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+ 	 padding: 14px 80px 18px 36px;
+  	cursor: pointer;
+	height: 250px;
+}
+
+.card:hover{
+     transform: scale(1.05);
+     box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+
+.card h3{
+  font-weight: 600;
+}
+
+.card img{
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  max-height: 120px;
+}
+
+.card-1{
+  background-image: url(https://ionicframework.com/img/getting-started/ionic-native-card.png);
+      background-repeat: no-repeat;
+    background-position: right;
+    background-size: 80px;
+}
+
+.card-2{
+   background-image: url(https://ionicframework.com/img/getting-started/components-card.png);
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: 80px;
+}
+
+.card-3{
+   background-image: url(https://ionicframework.com/img/getting-started/theming-card.png);
+      background-repeat: no-repeat;
+    background-position: right;
+    background-size: 80px;
+}
+.card-4{
+	background-image: url(https://cdn-icons-png.flaticon.com/512/1046/1046435.png);
+	   background-repeat: no-repeat;
+	 background-position: right;
+	 background-size: 80px  ;
+	 
+
+ }
+
+@media(max-width: 990px){
+  .card{
+    margin: 20px;
+  }
+} 
+
+</style>	
+	  
+
+
+
+
 {% endblock content %}
