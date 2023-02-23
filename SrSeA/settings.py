@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ["localhost","192.168.1.16", "srsea.herokuapp.com"]
 
 INSTALLED_APPS = [
     'crispy_forms',
+    'crispy_bootstrap4',
     'ssr.apps.SsrConfig',
     'users.apps.UsersConfig',
     'main.apps.MainConfig',
