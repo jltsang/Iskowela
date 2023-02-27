@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'chatbot.apps.ChatbotConfig',
     'information.apps.InformationConfig',
     'interactive_map.apps.InteractiveMapConfig',
+    'markers.apps.MarkersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -143,3 +144,4 @@ LOGIN_URL = 'login'
 django_heroku.settings(locals())
 
 GOOGLE_RECAPTCHA_SECRET_KEY = '6LcaregUAAAAACDoxbU_uPkGay47a1SdbP6XpxUx'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

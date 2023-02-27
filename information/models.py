@@ -19,7 +19,7 @@ class ProcessGuide(models.Model):
 class Courses(models.Model):
     schoolid = models.TextField()
     college_group = models.TextField(default='')
-    course_list = models.JSONField(default=[])
+    course_list = models.JSONField(default=dict)
     last_updated = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

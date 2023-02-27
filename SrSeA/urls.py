@@ -20,6 +20,7 @@ from django.urls import include, path
 from chatbot import views as chatbot_views
 from information import views as information_views
 from interactive_map import views as interactive_map_views
+from markers import views as markers_views
 from ssr import views as ssr_views
 from users import views as user_views
 from main import views as main_views
@@ -46,6 +47,13 @@ urlpatterns = [
     path('scholarships/update/<pk>/', login_required(information_views.ScholarshipsUpdateView.as_view()), name='scholarship-update'),
     path('scholarships/delete/<pk>/', login_required(information_views.ScholarshipsDeleteView.as_view()), name='scholarship-delete'),
 
+    path('markers/<int:mtype>', markers_views.markers, name='markers'),
+    path('markers/new-event', markers_views.EventCreateView.as_view(), name='event-create'),
+    path('markers/1/<int:pk>/update/', markers_views.EventUpdateView.as_view(), name='event-update'),
+    path('markers/1/<int:pk>/delete/', markers_views.EventDeleteView.as_view(), name='event-delete'),
+    path('markers/new-place', markers_views.PlaceCreateView.as_view(), name='place-create'),
+    path('markers/2/<int:pk>/update/', markers_views.PlaceUpdateView.as_view(), name='place-update'),
+    path('markers/2/<int:pk>/delete/', markers_views.PlaceDeleteView.as_view(), name='place-delete'),
     path('imap/<int:stype>', interactive_map_views.SuggestionListView.as_view(), name='imap-index'),
     # path('imap/<int:pk>', interactive_map_views.SuggestionDetailView.as_view(), name='suggestion-detail'), #Deletable / Not really
     path('imap/new', interactive_map_views.SuggestionCreateView.as_view(), name='suggestion-create'),

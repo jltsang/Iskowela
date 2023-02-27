@@ -1,0 +1,577 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet"/>
+
+    {{user.is_authenticated | json_script:"user_auth"}}
+    {{mtype | json_script:"mtype"}}
+
+    <style>
+        .sidebar {
+        position: absolute;
+        width: 30%;
+        height: 100%;
+        top: 0;
+        right: 0;
+        padding-top: 8vh;
+        overflow: hidden;
+        border-right: 1px solid rgba(0, 0, 0, 0.25);
+        }
+ 
+        .map {
+        position: absolute;
+        left: 0;
+        width: 70%;
+        top: 0;
+        bottom: 0;
+        }
+ 
+        .listings {
+        height: 85%;
+        overflow: auto;
+        border-top: 2px solid #eee;
+        border-bottom: 2px solid #eee;
+        }
+ 
+        .listings .item {
+        display: block;
+        border-bottom: 1px solid #eee;
+        padding: 10px;
+        text-decoration: none;
+        padding-left: 5%;
+        }
+        
+        .listings .item:last-child {
+        border-bottom: none;
+        }
+
+        .listings .item .title {
+        display: block;
+        color: #007BFF;
+        font-weight: 700;
+        }
+        
+        .listings .item .title small {
+        font-weight: 400;
+        }
+        .listings .item.active .title,
+        .listings .item .title:hover {
+        color: #00853e;
+        }
+        .listings .item.active {
+        background-color: #f8f8f8;
+        }
+        ::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+        border-left: 0;
+        background: rgba(0, 0, 0, 0.1);
+        }
+        ::-webkit-scrollbar-track {
+        background: none;
+        }
+        ::-webkit-scrollbar-thumb {
+        background: #0067d4;
+        border-radius: 0;
+        }
+
+        .cntr {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        column-gap: 5%;
+        }
+    
+        /* Marker tweaks */
+        .mapboxgl-popup-close-button {
+        display: none;
+        }
+
+        .mapboxgl-popup-content {
+        padding: 0;
+        }
+
+        .mapboxgl-popup-content h6 {
+        background: #007BFF;
+        color: #ffff;
+        padding: 10px;
+        padding-right: 20px;
+        border-radius: 3px 3px 0 0;
+        font-weight: 700;
+        }
+
+        .mapboxgl-popup-content p {
+        margin: 0;
+        padding: 0 10px 10px 10px ;
+        font-weight: 400;
+        }
+
+        .mapboxgl-popup {
+        padding-bottom: 50px;
+        }
+
+    </style>
+
+    <div id="map" class="map"></div>
+    <div class="sidebar">
+        <div class="cntr pb-2">
+            <a class="btn btn-primary {% if mtype == 1 %}disabled{% endif %}" href="{% url 'markers' 1 %}">Events</a>
+            <a class="btn btn-primary {% if mtype == 2 %}disabled{% endif %}" href="{% url 'markers' 2 %}">Places</a>
+            {% if mtype == 3 and user.is_authenticated %}
+                <a class="btn btn-primary disabled" href="{% url 'markers' 3 %}">Suggestions</a>
+            {% elif user.is_authenticated %}
+                <a class="btn btn-primary" href="{% url 'markers' 3 %}">Suggestions</a>
+            {% endif %}
+        </div>
+        <div id="listings" class="listings"></div>
+        <div class="cntr pt-4">
+            {% if mtype ==  1 and user.is_authenticated %}
+                <a class="btn btn-primary" href="{% url 'event-create' %}">Add Event</a>
+            {% elif mtype ==  2 and user.is_authenticated %}
+                <a class="btn btn-primary" href="{% url 'place-create' %}">Add Location</a>
+            {% elif mtype ==  1 %}
+                <a class="btn btn-primary" href="{% url 'suggestion-create' %}">Suggest Event</a>
+            {% elif mtype == 2 %}
+                <a class="btn btn-primary" href="{% url 'suggestion-create' %}">Suggest Location</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoiamx0c2FuZyIsImEiOiJjbGVpODE2bDAwdzh1M3ZsZGVyM2RwM3NkIn0.tqAoS6z_fUkuy6BTdA3XJA';
+        /**
+        * Add the map to the page
+        */
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v12',
+            center: [121.098434, 14.648697],
+            zoom: 18,
+            pitch: 40,
+            bearing: 20,
+            antialias: true,
+        });
+
+        map.addControl(new mapboxgl.ScaleControl({maxWidth:100}));
+
+        const type = JSON.parse(document.getElementById('mtype').textContent);
+        if (type == 1) {
+            const stores = {
+                'type': 'FeatureCollection',
+                'features': [
+                    {
+                    'type': 'Feature',
+                    'geometry': {
+                    'type': 'Point',
+                    'coordinates': [121.098434, 14.648697]
+                    },
+                    'properties': {
+                    'stype': '2',
+                    'title': 'Event 1',
+                    'date': 'October 16, 2022',
+                    'type': 'offline',
+                    'description': 'test new event',
+                    }
+                    },
+                    {
+                    'type': 'Feature',
+                    'geometry': {
+                    'type': 'Point',
+                    'coordinates': [121.12345, 14.648697]
+                    },
+                    'properties': {
+                    'title': 'Event 1',
+                    'date': 'October 16, 2022',
+                    'type': 'offline',
+                    'description': 'test new event',
+                    }
+                    },
+                ]
+            };
+                
+            /**
+            * Assign a unique id to each store. You'll use this `id`
+            * later to associate each point on the map with a listing
+            * in the sidebar.
+            */
+            stores.features.forEach((store, i) => {
+                store.properties.id = i;
+            });
+    
+            /**
+            * Wait until the map loads to make changes to the map.
+            */
+            map.on('load', () => {
+                /**
+                * This is where your '.addLayer()' used to be, instead
+                * add only the source without styling a layer
+                */
+                
+                map.addSource('places', {
+                'type': 'geojson',
+                'data': stores
+                });
+                
+            
+                /**
+                * Add all the things to the page:
+                * - The location listings on the side of the page
+                * - The markers onto the map
+                */
+                buildLocationList(stores);
+                addMarkers(stores);
+            });
+        }
+        else if (type == 2) {
+            const stores = {
+                'type': 'FeatureCollection',
+                'features': [
+                    {% for place in places %}
+
+                    {
+                        'type': 'Feature',
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [{{ place.longitude }}, {{ place.latitude }}]
+                        },
+                        'properties': {
+                            'db_id': '{{ place.id }}',
+                            'title': '{{ place.name }}',
+                            'type': '{{ place.get_type_display }}',
+                            'description': '{{ place.description }}'
+                        }
+                    },     
+                    {% endfor %}
+                ]
+            };
+                
+            /**
+            * Assign a unique id to each store. You'll use this `id`
+            * later to associate each point on the map with a listing
+            * in the sidebar.
+            */
+            stores.features.forEach((store, i) => {
+                store.properties.id = i;
+            });
+    
+            /**
+            * Wait until the map loads to make changes to the map.
+            */
+            map.on('load', () => {
+                /**
+                * This is where your '.addLayer()' used to be, instead
+                * add only the source without styling a layer
+                */
+                
+                map.addSource('places', {
+                'type': 'geojson',
+                'data': stores
+                });
+                
+            
+                /**
+                * Add all the things to the page:
+                * - The location listings on the side of the page
+                * - The markers onto the map
+                */
+                buildLocationList(stores);
+                addMarkers(stores);
+            });
+        }
+
+        else if (type == 3) {
+            const stores = {
+                'type': 'FeatureCollection',
+                'features': [
+                    {
+                    'type': 'Feature',
+                    'geometry': {
+                    'type': 'Point',
+                    'coordinates': [121.098434, 14.648697]
+                    },
+                    'properties': {
+                    'stype': '2',
+                    'title': 'Event 1',
+                    'date': 'October 16, 2022',
+                    'type': 'offline',
+                    'description': 'test new event',
+                    }
+                    },
+                    {
+                    'type': 'Feature',
+                    'geometry': {
+                    'type': 'Point',
+                    'coordinates': [121.12345, 14.648697]
+                    },
+                    'properties': {
+                    'title': 'Event 1',
+                    'date': 'October 16, 2022',
+                    'type': 'offline',
+                    'description': 'test new event',
+                    }
+                    },
+                    {
+                    'type': 'Feature',
+                    'geometry': {
+                    'type': 'Point',
+                    'coordinates': [121.098434, 14.648697]
+                    },
+                    'properties': {
+                    'stype': '2',
+                    'title': 'Location 1',
+                    'type': 'Food',
+                    'description': 'test new event',
+                    }
+                    },
+                    {
+                    'type': 'Feature',
+                    'geometry': {
+                    'type': 'Point',
+                    'coordinates': [121.12345, 14.648697]
+                    },
+                    'properties': {
+                    'title': 'Event 1',
+                    'type': 'Health',
+                    'description': 'test new event',
+                    }
+                    },
+                ]
+            };
+                
+            /**
+            * Assign a unique id to each store. You'll use this `id`
+            * later to associate each point on the map with a listing
+            * in the sidebar.
+            */
+            stores.features.forEach((store, i) => {
+                store.properties.id = i;
+            });
+    
+            /**
+            * Wait until the map loads to make changes to the map.
+            */
+            map.on('load', () => {
+                /**
+                * This is where your '.addLayer()' used to be, instead
+                * add only the source without styling a layer
+                */
+                
+                map.addSource('places', {
+                'type': 'geojson',
+                'data': stores
+                });
+                
+            
+                /**
+                * Add all the things to the page:
+                * - The location listings on the side of the page
+                * - The markers onto the map
+                */
+                buildLocationList(stores);
+                addMarkers(stores);
+            });
+        }
+ 
+        /**
+        * Add a marker to the map for every store listing.
+        **/
+        function addMarkers(stores) {
+            /* For each feature in the GeoJSON object above: */
+            for (const marker of stores.features) {
+                /* Create a div element for the marker. */
+                const el = document.createElement('div');
+                /* Assign a unique `id` to the marker. */
+                el.id = `marker-${marker.properties.id}`;
+                /* Assign the `marker` class to each marker for styling. */
+                el.className = 'marker-1';
+            
+                /**
+                * Create a marker using the div element
+                * defined above and add it to the map.
+                **/
+                new mapboxgl.Marker(el, { offset: [0, -23] })
+                .setLngLat(marker.geometry.coordinates)
+                .addTo(map);
+            
+                /**
+                * Listen to the element and when it is clicked, do three things:
+                * 1. Fly to the point
+                * 2. Close all other popups and display popup for clicked store
+                * 3. Highlight listing in sidebar (and remove highlight for all other listings)
+                **/
+                el.addEventListener('click', (e) => {
+                    /* Fly to the point */
+                    flyToStore(marker);
+                    /* Close all other popups and display popup for clicked store */
+                    createPopUp(marker);
+                    /* Highlight listing in sidebar */
+                    const activeItem = document.getElementsByClassName('active');
+                    e.stopPropagation();
+                    if (activeItem[0]) {
+                        activeItem[0].classList.remove('active');
+                    }
+                    const listing = document.getElementById(`listing-${marker.properties.id}`);
+                    listing.classList.add('active');
+                });
+            }
+        }
+ 
+        /**
+        * Add a listing for each store to the sidebar.
+        **/
+        function buildLocationList(stores) {
+            for (const store of stores.features) {
+                /* Add a new listing section to the sidebar. */
+                const listings = document.getElementById('listings');
+                const listing = listings.appendChild(document.createElement('div'));
+                /* Assign a unique `id` to the listing. */
+                listing.id = `listing-${store.properties.id}`;
+                /* Assign the `item` class to each listing for styling. */
+                listing.className = 'item ';
+                
+                /* Add the link to the individual listing created above. */
+                const link = listing.appendChild(document.createElement('a'));
+                link.href = '#';
+                link.className = 'title';
+                link.id = `link-${store.properties.id}`;
+                link.innerHTML = `${store.properties.title}`;
+
+                /* Add details to the individual listing. */
+                const details = listing.appendChild(document.createElement('div'));
+                if (store.properties.date == undefined) {
+                    
+                    details.innerHTML = `${store.properties.type}`;
+                }
+                else {
+                    details.innerHTML = `${store.properties.date} &middot; ${store.properties.type}`;
+                }
+
+                const desc = listing.appendChild(document.createElement('div'));
+                desc.innerHTML = `${store.properties.description}`;
+
+                const auth = JSON.parse(document.getElementById('user_auth').textContent);
+                if(auth){
+                    const edit = listing.appendChild(document.createElement('a'));
+                    edit.href = "#";
+                    edit.setAttribute("data-place-id", store.properties.db_id);
+                    edit.className = 'btn add-btn mt-2 mr-2';
+                    edit.innerHTML = `Edit`;
+
+                    const del = listing.appendChild(document.createElement('a'));
+                    del.href = "#";
+                    del.setAttribute("data-place-id", store.properties.db_id);
+                    del.className = 'btn neg-btn mt-2';
+                    del.id = `del-${store.properties.id}`;
+                    del.innerHTML = `Delete`;
+                }
+
+                /**
+                * Listen to the element and when it is clicked, do four things:
+                * 1. Update the `currentFeature` to the store associated with the clicked link
+                * 2. Fly to the point
+                * 3. Close all other popups and display popup for clicked store
+                * 4. Highlight listing in sidebar (and remove highlight for all other listings)
+                **/
+                link.addEventListener('click', function () {
+                    for (const feature of stores.features) {
+                        if (this.id === `link-${feature.properties.id}`) {
+                            flyToStore(feature);
+                            createPopUp(feature);
+                        }
+                    }
+                    const activeItem = document.getElementsByClassName('active');
+                    if (activeItem[0]) {
+                        activeItem[0].classList.remove('active');
+                    }
+                    this.parentNode.classList.add('active');
+                });
+
+                const editButtons = document.querySelectorAll('.btn.add-btn');
+                editButtons.forEach(function(button) {
+                    button.addEventListener('click', function(event) {
+                        const placeId = event.target.getAttribute('data-place-id');
+                        const editUrl = `/markers/2/${placeId}/update/`;
+                        window.location.href = editUrl;
+                    });
+                });
+
+                const deleteButtons = document.querySelectorAll('.btn.neg-btn');
+                deleteButtons.forEach(function(button) {
+                    button.addEventListener('click', function(event) {
+                        const placeId = event.target.getAttribute('data-place-id');
+                        const deleteUrl = `/markers/2/${placeId}/delete/`;
+                        window.location.href = deleteUrl;
+                    });
+                });
+            }
+        }
+        
+        /**
+        * Use Mapbox GL JS's `flyTo` to move the camera smoothly
+        * a given center point.
+        **/
+        function flyToStore(currentFeature) {
+            map.flyTo({
+                center: currentFeature.geometry.coordinates,
+                zoom: 18
+            });
+        }
+        
+        /**
+        * Create a Mapbox GL JS `Popup`.
+        **/
+        function createPopUp(currentFeature) {
+            const popUps = document.getElementsByClassName('mapboxgl-popup');
+            if (popUps[0]) popUps[0].remove();
+            const popup = new mapboxgl.Popup({ closeOnClick: true })
+            .setLngLat(currentFeature.geometry.coordinates)
+            .setHTML(
+                `<h6>${currentFeature.properties.title}</h6>
+                <p>${currentFeature.properties.date ? `${currentFeature.properties.date} &middot; ` : '' }${currentFeature.properties.type}</p>
+                <p>${currentFeature.properties.description}</p>`
+            )
+            .addTo(map);
+        }
+
+        map.on('load', function() {
+            // // Insert the layer beneath any symbol layer.
+            var layers = map.getStyle().layers;
+            
+            var labelLayerId;
+            for (var i = 0; i < layers.length; i++) {
+                if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+                    labelLayerId = layers[i].id;
+                    break;
+                }
+            }
+
+            map.addLayer({
+                'id': '3D',
+                'source': 'composite',
+                'source-layer': 'building',
+                'filter': ['==', 'extrude', 'true'],
+                'type': 'fill-extrusion',
+                'minzoom': 15,
+                'paint': {
+                    'fill-extrusion-color': '#aaa',
+                    
+                    // use an 'interpolate' expression to add a smooth transition effect to the
+                    // buildings as the user zooms in
+                    'fill-extrusion-height': [
+                    "interpolate", ["linear"], ["zoom"],
+                    15, 0,
+                    15.05, ["get", "height"]
+                    ],
+                    'fill-extrusion-base': [
+                    "interpolate", ["linear"], ["zoom"],
+                    15, 0,
+                    15.05, ["get", "min_height"]
+                    ],
+                    'fill-extrusion-opacity': .6
+                }
+            }, labelLayerId);
+        });
+
+    </script>
+{% endblock content %}

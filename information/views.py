@@ -39,7 +39,7 @@ class ProcessGuidesCreateView(CreateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['title'] = 'Interactive Map'
+		context['title'] = 'Process Guides'
 		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
 		
 		return context
@@ -50,7 +50,7 @@ class ProcessGuidesUpdateView(UpdateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['title'] = 'Interactive Map'
+		context['title'] = 'Process Guides'
 		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
 		
 		return context
@@ -61,7 +61,7 @@ class ProcessGuidesDeleteView(DeleteView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['title'] = 'Interactive Map'
+		context['title'] = 'Process Guides'
 		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
 		
 		return context
@@ -73,7 +73,7 @@ class ScholarshipsCreateView(CreateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['title'] = 'Interactive Map'
+		context['title'] = 'Scholarships'
 		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
 		
 		return context
@@ -84,7 +84,7 @@ class ScholarshipsUpdateView(UpdateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['title'] = 'Interactive Map'
+		context['title'] = 'Scholarships'
 		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
 		
 		return context
@@ -95,7 +95,7 @@ class ScholarshipsDeleteView(DeleteView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['title'] = 'Interactive Map'
+		context['title'] = 'Scholarships'
 		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
 		
 		return context
@@ -107,7 +107,7 @@ class CoursesCreateView(CreateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['title'] = 'Interactive Map'
+		context['title'] = 'Course List'
 		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
 		
 		return context
@@ -118,7 +118,7 @@ class CoursesUpdateView(UpdateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['title'] = 'Interactive Map'
+		context['title'] = 'Course List'
 		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
 		
 		return context
@@ -129,7 +129,7 @@ class CoursesDeleteView(DeleteView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['title'] = 'Interactive Map'
+		context['title'] = 'Course List'
 		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
 		
 		return context
