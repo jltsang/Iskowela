@@ -8,21 +8,17 @@ from django.views.generic import (
 	DeleteView
 )
 from django.forms import DateTimeInput
+from django.shortcuts import get_object_or_404
 
-def markers(request, mtype):
-	context = {
-		'title': 'Markers',
-		'mtype': mtype,
-		'places': Place_Markers.objects.all(),
-		'toggles': Toggles.objects.get(school_name="Roosevelt College Marikina")
-	}
-	return render(request, 'markers/map.html', context)
-	
-class EventCreateView(CreateView):
-	model = Event_Markers
-	fields = ['name', 'type', 'description', 'event_date', 'latitude', 'longitude'] 
-	success_url = "/markers/1"
-	
+class BaseForm:
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['title'] = 'Markers'
+		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+		
+		return context
+
+class EventForm:
 	def get_form(self, form_class=None):
 		form = super().get_form(form_class)
 		form.fields['latitude'].widget = form.fields['latitude'].hidden_widget()
@@ -30,74 +26,82 @@ class EventCreateView(CreateView):
 		form.fields['event_date'].widget = DateTimeInput(attrs={'type': 'datetime-local'})
 
 		return form
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Markers'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
-		
-		return context
 	
-class EventUpdateView(UpdateView):
-	model = Event_Markers
-	fields = ['name', 'type', 'description', 'event_date', 'longitude', 'latitude']
-	success_url = "/markers/1"
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Markers'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
-		
-		return context
-	
-class EventDeleteView(DeleteView):
-	model = Event_Markers
-	success_url = "/markers/1"
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Markers'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
-
-		return context
-
-class PlaceCreateView(CreateView):
-	model = Place_Markers
-	fields = ['name', 'type', 'description', 'latitude', 'longitude']
-	success_url = "/markers/2"
-	
+class PlaceForm:
 	def get_form(self, form_class=None):
 		form = super().get_form(form_class)
 		form.fields['latitude'].widget = form.fields['latitude'].hidden_widget()
 		form.fields['longitude'].widget = form.fields['longitude'].hidden_widget()
+
 		return form
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Markers'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
-		
-		return context
+def markers(request, mtype):
+	context = {
+		'title': 'Markers',
+		'mtype': mtype,
+		'places': Place_Markers.objects.all(),
+		'events' : Event_Markers.objects.all(),
+		'event_suggestions' : Event_Suggestions.objects.all(),
+		'place_suggestions' : Place_Suggestions.objects.all(),
+		'toggles': Toggles.objects.get(school_name="Roosevelt College Marikina")
+	}
+	return render(request, 'markers/map.html', context)
 	
-class PlaceUpdateView(UpdateView):
+class EventCreateView(BaseForm, EventForm, CreateView):
+	model = Event_Markers
+	fields = ['name', 'type', 'description', 'event_date', 'latitude', 'longitude'] 
+	success_url = "/markers/1"
+	
+class EventUpdateView(BaseForm, EventForm, UpdateView):
+	model = Event_Markers
+	fields = ['name', 'type', 'description', 'event_date', 'longitude', 'latitude']
+	success_url = "/markers/1"
+	
+class EventDeleteView(BaseForm, DeleteView):
+	model = Event_Markers
+	success_url = "/markers/1"
+
+class PlaceCreateView(BaseForm, PlaceForm, CreateView):
+	model = Place_Markers
+	fields = ['name', 'type', 'description', 'latitude', 'longitude']
+	success_url = "/markers/2"
+
+class PlaceUpdateView(BaseForm, PlaceForm, UpdateView):
 	model = Place_Markers
 	fields = ['name', 'type', 'description', 'longitude', 'latitude']
 	success_url = "/markers/2"
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Process Guides'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
-		
-		return context
 	
-class PlaceDeleteView(DeleteView):
+class PlaceDeleteView(BaseForm, DeleteView):
 	model = Place_Markers
 	success_url = "/markers/2"
+	
+class SuggestEventCreateView(BaseForm, EventForm, CreateView):
+	model = Event_Suggestions
+	fields = ['cud', 'name', 'type', 'description', 'event_date', 'longitude', 'latitude']
+	success_url = "/markers/1"
+	
+class SuggestPlaceCreateView(BaseForm, PlaceForm, CreateView):
+	model = Place_Suggestions
+	fields = ['cud', 'name', 'type', 'description', 'longitude', 'latitude']
+	success_url = "/markers/2"
+	
+class SuggestEventDeleteView(BaseForm, DeleteView):
+	model = Event_Suggestions
+	success_url = "/markers/3"
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Interactive Map'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
-		
-		return context
+class SuggestPlaceDeleteView(BaseForm, DeleteView):
+	model = Place_Suggestions
+	success_url = "/markers/3"
+
+
+""" Extra Views
+class SuggestEventUpdateView(BaseForm, EventForm, UpdateView):
+	model = Event_Suggestions
+	fields = ['cud', 'name', 'type', 'description', 'event_date', 'longitude', 'latitude']
+	success_url = "/markers/3"
+
+class SuggestPlaceUpdateView(BaseForm, PlaceForm, UpdateView):
+	model = Place_Suggestions
+	fields = ['cud', 'name', 'type', 'description', 'longitude', 'latitude']
+	success_url = "/markers/3
+"""
