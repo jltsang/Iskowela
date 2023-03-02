@@ -165,18 +165,42 @@ a.article-title:hover {
   display: none;
 }
 
-.marker-1 {
+.marker-store {
   border: none;
   cursor: pointer;
-  height: 56px;
-  width: 56px;
-  background-image: url(../images/marker1.png);
+  height: 15px;
+  width: 15px;
+  background-image: url(../images/shop.svg);
 }
 
-.marker-2 {
+.marker-info {
   border: none;
   cursor: pointer;
-  height: 56px;
-  width: 56px;
-  background-image: url(../images/marker1.png);
+  height: 15px;
+  width: 15px;
+  background-image: url(../images/information.svg);
+}
+
+.marker-finance {
+  border: none;
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  background-image: url(../images/bank.svg);
+}
+
+.marker-health {
+  border: none;
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  background-image: url(../images/hospital.svg);
+}
+
+.marker-food {
+  border: none;
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  background-image: url(../images/restaurant.svg);
 }

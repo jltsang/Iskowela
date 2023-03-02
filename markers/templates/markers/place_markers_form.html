@@ -36,7 +36,7 @@
                 {% if object.name != None %}
                     <h2>Updating "{{ object.name }}"</h2>
                 {% else %}
-                    <h2>Add Event</h2>
+                    <h2>Add Place</h2>
                 {% endif %}
             </div>
 			<fieldset class="form-group pt-4">
@@ -79,12 +79,12 @@
 		JSON.stringify(e.lngLat.wrap());
 	});
 
-	var marker = new mapboxgl.Marker();
+	const lng = document.getElementById('id_longitude');
+	const lat = document.getElementById('id_latitude');
+
+	var marker = new mapboxgl.Marker().setLngLat([lng.value, lat.value]).addTo(map);
 
 	function add_marker (e) {
-		const lng = document.getElementById('id_longitude');
-		const lat = document.getElementById('id_latitude');
-
 		var coordinates = e.lngLat;
 		lng.value = coordinates.lng;
 		lat.value = coordinates.lat;
