@@ -19,7 +19,7 @@ class Profile(models.Model):
 	live_chat_link = models.CharField(max_length=50)
 	chatbot_tree_link = models.CharField(max_length=50)
 	banner = models.ImageField(upload_to='media', default='banner.jpg')
-
+	
 
 	def __str__(self):
 		return f'{self.user.username} Profile'
