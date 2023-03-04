@@ -3,6 +3,7 @@ from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
+from main.models import Toggles
 
 @login_required #Must be signed in (as admin) in order to create new admin accounts
 def register(request):
@@ -21,6 +22,7 @@ def profile(request):
 	context = {
 		'title': 'About',
 		'active_profile': Profile.objects.get(school_name="Roosevelt College Marikina"),
+		'toggles': Toggles.objects.get(profile = 1)
 	}
 	return render(request, 'users/profile.html', context)
 

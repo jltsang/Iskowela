@@ -8,7 +8,6 @@ from django.views.generic import (
 	DeleteView
 )
 from django.forms import DateTimeInput
-from django.shortcuts import get_object_or_404
 
 class BaseForm:
 	def get_context_data(self, **kwargs):

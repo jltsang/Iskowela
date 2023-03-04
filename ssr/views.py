@@ -13,6 +13,7 @@ import urllib
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from main.models import Toggles
 
 def index(request):
 	context = {
@@ -32,6 +33,7 @@ class SSRListView(ListView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
+		context['toggles'] = Toggles.objects.get(profile = 1)
 		context['title'] = 'Stats'
 		context['average_imap'] = round(list(SSR.objects.aggregate(Avg('interactive_map_rating')).values())[0], 2)
 		context['average_chatbot'] = round(list(SSR.objects.aggregate(Avg('chatbot_rating')).values())[0], 2)

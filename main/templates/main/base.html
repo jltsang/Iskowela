@@ -107,14 +107,14 @@
 
 			<div class="navbar-nav">
 				{% if user.is_authenticated %}
-					<a class="nav-item nav-link px-3" href="{% url 'settings' 2 %}">Settings</a>
+					<a class="nav-item nav-link px-3 {% if title == 'Settings' %} active {% endif %}" href="{% url 'settings' 2 %}">Settings</a>
 					<a class="nav-item nav-link px-3" href="{% url 'logout' %}">Logout</a>
-					<a class="nav-item nav-link px-3" href="{% url 'ssr-index' %}">Stats</a>
+					<a class="nav-item nav-link px-3 {% if title == 'Stats' %} active {% endif %}" href="{% url 'ssr-index' %}">Stats</a>
 				{% else %}
 					<a class="nav-item nav-link px-3" href="{% url 'login' %}">Login</a>
 					<a class="nav-item nav-link px-3" href="{% url 'ssr-create' %}">Feedback</a>
 				{% endif %}
-				<a class="nav-item nav-link px-3" href="{% url 'profile' %}">About</a>
+				<a class="nav-item nav-link px-3 {% if title == 'About' %} active {% endif %}" href="{% url 'profile' %}">About</a>
 			</div>
 			</div>
 		</nav>

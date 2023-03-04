@@ -8,6 +8,14 @@ from django.views.generic import (
 	DeleteView
 )
 
+class BaseView:
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['title'] = 'Markers'
+		context['toggles'] = Toggles.objects.get(profile = 1)
+		
+		return context
+
 def processguide_list(request):
 	context = {
 		'title': 'Process Guides',
@@ -32,104 +40,41 @@ def scholarship_list(request):
 	}
 	return render(request, 'information/scholarships.html', context)
 
-class ProcessGuidesCreateView(CreateView):
+class ProcessGuidesCreateView(BaseView, CreateView):
 	model = ProcessGuide
 	fields = ['process_name', 'description']
 	success_url = "/processguides/"
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Process Guides'
-		context['toggles'] = Toggles.objects.get(profile = 1)
-		
-		return context
-
-class ProcessGuidesUpdateView(UpdateView):
+class ProcessGuidesUpdateView(BaseView, UpdateView):
 	model = ProcessGuide
 	fields = ['process_name', 'description']
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Process Guides'
-		context['toggles'] = Toggles.objects.get(profile = 1)
-		
-		return context
-
-class ProcessGuidesDeleteView(DeleteView):
+class ProcessGuidesDeleteView(BaseView, DeleteView):
 	model = ProcessGuide
 	success_url = "/processguides/"
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Process Guides'
-		context['toggles'] = Toggles.objects.get(profile = 1)
-		
-		return context
-
-class ScholarshipsCreateView(CreateView):
+class ScholarshipsCreateView(BaseView, CreateView):
 	model = Scholarships
 	fields = ['scholarship_name', 'description']
 	success_url = "/scholarships/"
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Scholarships'
-		context['toggles'] = Toggles.objects.get(profile = 1)
-		
-		return context
-
-class ScholarshipsUpdateView(UpdateView):
+class ScholarshipsUpdateView(BaseView, UpdateView):
 	model = Scholarships
 	fields = ['scholarship_name', 'description']
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Scholarships'
-		context['toggles'] = Toggles.objects.get(profile = 1)
-		
-		return context
-
-class ScholarshipsDeleteView(DeleteView):
+class ScholarshipsDeleteView(BaseView,DeleteView):
 	model = Scholarships
 	success_url = "/scholarships/"
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Scholarships'
-		context['toggles'] = Toggles.objects.get(profile = 1)
-		
-		return context
-
-class CoursesCreateView(CreateView):
+class CoursesCreateView(BaseView, CreateView):
 	model = Courses
 	fields = ['college_group', 'course_list']
 	success_url = "/courses/"
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Course List'
-		context['toggles'] = Toggles.objects.get(profile = 1)
-		
-		return context
-
-class CoursesUpdateView(UpdateView):
+class CoursesUpdateView(BaseView, UpdateView):
 	model = Courses
 	fields = ['college_group', 'course_list']
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Course List'
-		context['toggles'] = Toggles.objects.get(profile = 1)
-		
-		return context
-
-class CoursesDeleteView(DeleteView):
+class CoursesDeleteView(BaseView, DeleteView):
 	model = Courses
 	success_url = "/courses/"
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Course List'
-		context['toggles'] = Toggles.objects.get(profile = 1)
-		
-		return context
