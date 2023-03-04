@@ -12,7 +12,7 @@ def processguide_list(request):
 	context = {
 		'title': 'Process Guides',
 		'processguides': ProcessGuide.objects.all(),
-		'toggles': Toggles.objects.get(school_name="Roosevelt College Marikina")
+		'toggles': Toggles.objects.get(profile = 1),
 	}
 	return render(request, 'information/processguides.html', context)
 
@@ -20,7 +20,7 @@ def course_list(request):
 	context = {
 		'title': 'Course List',
 		'courses': Courses.objects.all(),
-		'toggles': Toggles.objects.get(school_name="Roosevelt College Marikina")
+		'toggles': Toggles.objects.get(profile = 1),
 	}
 	return render(request, 'information/courses.html', context)
 
@@ -28,7 +28,7 @@ def scholarship_list(request):
 	context = {
 		'title': 'Scholarships',
 		'scholarships': Scholarships.objects.all(),
-		'toggles': Toggles.objects.get(school_name="Roosevelt College Marikina")
+		'toggles': Toggles.objects.get(profile = 1),
 	}
 	return render(request, 'information/scholarships.html', context)
 
@@ -40,7 +40,7 @@ class ProcessGuidesCreateView(CreateView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['title'] = 'Process Guides'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+		context['toggles'] = Toggles.objects.get(profile = 1)
 		
 		return context
 
@@ -51,7 +51,7 @@ class ProcessGuidesUpdateView(UpdateView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['title'] = 'Process Guides'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+		context['toggles'] = Toggles.objects.get(profile = 1)
 		
 		return context
 
@@ -62,7 +62,7 @@ class ProcessGuidesDeleteView(DeleteView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['title'] = 'Process Guides'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+		context['toggles'] = Toggles.objects.get(profile = 1)
 		
 		return context
 
@@ -74,7 +74,7 @@ class ScholarshipsCreateView(CreateView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['title'] = 'Scholarships'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+		context['toggles'] = Toggles.objects.get(profile = 1)
 		
 		return context
 
@@ -85,7 +85,7 @@ class ScholarshipsUpdateView(UpdateView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['title'] = 'Scholarships'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+		context['toggles'] = Toggles.objects.get(profile = 1)
 		
 		return context
 
@@ -96,7 +96,7 @@ class ScholarshipsDeleteView(DeleteView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['title'] = 'Scholarships'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+		context['toggles'] = Toggles.objects.get(profile = 1)
 		
 		return context
 
@@ -108,7 +108,7 @@ class CoursesCreateView(CreateView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['title'] = 'Course List'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+		context['toggles'] = Toggles.objects.get(profile = 1)
 		
 		return context
 
@@ -119,7 +119,7 @@ class CoursesUpdateView(UpdateView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['title'] = 'Course List'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+		context['toggles'] = Toggles.objects.get(profile = 1)
 		
 		return context
 
@@ -130,6 +130,6 @@ class CoursesDeleteView(DeleteView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['title'] = 'Course List'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+		context['toggles'] = Toggles.objects.get(profile = 1)
 		
 		return context

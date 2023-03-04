@@ -14,7 +14,7 @@ class Toggles(models.Model):
     web_analytics_toggle = models.BooleanField(default=False)
     
     def __str__(self):
-        return self.school_name
+        return f"{self.profile.user.username}"
 
 class Post(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)

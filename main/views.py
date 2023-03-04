@@ -9,12 +9,12 @@ from django.views.generic import (
 	DeleteView
 )
 
-active_profile = Profile.objects.get(school_name="Roosevelt College Marikina")
+active_profile = Profile.objects.get(id=1)
 
 def index(request):
 	context = {
 		'active_profile': active_profile,
-		'toggles': Toggles.objects.get(school_name="Roosevelt College Marikina"),
+		'toggles': Toggles.objects.get(profile = 1),
 		'title': 'Home',
 		'posts': Post.objects.all()
 	}
@@ -24,7 +24,7 @@ def menu(request):
 	context = {
 		'title': 'Menu',
 		'active_profile': active_profile,
-		'toggles': Toggles.objects.get(school_name="Roosevelt College Marikina")
+		'toggles': Toggles.objects.get(profile = 1),
 	}
 	return render(request, 'main/menu.html', context)
 
@@ -32,7 +32,7 @@ def imap_menu(request):
 	context = {
 		'title': 'Interactive Map Menu',
 		'active_profile': active_profile,
-		'toggles': Toggles.objects.get(school_name="Roosevelt College Marikina")
+		'toggles': Toggles.objects.get(profile = 1),
 	}
 	return render(request, 'main/imap_menu.html', context)
 

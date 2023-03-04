@@ -14,7 +14,7 @@ class BaseForm:
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['title'] = 'Markers'
-		context['toggles'] = Toggles.objects.get(school_name="Roosevelt College Marikina")
+		context['toggles'] = Toggles.objects.get(profile = 1)
 		
 		return context
 
@@ -43,7 +43,7 @@ def markers(request, mtype):
 		'events' : Event_Markers.objects.all(),
 		'event_suggestions' : Event_Suggestions.objects.all(),
 		'place_suggestions' : Place_Suggestions.objects.all(),
-		'toggles': Toggles.objects.get(school_name="Roosevelt College Marikina")
+		'toggles': Toggles.objects.get(profile = 1)
 	}
 	return render(request, 'markers/map.html', context)
 	
