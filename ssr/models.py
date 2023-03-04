@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from users.models import Profile
 
 class SSR(models.Model):
 	Rating_choices = (
@@ -10,6 +11,8 @@ class SSR(models.Model):
 	    (4, 'Good'),
 	    (5, 'Excellent')
 	)
+
+	profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
 	email = models.EmailField()
 	interactive_map_comment = models.TextField(default='')
 	interactive_map_rating = models.IntegerField(choices=Rating_choices, default=3)

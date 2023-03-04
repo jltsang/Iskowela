@@ -1,9 +1,10 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from users.models import Profile
 
 class Toggles(models.Model):
-    school_name = models.CharField(max_length=40)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
     info_toggle = models.BooleanField(default=False)
     processguides_toggle = models.BooleanField(default=False)
     scholarships_toggle = models.BooleanField(default=False)
@@ -16,6 +17,7 @@ class Toggles(models.Model):
         return self.school_name
 
 class Post(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
     school_name = models.CharField(max_length=40, null=True)
     title = models.CharField(max_length=100)
     content = models.TextField()

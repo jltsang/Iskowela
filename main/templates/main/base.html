@@ -35,6 +35,11 @@
 
 			<div class="navbar-nav">
 				{% if title != 'Menu' %}
+					{% if title == 'Home' %}
+						<a class="nav-item nav-link active px-3" href="{% url 'main-index' %}">Home</a>
+					{% else %}
+						<a class="nav-item nav-link px-3" href="{% url 'main-index' %}">Home</a>
+					{% endif %}
 					{% if title == 'Process Guides' or title == 'Course List' or title == 'Scholarships' %}
 						{% if toggles.processguides_toggle == True or toggles.courses_toggle == True or toggles.scholarships_toggle == True%}
 						<a class="nav-item dropdown">
@@ -79,10 +84,10 @@
 						{% endif %}
 					{% endif %}
 					{% if toggles.markers_toggle == True %}
-						{% if title == 'Interactive Map' or title == 'Interactive Map Menu'%}
-						<a class="nav-item nav-link active px-3" href="{% url 'imap-index' 1 %}">Events/Places</a>
+						{% if title == 'Markers' %}
+						<a class="nav-item nav-link active px-3" href="{% url 'markers' 1 %}">Events/Places</a>
 						{% else %}
-							<a class="nav-item nav-link px-3" href="{% url 'imap-index' 1 %}">Events/Places</a>
+							<a class="nav-item nav-link px-3" href="{% url 'markers' 1 %}">Events/Places</a>
 						{% endif %}
 					{% endif %}
 					{% if toggles.chatbot_toggle == True %}

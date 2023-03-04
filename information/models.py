@@ -1,11 +1,12 @@
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
+from users.models import Profile
 
 # Create your models here.
 
 class ProcessGuide(models.Model):
-    school_name = models.TextField(default='Roosevelt College Marikina')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
     process_name = models.TextField(default='')
     description = models.TextField(default='')
     last_updated = models.DateTimeField(default=timezone.now)
@@ -17,7 +18,7 @@ class ProcessGuide(models.Model):
         return reverse('processguides')
 
 class Courses(models.Model):
-    schoolid = models.TextField()
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
     college_group = models.TextField(default='')
     course_list = models.JSONField(default=dict)
     last_updated = models.DateTimeField(default=timezone.now)
@@ -29,7 +30,7 @@ class Courses(models.Model):
         return reverse('courses')
 
 class Scholarships(models.Model):
-    schoolid = models.TextField()
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
     scholarship_name = models.TextField(default='')
     description = models.TextField(default='')
     last_updated = models.DateTimeField(default=timezone.now)

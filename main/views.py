@@ -15,6 +15,7 @@ def index(request):
 	context = {
 		'active_profile': active_profile,
 		'toggles': Toggles.objects.get(school_name="Roosevelt College Marikina"),
+		'title': 'Home',
 		'posts': Post.objects.all()
 	}
 	return render(request, 'main/index.html', context)

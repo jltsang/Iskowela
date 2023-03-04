@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from users.models import Profile
 
 class Event_Suggestions(models.Model):
 	class EventType(models.IntegerChoices):
@@ -9,8 +10,9 @@ class Event_Suggestions(models.Model):
 		CREATE = 1
 		UPDATE = 2
 		DELETE = 3
-
-	name = models.CharField(max_length=100, unique=True)
+		
+	profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
+	name = models.CharField(max_length=100)
 	type = models.IntegerField(choices=EventType.choices)
 	description = models.CharField(max_length=100, default='')
 	event_date = models.DateTimeField()
@@ -27,7 +29,8 @@ class Event_Markers(models.Model):
 		OFFLINE = 1
 		ONLINE = 2
 		
-	name = models.CharField(max_length=100, unique=True)
+	profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
+	name = models.CharField(max_length=100)
 	type = models.IntegerField(choices=EventType.choices)
 	description = models.CharField(max_length=100, default='')
 	event_date = models.DateTimeField()
@@ -49,8 +52,9 @@ class Place_Suggestions(models.Model):
 		CREATE = 1
 		UPDATE = 2
 		DELETE = 3
-
-	name = models.CharField(max_length=100, unique=True)
+		
+	profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
+	name = models.CharField(max_length=100)
 	type = models.IntegerField(choices=PlaceType.choices)
 	description = models.CharField(max_length=100, default='')
 	cud = models.IntegerField(choices=Action.choices)
@@ -68,8 +72,9 @@ class Place_Markers(models.Model):
 		FINANCE = 3
 		STORE = 4
 		ETC = 5
-		
-	name = models.CharField(max_length=100, unique=True)
+	
+	profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
+	name = models.CharField(max_length=100)
 	type = models.IntegerField(choices=PlaceType.choices)
 	description = models.CharField(max_length=100, default='')
 	longitude = models.DecimalField(default=0, decimal_places=20, max_digits=25)
