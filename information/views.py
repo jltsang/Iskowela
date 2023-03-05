@@ -1,12 +1,55 @@
-from django.shortcuts import render
+from django.shortcuts import render , redirect
 from .models import ProcessGuide, Courses, Scholarships
 from main.models import Toggles
 from django.urls import reverse
+import requests
+from datetime import datetime
+from analytics.models import HomeMonitor, InfoMonitor, MarkerMonitor, ChatbotMonitor
 from django.views.generic import (
 	CreateView, 
 	UpdateView, 
 	DeleteView
 )
+
+
+def get_ip_info(request):
+	################# get ip ######################
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		ip = x_forwarded_for.split(',')[0]
+	else:
+		ip = request.META.get('REMOTE_ADDR') 
+	if ip == '127.0.0.1': # Only define the IP if you are testing on localhost.
+		ip = '202.92.130.117'
+    
+	url = "https://ipxapi.com/api/ip?ip="
+	url += ip
+                
+	headers = {
+        'Accept': "application/json",
+        'Content-Type': "application/json",
+        'Authorization': "Bearer 6742|QLoOwndQ45sjffJRgBK45iOPNVoh8tXDtzG7TXpx",
+        'cache-control': "no-cache"
+    }
+                
+	response = requests.request("GET", url, headers=headers)
+	rawData = response.json()
+    
+	continent = rawData["continentName"]
+	country = rawData['country']
+	city = rawData['city']
+	now = datetime.now()  
+    #datetimenow = now.strftime("%Y-%m-%d %H:%M:%S")
+    #datetimenow = now.strftime("%Y-%m-%d")
+	saveNow = InfoMonitor(
+        continent=continent,
+        country=country,
+        city=city,
+        datetime=now,
+        ip=ip
+    )
+	saveNow.save()
+	################# get ip ######################
 
 class BaseView:
 	def get_context_data(self, **kwargs):
@@ -17,6 +60,7 @@ class BaseView:
 		return context
 
 def processguide_list(request):
+	get_ip_info(request)
 	context = {
 		'title': 'Process Guides',
 		'processguides': ProcessGuide.objects.all(),
@@ -25,6 +69,7 @@ def processguide_list(request):
 	return render(request, 'information/processguides.html', context)
 
 def course_list(request):
+	get_ip_info(request)
 	context = {
 		'title': 'Course List',
 		'courses': Courses.objects.all(),
@@ -33,6 +78,7 @@ def course_list(request):
 	return render(request, 'information/courses.html', context)
 
 def scholarship_list(request):
+	get_ip_info(request)
 	context = {
 		'title': 'Scholarships',
 		'scholarships': Scholarships.objects.all(),

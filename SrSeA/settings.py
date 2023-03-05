@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'information.apps.InformationConfig',
     'interactive_map.apps.InteractiveMapConfig',
     'markers.apps.MarkersConfig',
+    'analytics.apps.AnalyticsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

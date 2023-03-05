@@ -24,6 +24,7 @@ from markers import views as markers_views
 from ssr import views as ssr_views
 from users import views as user_views
 from main import views as main_views
+from analytics import views as analytics_views
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -78,6 +79,9 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', login_required(auth_views.LogoutView.as_view(template_name='users/logout.html')), name='logout'), #Signed in only
     path('<pk>/update', login_required(main_views.SettingsUpdateView.as_view()), name='settings'), 
+
+    path('analytics/', analytics_views.traffic_monitor, name="analytics"),
+    #path('analytics/monitor/', , name="analytics-monitor"), 
 ]
 
 if settings.DEBUG:
