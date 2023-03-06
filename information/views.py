@@ -60,7 +60,7 @@ class BaseView:
 		return context
 
 def processguide_list(request):
-	get_ip_info(request)
+	# get_ip_info(request)
 	context = {
 		'title': 'Process Guides',
 		'processguides': ProcessGuide.objects.all(),
@@ -69,7 +69,7 @@ def processguide_list(request):
 	return render(request, 'information/processguides.html', context)
 
 def course_list(request):
-	get_ip_info(request)
+	# get_ip_info(request)
 	context = {
 		'title': 'Course List',
 		'courses': Courses.objects.all(),
@@ -78,7 +78,7 @@ def course_list(request):
 	return render(request, 'information/courses.html', context)
 
 def scholarship_list(request):
-	get_ip_info(request)
+	# get_ip_info(request)
 	context = {
 		'title': 'Scholarships',
 		'scholarships': Scholarships.objects.all(),
