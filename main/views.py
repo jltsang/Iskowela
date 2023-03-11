@@ -3,13 +3,10 @@ from users.models import Profile
 from users.forms import MainUpdateForm
 from .models import Toggles, Post
 from django.contrib import messages
-<<<<<<< HEAD
 from django.urls import reverse_lazy
-=======
 import requests
 from datetime import datetime
 from analytics.models import HomeMonitor, InfoMonitor, MarkerMonitor, ChatbotMonitor
->>>>>>> 24ffa1bc61fec7f12e07699fc0600742ba6fdaef
 from django.views.generic import (
 	CreateView, 
 	UpdateView, 
@@ -25,7 +22,6 @@ class PostForm:
 		context['profile_id'] = self.kwargs['profile_id']
 		context['active_profile'] = Profile.objects.get(id=self.kwargs['profile_id'])
 
-<<<<<<< HEAD
 		return context
 
 	def get_initial(self):
@@ -42,8 +38,6 @@ class PostForm:
 		return obj
 
 def index(request, profile_id):
-=======
-def index(request):
 	# ################# get ip ######################
 	# x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 	# if x_forwarded_for:
@@ -81,8 +75,7 @@ def index(request):
     # )
 	# saveNow.save()
 	# ################# get ip ######################
-
->>>>>>> 24ffa1bc61fec7f12e07699fc0600742ba6fdaef
+	
 	context = {
 		'active_profile': Profile.objects.get(id=profile_id),
 		'title': 'Home',
