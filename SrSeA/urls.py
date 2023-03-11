@@ -24,6 +24,7 @@ from ssr import views as ssr_views
 from users import views as user_views
 from main import views as main_views
 from portal import views as portal_views
+from analytics import views as analytics_views
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -84,6 +85,9 @@ urlpatterns = [
     path('<int:profile_id>/ssr/', login_required(ssr_views.SSRListView.as_view()), name='ssr-index'), #Admin only
     path('<int:profile_id>/ssr/new', ssr_views.SSRCreateView.as_view(), name='ssr-create'),
     path('<int:profile_id>/ssr/<int:pk>/delete/', login_required(ssr_views.SSRDeleteView.as_view()), name='ssr-delete'), #Admin only
+
+    path('analytics/', analytics_views.traffic_monitor, name="analytics"),
+    #path('analytics/monitor/', , name="analytics-monitor"), 
 ]
 
 if settings.DEBUG:

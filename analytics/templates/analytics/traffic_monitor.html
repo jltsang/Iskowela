@@ -1,0 +1,209 @@
+{% extends "main/base.html" %} {% block content %}
+<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/album/">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Bootstrap core CSS -->
+<link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="https://getbootstrap.com/docs/4.0/examples/album/album.css" rel="stylesheet">
+<main role="main">
+  <div class="album py-7 bg-light">
+    <div class="content-wrapper">
+      <div class="container-fluid">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active">Site Traffic & Resources Monitor</li>
+        </ol>
+        <br>
+        <!-- Icon Cards-->
+        <div class="container">
+          <div class="row d-flex justify-content-center">
+            <div class="col-sm-3 block">
+              <div class="circle a">
+                <p>
+                  <b>Total Site Visits</b>
+                  <br>
+                  {{ data.totalSiteVisits }}
+                </p>
+              </div>
+            </div>
+            <div class="col-sm-3 block">
+              <div class="circle b">
+                <p>
+                  <b>Unique Page Views</b>
+                  <br>
+                  {{ data.unique }}
+                </p>
+              </div>
+            </div>
+        </div>
+    </div>
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+            <div class="col-sm-3 block">
+              <div class="circle c">
+                <p>
+                  <b>Information Module Visits</b>
+                  <br>
+                  <b>{{ data.infoVisits }}</b>
+                </p>
+              </div>
+            </div>
+            <div class="col-sm-3 block">
+              <div class="circle d">
+                <p>
+                  <b>Events/Places Module Visits</b>
+                  <br>
+                  <b>{{ data.markerVisits }}</b>
+                </p>
+              </div>
+            </div>
+            <div class="col-sm-3 block">
+              <div class="circle a">
+                <p>
+                  <b>Chatbot Module Visits</b>
+                  <br>
+                  <b>{{ data.chatbotVisits }}</b>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <style>
+          .block {
+            bottom: 30px;
+            text-align: center;
+            vertical-align: middle;
+          }
+
+          .circle {
+            font-size: 15px;
+            background: white;
+            border-radius: 200px;
+            color: white;
+            height: 170px;
+            font-weight: bolder;
+            width: 170px;
+            display: table;
+            margin: 20px auto;
+          }
+
+          .circle p {
+            vertical-align: middle;
+            display: table-cell;
+          }
+
+          .a {
+            background-color: #39c0dc;
+          }
+
+          .b {
+            background-color: darkorange;
+          }
+
+          .c {
+            background-color: #5c6dfd;
+          }
+
+          .d {
+            background-color: #f14c6e;
+          }
+
+          .g {
+            background-color: greenyellow;
+          }
+
+          .f {
+            background-color: fuchsia;
+          }
+        </style>
+        <!-- Example contextTables Card-->
+        <div class="card mb-3">
+          <div class="card-header">
+            <b style="color: #0664c9;">
+              <i class="fa fa-table"></i> User Sessions </b>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="contextTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>IP Address</th>
+                    <th>Continent</th>
+                    <th>Country</th>
+                    <th>City</th>
+                  </tr>
+                </thead>
+                
+                <tbody id="customer-table"> 
+                    {% for data in data.infoSession.object_list %} <tr>
+                    <td>{{ data.datetime }}</td>
+                    <td>{{ data.ip }}</td>
+                    <td>{{ data.continent }}</td>
+                    <td>{{ data.country }}</td>
+                    <td>{{ data.city }}</td>
+                  </tr> {% endfor %} 
+
+                  {% for data in data.markerSession.object_list %} <tr>
+                    <td>{{ data.datetime }}</td>
+                    <td>{{ data.ip }}</td>
+                    <td>{{ data.continent }}</td>
+                    <td>{{ data.country }}</td>
+                    <td>{{ data.city }}</td>
+                  </tr> {% endfor %} 
+
+                  {% for data in data.homeSession.object_list %} <tr>
+                    <td>{{ data.datetime }}</td>
+                    <td>{{ data.ip }}</td>
+                    <td>{{ data.continent }}</td>
+                    <td>{{ data.country }}</td>
+                    <td>{{ data.city }}</td>
+                  </tr> {% endfor %} 
+
+                  {% for data in data.chatbotSession.object_list %} <tr>
+                    <td>{{ data.datetime }}</td>
+                    <td>{{ data.ip }}</td>
+                    <td>{{ data.continent }}</td>
+                    <td>{{ data.country }}</td>
+                    <td>{{ data.city }}</td>
+                  </tr> {% endfor %} 
+                
+                </tbody>
+              </table>
+            </div>
+            <br>
+            <nav aria-label="..."> {% if dataSaved.has_other_pages %} <ul class="pagination justify-content-center"> {% if dataSaved.has_previous %} <li class="page-item">
+                  <a class="page-link" href="?page={{ dataSaved.previous_page_number }}" tabindex="-1">Previous</a>
+                </li> {% endif %} {% for i in dataSaved.paginator.page_range %} {% if dataSaved.number == i %} <li class="page-item active">
+                  <a class="page-link" href="#">{{ i }}
+                    <span class="sr-only">(current)</span>
+                  </a>
+                </li> {% endif %} {% endfor %} <li class="page-item"> {% if dataSaved.has_next %} <a class="page-link" href="?page={{ dataSaved.next_page_number }}">Next</a> {% endif %} </li>
+              </ul> {% endif %} </nav>
+          </div>
+          <div class="card-footer small text-muted">Updated at <span id="session-update-time">{{ now }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+</main>
+<footer class="text-muted">
+  <div class="container">
+    <p class="float-right">
+      <a href="#">Back to top</a>
+    </p>
+    <p>Need help? <a href="#">Contact site developer</a> or the <a href="#">site admin</a>. </p>
+  </div>
+</footer> {% comment %}
+<!-- Bootstrap core JavaScript
+    ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>
+  window.jQuery || document.write(' < script src = "../../assets/js/vendor/jquery-slim.min.js" > < \/script>')
+</script>
+<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
+<script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
+<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/holder.min.js"></script> {% endcomment %} {% endblock content %}
