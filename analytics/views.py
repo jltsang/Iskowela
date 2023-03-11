@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 from django.utils import timezone
 
 #traffic monitor
-def traffic_monitor(request):
+def traffic_monitor(request, profile_id):
     dataSaved_info = InfoMonitor.objects.all().order_by('-datetime')
     dataSaved_marker = MarkerMonitor.objects.all().order_by('-datetime')
     dataSaved_chatbot = ChatbotMonitor.objects.all().order_by('-datetime')
@@ -54,7 +54,8 @@ def traffic_monitor(request):
 
     context = {
 		'toggles': Toggles.objects.get(profile = 1),
-        'data': data
+        'data': data,
+        'profile_id': profile_id,
 	}
    
 

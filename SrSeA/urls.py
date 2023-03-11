@@ -86,8 +86,8 @@ urlpatterns = [
     path('<int:profile_id>/ssr/new', ssr_views.SSRCreateView.as_view(), name='ssr-create'),
     path('<int:profile_id>/ssr/<int:pk>/delete/', login_required(ssr_views.SSRDeleteView.as_view()), name='ssr-delete'), #Admin only
 
-    path('analytics/', analytics_views.traffic_monitor, name="analytics"),
-    #path('analytics/monitor/', , name="analytics-monitor"), 
+    path('<int:profile_id>/analytics/', analytics_views.traffic_monitor, name="analytics"),
+    #path('<int:profile_id>/analytics/monitor/', , name="analytics-monitor"), 
 ]
 
 if settings.DEBUG:
