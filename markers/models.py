@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 from users.models import Profile
 
 class Event_Suggestions(models.Model):
@@ -24,6 +25,9 @@ class Event_Suggestions(models.Model):
 	def __str__(self):
 		return self.name
 	
+	def get_absolute_url(self):
+		return reverse('markers', args=[self.profile.id, 1])
+
 class Event_Markers(models.Model):
 	class EventType(models.IntegerChoices):
 		OFFLINE = 1
@@ -40,6 +44,9 @@ class Event_Markers(models.Model):
 
 	def __str__(self):
 		return self.name
+
+	def get_absolute_url(self):
+		return reverse('markers', args=[self.profile.id, 1])
 
 class Place_Suggestions(models.Model):
 	class PlaceType(models.IntegerChoices):
@@ -64,7 +71,10 @@ class Place_Suggestions(models.Model):
 	
 	def __str__(self):
 		return self.name
-	
+
+	def get_absolute_url(self):
+		return reverse('markers', args=[self.profile.id, 2])
+
 class Place_Markers(models.Model):
 	class PlaceType(models.IntegerChoices):
 		HEALTH = 1
@@ -83,3 +93,6 @@ class Place_Markers(models.Model):
 
 	def __str__(self):
 		return self.name
+	
+	def get_absolute_url(self):
+		return reverse('markers', args=[self.profile.id, 2])

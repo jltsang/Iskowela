@@ -8,39 +8,33 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
     <link rel="stylesheet" type="text/css" href="{% static 'main/main.css'%}">
 
-    <!-- Mapbox GL JS -->
-	<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.min.js'></script>
-	<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.css' type='text/css' />
-
-	<script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
-	<link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	{% if title %}
-		<title>Roosevelt College - {{ title }}</title>
+		<title>{{ active_profile.school_name }} - {{ title }}</title>
 	{% else %}
-		<title>Roosevelt College</title>
+		<title>{{ active_profile.school_name }} </title>
 	{% endif %}
 </head>
 <body class="mainsite">
 	<main role="main">
 		<header class="site-header sticky-top mb-5">
 		<nav class="container-xxl bd-gutter flex-wrap flex-lg-nowrap navbar navbar-expand-md navbar-dark bg-primary px-5">
-			
-			<a class="navbar-brand" href="{% url 'main-index' %}">Roosevelt College</a>
+			<a class="navbar-brand fa fa-home" href="{% url 'portal' %}"></a>
+			<a class="navbar-brand" href="{% url 'main-index' profile_id %}">{{ active_profile.school_name }}</a>
 
 			<div class="mx-auto"></div>
 
 			<div class="navbar-nav">
 				{% if title != 'Menu' %}
 					{% if title == 'Home' %}
-						<a class="nav-item nav-link active px-3" href="{% url 'main-index' %}">Home</a>
+						<a class="nav-item nav-link active px-3" href="{% url 'main-index' profile_id %}">Home</a>
 					{% else %}
-						<a class="nav-item nav-link px-3" href="{% url 'main-index' %}">Home</a>
+						<a class="nav-item nav-link px-3" href="{% url 'main-index' profile_id %}">Home</a>
 					{% endif %}
-					{% if title == 'Process Guides' or title == 'Course List' or title == 'Scholarships' %}
+					{% if title == 'Process Guides' or title == 'Course List' or title == 'Scholarships' or title == "Information"%}
 						{% if toggles.processguides_toggle == True or toggles.courses_toggle == True or toggles.scholarships_toggle == True%}
 						<a class="nav-item dropdown">
 							<div class="btn-group" role="group" style="margin: 0px; padding: 0px">
@@ -49,13 +43,13 @@
 							</a>
 							<ul class="dropdown-menu">
 								{% if toggles.processguides_toggle == True %}
-								<li><a class="dropdown-item" href="{% url 'processguides' %}">Process Guides</a></li>
+								<li><a class="dropdown-item" href="{% url 'processguides' profile_id %}">Process Guides</a></li>
 								{% endif %}
 								{% if toggles.courses_toggle == True %}
-								<li><a class="dropdown-item" href="{% url 'courses' %}">Courses</a></li>
+								<li><a class="dropdown-item" href="{% url 'courses' profile_id %}">Courses</a></li>
 								{% endif %}
 								{% if toggles.scholarships_toggle == True %}
-								<li><a class="dropdown-item" href="{% url 'scholarships' %}">Scholarships</a></li>
+								<li><a class="dropdown-item" href="{% url 'scholarships' profile_id %}">Scholarships</a></li>
 								{% endif %}
 							</ul>
 							</div>
@@ -70,13 +64,13 @@
 								</a>
 								<ul class="dropdown-menu">
 									{% if toggles.processguides_toggle == True %}
-									<li><a class="dropdown-item" href="{% url 'processguides' %}">Process Guides</a></li>
+									<li><a class="dropdown-item" href="{% url 'processguides' profile_id %}">Process Guides</a></li>
 									{% endif %}
 									{% if toggles.courses_toggle == True %}
-									<li><a class="dropdown-item" href="{% url 'courses' %}">Courses</a></li>
+									<li><a class="dropdown-item" href="{% url 'courses' profile_id %}">Courses</a></li>
 									{% endif %}
 									{% if toggles.scholarships_toggle == True %}
-									<li><a class="dropdown-item" href="{% url 'scholarships' %}">Scholarships</a></li>
+									<li><a class="dropdown-item" href="{% url 'scholarships' profile_id %}">Scholarships</a></li>
 									{% endif %}
 								</ul>
 								</div>
@@ -85,19 +79,19 @@
 					{% endif %}
 					{% if toggles.markers_toggle == True %}
 						{% if title == 'Markers' %}
-						<a class="nav-item nav-link active px-3" href="{% url 'markers' 1 %}">Events/Places</a>
+						<a class="nav-item nav-link active px-3" href="{% url 'markers' profile_id 1 %}">Events/Places</a>
 						{% else %}
-							<a class="nav-item nav-link px-3" href="{% url 'markers' 1 %}">Events/Places</a>
+							<a class="nav-item nav-link px-3" href="{% url 'markers' profile_id 1 %}">Events/Places</a>
 						{% endif %}
 					{% endif %}
 					{% if toggles.chatbot_toggle == True %}
 						{% if title == 'Chatbot' %}
-							<a class="nav-item nav-link active px-3" href="{% url 'chatbot-index' %}">Chatbot</a>
+							<a class="nav-item nav-link active px-3" href="{% url 'chatbot-index' profile_id %}">Chatbot</a>
 						{% else %}
-							<a class="nav-item nav-link px-3" href="{% url 'chatbot-index' %}">Chatbot</a>
+							<a class="nav-item nav-link px-3" href="{% url 'chatbot-index' profile_id %}">Chatbot</a>
 						{% endif %}
 					{% endif %}
-					{% if toggles.web_analytics_toggle == True %}
+					{% if toggles.web_analytics_toggle == True and user.is_authenticated %}
 						<a class="nav-item nav-link px-3" href="#">Website Analytics</a>
 					{% endif %}
 				{% endif %}
@@ -107,14 +101,14 @@
 
 			<div class="navbar-nav">
 				{% if user.is_authenticated %}
-					<a class="nav-item nav-link px-3 {% if title == 'Settings' %} active {% endif %}" href="{% url 'settings' 2 %}">Settings</a>
+					<a class="nav-item nav-link px-3 {% if title == 'Settings' %} active {% endif %}" href="{% url 'settings' profile_id toggles.id %}">Settings</a>
 					<a class="nav-item nav-link px-3" href="{% url 'logout' %}">Logout</a>
-					<a class="nav-item nav-link px-3 {% if title == 'Stats' %} active {% endif %}" href="{% url 'ssr-index' %}">Stats</a>
+					<a class="nav-item nav-link px-3 {% if title == 'Stats' %} active {% endif %}" href="{% url 'ssr-index' profile_id %}">Stats</a>
 				{% else %}
 					<a class="nav-item nav-link px-3" href="{% url 'login' %}">Login</a>
-					<a class="nav-item nav-link px-3" href="{% url 'ssr-create' %}">Feedback</a>
+					<a class="nav-item nav-link px-3" href="{% url 'ssr-create' profile_id %}">Feedback</a>
 				{% endif %}
-				<a class="nav-item nav-link px-3 {% if title == 'About' %} active {% endif %}" href="{% url 'profile' %}">About</a>
+				<a class="nav-item nav-link px-3 {% if title == 'About' %} active {% endif %}" href="{% url 'profile' profile_id %}">About</a>
 			</div>
 			</div>
 		</nav>

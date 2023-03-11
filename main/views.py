@@ -3,38 +3,47 @@ from users.models import Profile
 from users.forms import MainUpdateForm
 from .models import Toggles, Post
 from django.contrib import messages
+from django.urls import reverse_lazy
 from django.views.generic import (
 	CreateView, 
 	UpdateView, 
 	DeleteView
 )
+from django.http import Http404
 
-active_profile = Profile.objects.get(id=1)
+class PostForm:
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['title'] = 'Post List'
+		context['toggles'] = Toggles.objects.get(profile_id=self.kwargs['profile_id'])	
+		context['profile_id'] = self.kwargs['profile_id']
+		context['active_profile'] = Profile.objects.get(id=self.kwargs['profile_id'])
 
-def index(request):
+		return context
+
+	def get_initial(self):
+		initial = super().get_initial()
+		initial['profile'] = self.kwargs['profile_id']
+
+		return initial
+
+	def get_object(self, queryset=None):
+		obj = super().get_object(queryset=queryset)
+		if obj.profile.id != self.kwargs['profile_id']:
+			raise Http404("You are not allowed to edit this place.")
+		
+		return obj
+
+def index(request, profile_id):
 	context = {
-		'active_profile': active_profile,
-		'toggles': Toggles.objects.get(profile = 1),
+		'active_profile': Profile.objects.get(id=profile_id),
 		'title': 'Home',
-		'posts': Post.objects.all()
+		'toggles': Toggles.objects.get(profile=profile_id),
+		'posts': Post.objects.filter(profile=profile_id),
+		'profile_id': profile_id,
+		'active_profile': Profile.objects.get(id=profile_id),
 	}
 	return render(request, 'main/index.html', context)
-
-def menu(request):
-	context = {
-		'title': 'Menu',
-		'active_profile': active_profile,
-		'toggles': Toggles.objects.get(profile = 1),
-	}
-	return render(request, 'main/menu.html', context)
-
-def imap_menu(request):
-	context = {
-		'title': 'Interactive Map Menu',
-		'active_profile': active_profile,
-		'toggles': Toggles.objects.get(profile = 1),
-	}
-	return render(request, 'main/imap_menu.html', context)
 
 def main_update(request):
 	if request.method == 'POST':
@@ -58,43 +67,48 @@ class SettingsUpdateView(UpdateView):
 	model = Toggles
 	fields = ['processguides_toggle', 'courses_toggle', 'scholarships_toggle', 'markers_toggle', 'chatbot_toggle', 'web_analytics_toggle']
 	
-	success_url = "/"
-
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['title'] = 'Settings'
-		context['toggles'] = Toggles.objects.get(profile = 1)
-		
+		context['toggles'] = Toggles.objects.get(profile_id=self.kwargs['profile_id'])
+		context['profile_id'] = self.kwargs['profile_id']
+		context['pk'] = self.kwargs['pk']
+		context['active_profile'] = Profile.objects.get(id=self.kwargs['profile_id'])
+
 		return context
 	
-class PostCreateView(CreateView):
+	def get_object(self, queryset=None):
+		obj = super().get_object(queryset=queryset)
+		if obj.profile.id != self.kwargs['profile_id']:
+			raise Http404("You are not allowed to edit this place.")
+		return obj
+	
+	def get_success_url(self):
+		return reverse_lazy('settings', kwargs={'profile_id': self.kwargs['profile_id'], 'pk': self.kwargs['pk']})
+
+class PostCreateView(PostForm, CreateView):
 	model = Post
-	fields = ['title', 'content', 'author']
-	success_url = "/"
+	fields = ['profile', 'title', 'content']
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Post List'
+	def get_form(self, form_class=None):
+		form = super().get_form(form_class)
+		form.fields['profile'].widget = form.fields['profile'].hidden_widget()
 
-		return context
-
-class PostUpdateView(UpdateView):
+		return form
+	
+class PostUpdateView(PostForm, UpdateView):
 	model = Post
-	fields = ['title', 'content']
-	success_url = "/"
+	fields = ['profile', 'title', 'content']
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Post List'
-				
-		return context
+	def get_form(self, form_class=None):
+		form = super().get_form(form_class)
+		form.fields['profile'].widget = form.fields['profile'].hidden_widget()
 
-class PostDeleteView(DeleteView):
+		return form
+
+class PostDeleteView(PostForm, DeleteView):
 	model = Post
-	success_url = "/"
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Post List'
-		
-		return context
+	def get_success_url(self):
+		return reverse_lazy("main-index", kwargs={"profile_id": self.object.profile.id})
+

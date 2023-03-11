@@ -16,7 +16,7 @@
 		      <a class="mr-2" href="#">{{ ssr.email }}</a>
 		      <small class="text-muted">{{ ssr.date_posted|date:"F d, Y" }}</small>
 		      {% if user.is_authenticated %}
-			      <!-- <a class="btn btn-outline-danger btn-sm mt-1 mb-1" href="{% url 'ssr-delete' ssr.id %}" role="button">Delete</a> -->
+			      <!-- <a class="btn btn-outline-danger btn-sm mt-1 mb-1" href="{% url 'ssr-delete' profile_id ssr.id %}" role="button">Delete</a> -->
 		  	  {% endif %}
 		    </div>
 		    

@@ -3,26 +3,27 @@ from django.contrib.auth.models import User
 from PIL import Image
 
 class Profile(models.Model):
+	PUBLIC = 'Public'
+	PRIVATE = 'Private'
+	TYPE_CHOICES = [
+		(PUBLIC, 'Public'),
+		(PRIVATE, 'Private'),
+    ]
+
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	school_name = models.CharField(max_length=40)
 	logo = models.ImageField(default='default.jpg', upload_to='logo_pics')
+	banner = models.ImageField(upload_to='media', default='banner.jpg')
+	location = models.CharField(max_length=200, default='')
+	type = models.CharField(max_length=7, choices=TYPE_CHOICES, default=PUBLIC)
+	email = models.EmailField(default = '')
 	contact_details = models.TextField()
 	mapbox_key = models.CharField(max_length=100)
-	event_markers_dataset_link = models.CharField(max_length=80)
-	newgame_markers_dataset_link = models.CharField(max_length=80, default='')
-	health_markers_dataset_link = models.CharField(max_length=80, default='')
-	food_markers_dataset_link = models.CharField(max_length=80, default='')
-	finance_markers_dataset_link = models.CharField(max_length=80, default='')
-	store_markers_dataset_link = models.CharField(max_length=80, default='')
-	etc_markers_dataset_link = models.CharField(max_length=80, default='')
-	newgame_textfield = models.TextField(default='')
 	live_chat_link = models.CharField(max_length=50)
 	chatbot_tree_link = models.CharField(max_length=50)
-	banner = models.ImageField(upload_to='media', default='banner.jpg')
 	
-
 	def __str__(self):
-		return f'{self.user.username} Profile'
+		return self.school_name
 
 	# Resize the logo
 	def save(self, *args, **kwargs):

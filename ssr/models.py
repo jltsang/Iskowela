@@ -24,6 +24,6 @@ class SSR(models.Model):
 
 	def __str__(self):
 		return self.email
-
+	
 	def get_absolute_url(self):
-		return reverse('ssr-create')
+		return reverse('ssr-create', args=[self.profile.id])

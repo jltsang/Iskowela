@@ -204,3 +204,105 @@ a.article-title:hover {
   width: 15px;
   background-image: url(../images/restaurant.svg);
 }
+
+.profile-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.profile-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-info {
+    flex-grow: 1;
+    margin-right: 20px;
+}
+
+.profile-name {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.profile-bio {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.profile-btn {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+table {
+  width: 90%;
+  margin-top: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table td, table th {
+  padding: 10px;
+  text-align: left;
+}
+
+.infobox2 {
+  background: #FFFFFF;
+  height: 85vh;
+  margin-left: 4vw;
+  margin-right: 4vw;
+  border-radius: 10px;
+  padding-top: 3vh;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: center;
+}
+
+.pagenav {
+  align-self: flex-end;
+  justify-content: center;
+  padding-bottom: 20px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.page-item {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.page-link {
+  color: #007bff;
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-link:hover {
+  text-decoration: none;
+  background-color: #007bff;
+  color: #fff;
+}
+
+.page-item.active .page-link {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.page-item.disabled .page-link {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

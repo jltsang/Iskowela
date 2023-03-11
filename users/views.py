@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
-from .models import Profile
+from .models import Profile, User
 from main.models import Toggles
+from django.urls import reverse_lazy
 
 @login_required #Must be signed in (as admin) in order to create new admin accounts
 def register(request):
@@ -18,32 +19,36 @@ def register(request):
 		form = UserRegisterForm()
 	return render(request, 'users/register.html', {'form': form})
 
-def profile(request):
+def profile(request, profile_id):
 	context = {
 		'title': 'About',
-		'active_profile': Profile.objects.get(school_name="Roosevelt College Marikina"),
-		'toggles': Toggles.objects.get(profile = 1)
+		'active_profile': Profile.objects.get(id=profile_id),
+		'toggles': Toggles.objects.get(profile = profile_id),
+		'profile_id': profile_id,
 	}
 	return render(request, 'users/profile.html', context)
 
 # Profile Update
-def pupdate(request):
+def pupdate(request, profile_id):
 	if request.method == 'POST':
-		u_form = UserUpdateForm(request.POST, instance=request.user)
-		p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+		u_form = UserUpdateForm(request.POST, instance=User.objects.get(id=profile_id))
+		p_form = ProfileUpdateForm(request.POST, request.FILES, instance=Profile.objects.get(id=profile_id))
 		if u_form.is_valid() and p_form.is_valid():
 			u_form.save()
 			p_form.save()
 			messages.success(request, f'Your profile has been updated!')
-			return redirect('profile')
+			return redirect(reverse_lazy('profile', kwargs={'profile_id': profile_id}))
 
 	else:
-		u_form = UserUpdateForm(instance=request.user)
-		p_form = ProfileUpdateForm(instance=request.user.profile)
+		u_form = UserUpdateForm(instance=User.objects.get(id=profile_id))
+		p_form = ProfileUpdateForm(instance=Profile.objects.get(id=profile_id))
 
 	context = {
 		'u_form': u_form,
 		'p_form': p_form,
 		'title': 'Profile Update',
+		'toggles': Toggles.objects.get(profile = profile_id),
+		'profile_id': profile_id,
+		'active_profile': Profile.objects.get(id=profile_id),
 	}
 	return render(request, 'users/pupdate.html', context)

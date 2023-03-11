@@ -30,7 +30,7 @@
 		<form method="POST">
 			{% csrf_token %}
 			<div class="d-flex border-bottom pb-4">
-                <a href="{% url 'markers' 2 %}" class="mr-3 align-self-center" style="color: black;"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                <a href="{% url 'markers' profile_id 2 %}" class="mr-3 align-self-center" style="color: black;"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                 </svg></a>
                 {% if object.name != None %}
@@ -46,7 +46,7 @@
 			<pre id="info"></pre>
             <div class="mt-4 d-flex">
 				<button class="btn add-btn mr-auto" type="submit">Post</button>
-                <a class="btn neg-btn" href="{% url 'markers' 2 %}">Cancel</a>
+                <a class="btn neg-btn" href="{% url 'markers' profile_id 2 %}">Cancel</a>
 			</div>
 		</form>
 	</div>

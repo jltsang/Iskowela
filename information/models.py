@@ -15,7 +15,7 @@ class ProcessGuide(models.Model):
         return self.process_name
     
     def get_absolute_url(self):
-        return reverse('processguides')
+        return reverse('processguides', args=[self.profile.id])
 
 class Courses(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
@@ -27,7 +27,7 @@ class Courses(models.Model):
         return self.college_group
 
     def get_absolute_url(self):
-        return reverse('courses')
+        return reverse('courses', args=[self.profile.id])
 
 class Scholarships(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
@@ -39,4 +39,4 @@ class Scholarships(models.Model):
         return self.scholarship_name
 
     def get_absolute_url(self):
-        return reverse('scholarships')
+        return reverse('scholarships', args=[self.profile.id])
