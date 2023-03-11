@@ -10,10 +10,10 @@ from django.utils import timezone
 
 #traffic monitor
 def traffic_monitor(request, profile_id):
-    dataSaved_info = InfoMonitor.objects.all().order_by('-datetime')
-    dataSaved_marker = MarkerMonitor.objects.all().order_by('-datetime')
-    dataSaved_chatbot = ChatbotMonitor.objects.all().order_by('-datetime')
-    dataSaved_home = HomeMonitor.objects.all().order_by('-datetime')
+    dataSaved_info = InfoMonitor.objects.filter(profile = profile_id).order_by('-datetime')
+    dataSaved_marker = MarkerMonitor.objects.filter(profile = profile_id).order_by('-datetime')
+    dataSaved_chatbot = ChatbotMonitor.objects.filter(profile = profile_id).order_by('-datetime')
+    dataSaved_home = HomeMonitor.objects.filter(profile = profile_id).order_by('-datetime')
     
     totalSiteVisits = dataSaved_info.count() + dataSaved_chatbot.count() + dataSaved_home.count() + dataSaved_marker.count()
     #unique page viewers
@@ -53,7 +53,7 @@ def traffic_monitor(request, profile_id):
     }
 
     context = {
-		'toggles': Toggles.objects.get(profile = 1),
+		'toggles': Toggles.objects.get(profile = profile_id),
         'data': data,
         'profile_id': profile_id,
 	}
