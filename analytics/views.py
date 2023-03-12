@@ -12,7 +12,7 @@ from users.models import Profile
 def traffic_monitor(request, profile_id):
     dataSaved = Monitor.objects.filter(profile = profile_id).order_by('-datetime')
 
-    p = Paginator(dataSaved, 100)
+    p = Paginator(dataSaved, 10)
     pageNum = request.GET.get('page', 1)
     page = p.page(pageNum)
 
