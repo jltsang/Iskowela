@@ -6,7 +6,6 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 import requests
 from datetime import datetime
-from analytics.models import HomeMonitor, InfoMonitor, MarkerMonitor, ChatbotMonitor
 from django.views.generic import (
 	CreateView, 
 	UpdateView, 

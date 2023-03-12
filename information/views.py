@@ -10,8 +10,6 @@ from django.views.generic import (
 )
 from django.http import Http404
 import requests
-from datetime import datetime
-from analytics.models import HomeMonitor, InfoMonitor, MarkerMonitor, ChatbotMonitor
 from analytics.views import get_ip
 
 

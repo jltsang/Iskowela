@@ -1,10 +1,6 @@
-{% extends "main/base.html" %} {% block content %}
-<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/album/">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- Bootstrap core CSS -->
-<link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Custom styles for this template -->
-<link href="https://getbootstrap.com/docs/4.0/examples/album/album.css" rel="stylesheet">
+{% extends "main/base.html" %} 
+{% block content %}
+
 <main role="main">
   <div class="album py-7 bg-light">
     <div class="content-wrapper">
@@ -28,6 +24,7 @@
                 </p>
               </div>
             </div>
+
             <div class="col-sm-3 block">
               <div class="circle b">
                 <p>
@@ -37,19 +34,7 @@
                 </p>
               </div>
             </div>
-        </div>
-    </div>
-        <div class="container">
-            <div class="row d-flex justify-content-center">
-            <div class="col-sm-3 block">
-              <div class="circle c">
-                <p>
-                  <b>Information (Courses) Module Visits</b>
-                  <br>
-                  <b>{{ data.courseVisits }}</b>
-                </p>
-              </div>
-            </div>
+            {% if toggles.markers_toggle == True %}
             <div class="col-sm-3 block">
               <div class="circle d">
                 <p>
@@ -59,6 +44,8 @@
                 </p>
               </div>
             </div>
+            {% endif %}
+            {% if toggles.chatbot_toggle == True %}
             <div class="col-sm-3 block">
               <div class="circle a">
                 <p>
@@ -68,7 +55,45 @@
                 </p>
               </div>
             </div>
+            {% endif %}
           </div>
+        </div>
+    </div>
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+              {% if toggles.courses_toggle == True %}
+            <div class="col-sm-3 block">
+              <div class="circle c">
+                <p>
+                  <b>Courses Module Visits</b>
+                  <br>
+                  <b>{{ data.courseVisits }}</b>
+                </p>
+              </div>
+            </div>
+            {% endif %}
+            {% if toggles.processguides_toggle == True %}
+            <div class="col-sm-3 block">
+              <div class="circle c">
+                <p>
+                  <b>Process Guides Module Visits</b>
+                  <br>
+                  <b>{{ data.processVisits }}</b>
+                </p>
+              </div>
+            </div>
+            {% endif %}
+            {% if toggles.scholarships_toggle == True %}
+            <div class="col-sm-3 block">
+              <div class="circle c">
+                <p>
+                  <b>Scholarship Module Visits</b>
+                  <br>
+                  <b>{{ data.scholarshipVisits }}</b>
+                </p>
+              </div>
+            </div>
+            {% endif %}
         </div>
         <style>
           .block {
@@ -120,7 +145,7 @@
         </style>
         <!-- Example contextTables Card-->
         <div class="card mb-3">
-          <div class="card-header">
+          <div class="card-header bg-light rounded-bottom" >
             <b style="color: #0664c9;">
               <i class="fa fa-table"></i> User Sessions </b>
           </div>
@@ -134,6 +159,7 @@
                     <th>Continent</th>
                     <th>Country</th>
                     <th>City</th>
+                    <th>Page Visited</th>
                   </tr>
                 </thead>
                 
@@ -144,6 +170,7 @@
                     <td>{{ data.continent }}</td>
                     <td>{{ data.country }}</td>
                     <td>{{ data.city }}</td>
+                    <td>{{ data.page_visited }}</td>
                   </tr> {% endfor %} 
                 
                 </tbody>
@@ -159,7 +186,7 @@
                 </li> {% endif %} {% endfor %} <li class="page-item"> {% if dataSaved.has_next %} <a class="page-link" href="?page={{ dataSaved.next_page_number }}">Next</a> {% endif %} </li>
               </ul> {% endif %} </nav>
           </div>
-          <div class="card-footer small text-muted">Updated at <span id="session-update-time">{{ now }}</span>
+          <div class="card-footer small text-muted">Updated at <span id="session-update-time">{{ data.now }}</span>
           </div>
         </div>
       </div>
@@ -172,14 +199,5 @@
     </p>
     <p>Need help? <a href="#">Contact site developer</a> or the <a href="#">site admin</a>. </p>
   </div>
-</footer> {% comment %}
-<!-- Bootstrap core JavaScript
-    ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script>
-  window.jQuery || document.write(' < script src = "../../assets/js/vendor/jquery-slim.min.js" > < \/script>')
-</script>
-<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
-<script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
-<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/holder.min.js"></script> {% endcomment %} {% endblock content %}
+</footer> 
+{% endblock content %}

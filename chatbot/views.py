@@ -2,10 +2,7 @@ from django.shortcuts import render
 from main.models import Toggles
 from users.models import Profile
 import requests
-from datetime import datetime
-from analytics.models import HomeMonitor, InfoMonitor, MarkerMonitor, ChatbotMonitor
 from analytics.views import get_ip
-
 
 def index(request, profile_id):
 	get_ip(request, profile_id, "chatbot")
