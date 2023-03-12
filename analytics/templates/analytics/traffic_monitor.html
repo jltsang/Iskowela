@@ -44,9 +44,9 @@
             <div class="col-sm-3 block">
               <div class="circle c">
                 <p>
-                  <b>Information Module Visits</b>
+                  <b>Information (Courses) Module Visits</b>
                   <br>
-                  <b>{{ data.infoVisits }}</b>
+                  <b>{{ data.courseVisits }}</b>
                 </p>
               </div>
             </div>
@@ -138,32 +138,8 @@
                 </thead>
                 
                 <tbody id="customer-table"> 
-                    {% for data in data.infoSession.object_list %} <tr>
-                    <td>{{ data.datetime }}</td>
-                    <td>{{ data.ip }}</td>
-                    <td>{{ data.continent }}</td>
-                    <td>{{ data.country }}</td>
-                    <td>{{ data.city }}</td>
-                  </tr> {% endfor %} 
-
-                  {% for data in data.markerSession.object_list %} <tr>
-                    <td>{{ data.datetime }}</td>
-                    <td>{{ data.ip }}</td>
-                    <td>{{ data.continent }}</td>
-                    <td>{{ data.country }}</td>
-                    <td>{{ data.city }}</td>
-                  </tr> {% endfor %} 
-
-                  {% for data in data.homeSession.object_list %} <tr>
-                    <td>{{ data.datetime }}</td>
-                    <td>{{ data.ip }}</td>
-                    <td>{{ data.continent }}</td>
-                    <td>{{ data.country }}</td>
-                    <td>{{ data.city }}</td>
-                  </tr> {% endfor %} 
-
-                  {% for data in data.chatbotSession.object_list %} <tr>
-                    <td>{{ data.datetime }}</td>
+                    {% for data in data.userSession.object_list %} <tr>
+                    <td>{{ data.datetime  }}</td>
                     <td>{{ data.ip }}</td>
                     <td>{{ data.continent }}</td>
                     <td>{{ data.country }}</td>

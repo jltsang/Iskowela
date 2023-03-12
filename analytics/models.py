@@ -6,7 +6,7 @@ class HomeMonitor(models.Model):
     continent = models.CharField(max_length=50, blank=True, null=True)
     country = models.CharField(max_length=50, blank=True, null=True)
     city = models.CharField(max_length=50, blank=True, null=True)
-    datetime = models.DateField(max_length=50, blank=True, null=True)
+    datetime = models.DateTimeField(max_length=50, blank=True, null=True)
     ip = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
@@ -18,7 +18,7 @@ class InfoMonitor(models.Model):
     continent = models.CharField(max_length=50, blank=True, null=True)
     country = models.CharField(max_length=50, blank=True, null=True)
     city = models.CharField(max_length=50, blank=True, null=True)
-    datetime = models.DateField(max_length=50, blank=True, null=True)
+    datetime = models.DateTimeField(max_length=50, blank=True, null=True)
     ip = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
@@ -30,7 +30,7 @@ class MarkerMonitor(models.Model):
     continent = models.CharField(max_length=50, blank=True, null=True)
     country = models.CharField(max_length=50, blank=True, null=True)
     city = models.CharField(max_length=50, blank=True, null=True)
-    datetime = models.DateField(max_length=50, blank=True, null=True)
+    datetime = models.DateTimeField(max_length=50, blank=True, null=True)
     ip = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
@@ -41,9 +41,22 @@ class ChatbotMonitor(models.Model):
     continent = models.CharField(max_length=50, blank=True, null=True)
     country = models.CharField(max_length=50, blank=True, null=True)
     city = models.CharField(max_length=50, blank=True, null=True)
-    datetime = models.DateField(max_length=50, blank=True, null=True)
+    datetime = models.DateTimeField(max_length=50, blank=True, null=True)
     ip = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return self.ip
+
+class Monitor(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
+    page_visited = models.CharField(max_length=50, blank=True, null=True)
+    continent = models.CharField(max_length=50, blank=True, null=True)
+    country = models.CharField(max_length=50, blank=True, null=True)
+    city = models.CharField(max_length=50, blank=True, null=True)
+    datetime = models.DateTimeField(max_length=50, blank=True, null=True)
+    ip = models.CharField(max_length=50, blank=True, null=True)
+
+    def __str__(self):
+        return self.ip
+    
     
