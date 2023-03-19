@@ -60,6 +60,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'analytics.middleware.TimeTrackingMiddleware',
+    'analytics.middleware.TimeTrackingUpdateMiddleware',
+
 ]
 
 ROOT_URLCONF = 'SrSeA.urls'

@@ -2,11 +2,16 @@ from django.shortcuts import render, redirect
 from main.models import Toggles
 import requests
 from django.utils import timezone
-from .models import Monitor
+from .models import Monitor, TimeTracking
 from django.core.paginator import Paginator
 from django.utils import timezone
+import datetime
 from django.contrib.gis.geoip2 import GeoIP2
+from django.db.models import Count
 from users.models import Profile
+import json
+from django.db.models import Sum
+
 
 
 def traffic_monitor(request, profile_id):
@@ -65,6 +70,7 @@ def get_ip(request, profile_id, page):
     
 
 def chart(request, profile_id):
+    # Per Module View Data
     course = Monitor.objects.filter(page_visited = "course", profile = profile_id).count()
     course = int(course)
    
@@ -80,12 +86,38 @@ def chart(request, profile_id):
     markers = Monitor.objects.filter(page_visited = "markers", profile = profile_id).count()
     markers = int(markers)
 
+    page_list = ['Courses', 'Process Guides', 'Scholarships', 'Chatbot', 'Events/Places']
+    page_count = [course, process, scholarship, chatbot, markers]
+
+    # Visitor Location Data
     countries = Monitor.objects.filter(profile = profile_id).values('country').distinct()
     country_list = list(countries.values_list('country',flat=True))
     country_count = [Monitor.objects.filter(profile = profile_id, country= country).count() for country in country_list]
 
 
-    page_list = ['Courses', 'Process Guides', 'Scholarships', 'Chatbot', 'Events/Places']
-    page_count = [course, process, scholarship, chatbot, markers]
-    context = {'page_list':page_list, 'page_count':page_count, 'country_list': country_list, 'country_count': country_count}
+
+    # Overall site visit
+    today = timezone.now()
+    start_of_month = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    end_of_month = start_of_month.replace(month=start_of_month.month+1)-timezone.timedelta(microseconds=1)
+
+    data = (
+        Monitor.objects
+        .filter(profile = profile_id, datetime__gte=start_of_month, datetime__lte=end_of_month)
+        .values('datetime__date')
+        .annotate(ip_count=Count('ip'))
+        .order_by('datetime__date')
+    )
+    
+    
+    # Time Spent Per Module View Data
+    course_time = TimeTracking.objects.filter(page__contains="{}/courses/".format(profile_id)).aggregate(Sum('time_spent'))['time_spent__sum']
+    scholarship_time = TimeTracking.objects.filter(page__icontains="{}/scholarships/".format(profile_id)).aggregate(Sum('time_spent'))['time_spent__sum']
+    process_time = TimeTracking.objects.filter(page__icontains="{}/processguides/".format(profile_id)).aggregate(Sum('time_spent'))['time_spent__sum']
+    chatbot_time = TimeTracking.objects.filter(page__icontains="{}/chatbot/".format(profile_id)).aggregate(Sum('time_spent'))['time_spent__sum']
+    marker_time = TimeTracking.objects.filter(page__icontains="{}/markers/".format(profile_id)).aggregate(Sum('time_spent'))['time_spent__sum']
+     
+    time_spent = [course_time, process_time, scholarship_time, chatbot_time, marker_time]
+
+    context = {'page_list':page_list, 'page_count':page_count, 'country_list': country_list, 'country_count': country_count, 'data': data, 'time_spent': time_spent}
     return context

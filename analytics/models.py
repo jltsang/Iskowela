@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import Profile
+from django.contrib.auth.models import User
 
 
 class Monitor(models.Model):
@@ -15,3 +16,13 @@ class Monitor(models.Model):
         return self.ip
     
     
+
+
+class TimeTracking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    page = models.CharField(max_length=255)
+    start_time = models.DateTimeField()
+    time_spent = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.page
