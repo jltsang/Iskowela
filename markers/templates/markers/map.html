@@ -33,8 +33,26 @@
         overflow: auto;
         border-top: 2px solid #eee;
         border-bottom: 2px solid #eee;
+        padding: 10px;
         }
  
+        .listings #type-filter {
+            
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            color: #333;
+            font-size: 16px;
+            height: 40px;
+            padding: 8px 10px;
+            width: 200px;
+        }
+
+        .listings #type-filter option {
+            color: #333;
+            font-size: 16px;
+        }
+
         .listings .item {
         display: block;
         border-bottom: 1px solid #eee;
@@ -125,39 +143,41 @@
             {% endif %}
         </div>
         <div id="listings" class="listings">
-            <select id="type-filter">
-                <optgroup label="Default">
-                    <option value="all">All</option>
-                    {% if mtype == 3 %}
-                        <option value="event">Events</option>
-                        <option value="place">Places</option>
+            <div>
+                <select id="type-filter">
+                    <optgroup label="Default">
+                        <option value="all">All</option>
+                        {% if mtype == 3 %}
+                            <option value="event">Events</option>
+                            <option value="place">Places</option>
+                        {% endif %}
+                    </optgroup>
+                    {% if mtype == 1 %}
+                        <optgroup label="Event Filters">
+                            {% for type, display_name in event_types %}
+                                <option value="{{ display_name }}">{{ display_name }}</option>
+                            {% endfor %}
+                        </optgroup>
+                    {% elif mtype == 2 %}
+                        <optgroup label="Place Filters">
+                            {% for type, display_name in place_types %}
+                                <option value="{{ display_name }}">{{ display_name }}</option>
+                            {% endfor %}
+                        </optgroup>
+                    {% elif mtype == 3 %}
+                        <optgroup label="Event Filters">
+                            {% for type, display_name in event_types %}
+                                <option value="{{ display_name }}">{{ display_name }}</option>
+                            {% endfor %}
+                        </optgroup>
+                        <optgroup label="Place Filters">
+                            {% for type, display_name in place_types %}
+                                <option value="{{ display_name }}">{{ display_name }}</option>
+                            {% endfor %}
+                        </optgroup>
                     {% endif %}
-                </optgroup>
-                {% if mtype == 1 %}
-                    <optgroup label="Event Filters">
-                        {% for type, display_name in event_types %}
-                            <option value="{{ display_name }}">{{ display_name }}</option>
-                        {% endfor %}
-                    </optgroup>
-                {% elif mtype == 2 %}
-                    <optgroup label="Place Filters">
-                        {% for type, display_name in place_types %}
-                            <option value="{{ display_name }}">{{ display_name }}</option>
-                        {% endfor %}
-                    </optgroup>
-                {% elif mtype == 3 %}
-                    <optgroup label="Event Filters">
-                        {% for type, display_name in event_types %}
-                            <option value="{{ display_name }}">{{ display_name }}</option>
-                        {% endfor %}
-                    </optgroup>
-                    <optgroup label="Place Filters">
-                        {% for type, display_name in place_types %}
-                            <option value="{{ display_name }}">{{ display_name }}</option>
-                        {% endfor %}
-                    </optgroup>
-                {% endif %}
-            </select>
+                </select>
+            </div>
         </div>
         <div class="cntr pt-4">
             {% if mtype ==  1 and user.is_authenticated %}
