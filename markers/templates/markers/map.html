@@ -181,8 +181,10 @@
         </div>
         <div class="cntr pt-4">
             {% if mtype ==  1 and user.is_authenticated %}
+            <button onclick="" class="add-btn">Set Center</button>
                 <a class="btn btn-primary" href="{% url 'event-create' profile_id %}">Add Event</a>
             {% elif mtype ==  2 and user.is_authenticated %}
+            <button onclick="" class="add-btn">Set Center</button>
                 <a class="btn btn-primary" href="{% url 'place-create' profile_id %}">Add Location</a>
             {% elif mtype ==  1 %}
                 <a class="btn btn-primary" href="{% url 'suggest-event' profile_id %}">Suggest Event</a>
@@ -200,7 +202,7 @@
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v12',
-            center: [121.098434, 14.648697],
+            center: [{{ active_profile.longitude }}, {{ active_profile.latitude }}],
             zoom: 18,
             pitch: 40,
             bearing: 20,

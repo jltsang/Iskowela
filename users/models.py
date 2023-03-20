@@ -21,6 +21,8 @@ class Profile(models.Model):
 	mapbox_key = models.CharField(max_length=100)
 	live_chat_link = models.CharField(max_length=50)
 	chatbot_tree_link = models.CharField(max_length=50)
+	longitude = models.DecimalField(default=0, decimal_places=20, max_digits=25, null=True, blank=True)
+	latitude = models.DecimalField(default=0, decimal_places=20, max_digits=25, null=True, blank=True)
 	
 	def __str__(self):
 		return self.school_name
