@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ["localhost","192.168.1.16", "srsea.herokuapp.com"]
 # Application definition
 
 INSTALLED_APPS = [
+    'geoip2',
     'crispy_forms',
     'crispy_bootstrap4',
     'ssr.apps.SsrConfig',
@@ -59,6 +60,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'analytics.middleware.TimeTrackingMiddleware',
+    'analytics.middleware.TimeTrackingUpdateMiddleware',
+
 ]
 
 ROOT_URLCONF = 'SrSeA.urls'
@@ -146,3 +150,5 @@ django_heroku.settings(locals())
 
 GOOGLE_RECAPTCHA_SECRET_KEY = '6LcaregUAAAAACDoxbU_uPkGay47a1SdbP6XpxUx'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+GEOIP_PATH =os.path.join('geoip')
