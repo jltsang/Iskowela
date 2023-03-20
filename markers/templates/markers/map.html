@@ -124,7 +124,31 @@
                 <a class="btn btn-primary {% if mtype == 3 %} disabled {% endif %}" href="{% url 'markers' profile_id 3 %}">Suggestions</a>
             {% endif %}
         </div>
-        <div id="listings" class="listings"></div>
+        <div id="listings" class="listings">
+            <select id="type-filter">
+                <option value="all">All Types</option>
+                {% if mtype == 1 %}
+                    {% for instance in events %}
+                        <option value="{{ instance.get_type_display }}">{{ instance.get_type_display }}</option>
+                    {% endfor %}
+                {% elif mtype == 2 %}
+                    {% for instance in places %}
+                        <option value="{{ instance.get_type_display }}">{{ instance.get_type_display }}</option>
+                    {% endfor %}
+                {% elif mtype == 3 %}
+                    <optgroup label="Event Suggestions">
+                        {% for instance in event_suggestions %}
+                            <option value="{{ instance.get_type_display }}">{{ instance.get_type_display }}</option>
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="Place Suggestions">
+                        {% for instance in place_suggestions %}
+                            <option value="{{ instance.get_type_display }}">{{ instance.get_type_display }}</option>
+                        {% endfor %}
+                    </optgroup>
+                {% endif %}
+            </select>
+        </div>
         <div class="cntr pt-4">
             {% if mtype ==  1 and user.is_authenticated %}
                 <a class="btn btn-primary" href="{% url 'event-create' profile_id %}">Add Event</a>
@@ -158,6 +182,9 @@
         const auth = JSON.parse(document.getElementById('user_auth').textContent);
         const profile_id = JSON.parse(document.getElementById('profile').textContent);
         let type = JSON.parse(document.getElementById('mtype').textContent);
+        const typeFilter = document.getElementById('type-filter');
+        let chosenTypes = [];
+
         if (type == 1) {
             const stores = {
                 'type': 'FeatureCollection',
@@ -212,6 +239,19 @@
                 */
                 buildLocationList(stores);
                 addMarkers(stores);
+            });
+
+            typeFilter.addEventListener('change', function() {
+                if (typeFilter.value === 'all') {
+                    // Show all types
+                    chosenTypes = [];
+                } else {
+                    // Only show selected types
+                    chosenTypes = [typeFilter.value];
+                }
+
+                // Update the map with the new filter
+                updateMap(stores, chosenTypes);
             });
         }
         else if (type == 2) {
@@ -268,6 +308,19 @@
                 buildLocationList(stores);
                 addMarkers(stores);
             });
+
+            typeFilter.addEventListener('change', function() {
+                if (typeFilter.value === 'all') {
+                    // Show all types
+                    chosenTypes = [];
+                } else {
+                    // Only show selected types
+                    chosenTypes = [typeFilter.value];
+                }
+
+                // Update the map with the new filter
+                updateMap(stores, chosenTypes);
+            });
         }
 
         else if (type == 3 && auth) {
@@ -284,10 +337,14 @@
                     'properties': {
                         'db_id': '{{ instance.id }}',
                         'title': '{{ instance.name }}',
+                        'marker': '{{ instance.event_marker.id }}',
+                        'typeno': '{{ instance.type }}',
                         'type': '{{ instance.get_type_display }}',
                         'date': '{{ instance.event_date }}',
+                        'dateformatted': '{{ instance.event_date | date:"Y-m-d\TH:i" }}',
                         'cud': '{{ instance.get_cud_display }}',
                         'description': '{{ instance.description }}',
+                        'mtype': 'event',
                     }
                 },     
                 {% endfor %}
@@ -301,9 +358,12 @@
                     'properties': {
                         'db_id': '{{ place.id }}',
                         'title': '{{ place.name }}',
+                        'marker': '{{ place.place_marker.id }}',
+                        'typeno': '{{ place.type }}',
                         'type': '{{ place.get_type_display }}',
                         'cud': '{{ place.get_cud_display }}',
                         'description': '{{ place.description }}',
+                        'mtype': 'place',
                     }
                 },     
                 {% endfor %}
@@ -340,6 +400,19 @@
                 */
                 buildLocationList(stores);
                 addMarkers(stores);
+            });
+
+            typeFilter.addEventListener('change', function() {
+                if (typeFilter.value === 'all') {
+                    // Show all types
+                    chosenTypes = [];
+                } else {
+                    // Only show selected types
+                    chosenTypes = [typeFilter.value];
+                }
+
+                // Update the map with the new filter
+                updateMap(stores, chosenTypes);
             });
         }
  
@@ -404,7 +477,7 @@
                 }
             }
         }
- 
+        
         /**
         * Add a listing for each store to the sidebar.
         **/
@@ -428,9 +501,9 @@
                 link.id = `link-${store.properties.id}`;
                 link.innerHTML = `${store.properties.title}`;
 
+
                 /* Add details to the individual listing. */
                 const details = listing.appendChild(document.createElement('div'));
-                details.className = 'small pb-2';
                 store.properties.date == undefined ? details.innerHTML += `` : details.innerHTML += `${store.properties.date} &middot; `;
                 details.innerHTML += `${store.properties.type}`;
 
@@ -438,13 +511,21 @@
                 desc.innerHTML = `${store.properties.description}`;
 
                 if(auth){
-                    if(type != 3){
+                    if (type != 3) {
                         const edit = listing.appendChild(document.createElement('a'));
                         edit.href = "#";
                         edit.setAttribute("db_id", store.properties.db_id);
                         edit.setAttribute("ep", store.properties.date ? 1 : 0);
                         edit.className = 'btn add-btn mt-2 mr-2';
                         edit.innerHTML = `Edit`;
+                    }
+                    else {
+                        const approve = listing.appendChild(document.createElement('a'));
+                        approve.href = "#";
+                        approve.setAttribute("db_id", store.properties.db_id);
+                        approve.setAttribute("ep", store.properties.date ? 1 : 0);
+                        approve.className = 'btn add-btn-alt mt-2 mr-2';
+                        approve.innerHTML = `Approve`; 
                     }
 
                     const del = listing.appendChild(document.createElement('a'));
@@ -476,26 +557,133 @@
                     }
                     this.parentNode.classList.add('active');
                 });
+                
+                if (auth) {
+                    if (type != 3) {
+                        const editButtons = document.querySelectorAll('.btn.add-btn');
+                        editButtons[editButtons.length - 1].addEventListener('click', function(event) {
+                            const btn_id = event.target.getAttribute('db_id');
+                            event.target.getAttribute('ep') == 0 && type == 3 ? type = 4 : type;
+                            const editUrl = `${type}/${btn_id}/update/`;
+                            window.location.href = editUrl;
+                        });
+                    }
+                    else {
+                        const approveButtons = document.querySelectorAll('.btn.add-btn-alt');
+                        approveButtons[approveButtons.length - 1].addEventListener('click', function(event) {
+                            const btn_id = event.target.getAttribute('db_id');
+                            const marker_type = event.target.getAttribute('ep') == 0 ? 'place' : 'event';
+                            const features = stores.features;
+                            for (let i = 0; i < features.length; i++) {
+                                const feature = features[i];
+                                const db_id = feature.properties.db_id;
+                                if (db_id == btn_id && feature.properties.mtype == marker_type) {
+                                    if (feature.properties.cud == 'Create') {
+                                        const data = {
+                                            name: feature.properties.title,
+                                            type: feature.properties.typeno,
+                                            description: feature.properties.description,
+                                            longitude: feature.geometry.coordinates[0],
+                                            latitude: feature.geometry.coordinates[1],
+                                        };
 
-                const editButtons = document.querySelectorAll('.btn.add-btn');
-                editButtons.forEach(function(button) {
-                    button.addEventListener('click', function(event) {
-                        const btn_id = event.target.getAttribute('db_id');
-                        event.target.getAttribute('ep') == 0 && type == 3 ? type = 4 : type;
-                        const editUrl = `${type}/${btn_id}/update/`;
-                        window.location.href = editUrl;
-                    });
-                });
+                                        let urlredirect = "";
+                                        if (feature.properties.dateformatted) {
+                                            data.event_date = feature.properties.dateformatted;
+                                            urlredirect = "new-event";
+                                        }
+                                        else {
+                                            urlredirect = "new-place";
+                                        }
 
-                const deleteButtons = document.querySelectorAll('.btn.neg-btn');
-                deleteButtons.forEach(function(button) {
-                    button.addEventListener('click', function(event) {
+                                        const xhr = new XMLHttpRequest();
+                                        xhr.open('POST', urlredirect);
+                                        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                                        xhr.onload = function() {
+                                            if (xhr.status === 200) {
+                                                // Redirect to EventCreateView with the submitted data in the query string
+                                                const params = new URLSearchParams(data).toString();
+                                                window.location.href = `/${profile_id}/markers/${urlredirect}?${params}`;
+                                            } else {
+                                                console.log('Request failed. Status:', xhr.status);
+                                            }
+                                        };
+                                        xhr.send();
+                                    }
+
+                                    else if (feature.properties.cud == 'Update') {
+                                        const data = {
+                                            name: feature.properties.title,
+                                            type: feature.properties.typeno,
+                                            description: feature.properties.description,
+                                            longitude: feature.geometry.coordinates[0],
+                                            latitude: feature.geometry.coordinates[1],
+                                        };
+
+                                        let urlredirect = "";
+                                        const marker_id = feature.properties.marker
+
+                                        if (feature.properties.dateformatted) {
+                                            data.event_date = feature.properties.dateformatted;
+                                            urlredirect = `1/${marker_id}/update/`;
+                                        }
+                                        else {
+                                            urlredirect = `2/${marker_id}/update/`;
+                                        }
+                                        
+                                        const xhr = new XMLHttpRequest();
+                                        xhr.open('POST', urlredirect);
+                                        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                                        xhr.onload = function() {
+                                            if (xhr.status === 200) {
+                                                const redirectUrl = `/${profile_id}/markers/${urlredirect}`;
+                                                const params = new URLSearchParams(data).toString();
+                                                window.location.href = `${redirectUrl}?${params}`;
+                                            } else {
+                                                console.log('Request failed. Status:', xhr.status);
+                                            }
+                                        };
+                                        xhr.send();
+                                    }
+
+                                    else if (feature.properties.cud == 'Delete') {
+                                        let urlredirect = "";
+                                        const marker_id = feature.properties.marker
+
+                                        if (feature.properties.dateformatted) {
+                                            urlredirect = `1/${marker_id}/delete/`;
+                                        }
+                                        else {
+                                            urlredirect = `2/${marker_id}/delete/`;
+                                        }
+                                        
+                                        const xhr = new XMLHttpRequest();
+                                        xhr.open('POST', urlredirect);
+                                        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                                        xhr.onload = function() {
+                                            if (xhr.status === 200) {
+                                                const redirectUrl = `/${profile_id}/markers/${urlredirect}`;
+                                                window.location.href = `${redirectUrl}`;
+                                            } else {
+                                                console.log('Request failed. Status:', xhr.status);
+                                            }
+                                        };
+                                        xhr.send();
+                                    }
+                                    // add update and delete approve - using connected marker, fix displays for suggestions to accomodate missing info + get info from marker
+                                }
+                            }
+                        });
+                    }
+
+                    const deleteButtons = document.querySelectorAll('.btn.neg-btn');
+                    deleteButtons[deleteButtons.length - 1].addEventListener('click', function(event) {
                         const btn_id = event.target.getAttribute('db_id');
                         event.target.getAttribute('ep') == 0 && type == 3 ? type = 4 : type;
                         const deleteUrl = `${type}/${btn_id}/delete/`;
                         window.location.href = deleteUrl;
                     });
-                });
+                }
             }
         }
         
@@ -525,6 +713,37 @@
             )
             .addTo(map);
         }
+        
+
+        function clearListings() {
+            // Remove all listings from the sidebar
+            const listings = document.getElementById('listings');
+            while (listings.childNodes.length > 2) {
+                listings.removeChild(listings.lastChild);
+            }
+
+            // Remove all markers from the map
+            const markers = document.querySelectorAll('[id^="marker-"]');
+            markers.forEach((marker) => {
+                marker.remove();
+            });
+        }
+
+        function updateMap(stores, chosenTypes) {
+            clearListings();
+            let filtered_stores = {
+                "type": "FeatureCollection",
+                "features": []
+            };
+            
+            filtered_stores.features = stores.features.filter(marker => 
+                chosenTypes.length === 0 || chosenTypes.includes(marker.properties.type)
+            );
+
+            buildLocationList(filtered_stores);
+            addMarkers(filtered_stores);
+        }
+        
 
     </script>
 {% endblock content %}

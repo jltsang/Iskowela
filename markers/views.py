@@ -29,7 +29,7 @@ class BaseForm:
 	
 	def get_object(self, queryset=None):
 		obj = super().get_object(queryset=queryset)
-		if obj.profile.id != self.kwargs['profile_id']:
+		if obj.profile.id != self.kwargs['profile_id'] or obj.profile.user != self.request.user:
 			raise Http404("You are not allowed to edit this place.")
 		return obj
 
@@ -49,6 +49,14 @@ class PlaceForm:
 		form.fields['longitude'].widget = form.fields['longitude'].hidden_widget()
 
 		return form
+	
+class CreateForm:
+	def dispatch(self, request, *args, **kwargs):
+		profile_id = self.kwargs['profile_id']
+		profile = Profile.objects.get(id=profile_id)
+		if profile.user != self.request.user:
+			raise Http404("You are not allowed to create a new object for this profile.")
+		return super().dispatch(request, *args, **kwargs)
 
 def markers(request, profile_id, mtype):
 	# ################# get ip ######################
@@ -102,7 +110,7 @@ def markers(request, profile_id, mtype):
 	}
 	return render(request, 'markers/map.html', context)
 	
-class EventCreateView(BaseForm, EventForm, CreateView):
+class EventCreateView(BaseForm, CreateForm, EventForm, CreateView):
 	model = Event_Markers
 	fields = ['profile', 'name', 'type', 'description', 'event_date', 'latitude', 'longitude'] 
 
@@ -111,6 +119,11 @@ class EventCreateView(BaseForm, EventForm, CreateView):
 		form.fields['profile'].widget = form.fields['profile'].hidden_widget()
 
 		return form
+	
+	def get_initial(self):
+		initial = super().get_initial()
+		initial.update(self.request.GET.dict())
+		return initial
 
 class EventUpdateView(BaseForm, EventForm, UpdateView):
 	model = Event_Markers
@@ -122,6 +135,11 @@ class EventUpdateView(BaseForm, EventForm, UpdateView):
 
 		return form
 
+	def get_initial(self):
+		initial = super().get_initial()
+		initial.update(self.request.GET.dict())
+		return initial
+
 class EventDeleteView(BaseForm, DeleteView):
 	model = Event_Markers
 
@@ -129,7 +147,7 @@ class EventDeleteView(BaseForm, DeleteView):
 		return reverse_lazy("markers", kwargs={"profile_id": self.object.profile.id, "mtype": 1})
 
 
-class PlaceCreateView(BaseForm, PlaceForm, CreateView):
+class PlaceCreateView(BaseForm, CreateForm, PlaceForm, CreateView):
 	model = Place_Markers
 	fields = ['profile', 'name', 'type', 'description', 'latitude', 'longitude']
 
@@ -138,6 +156,11 @@ class PlaceCreateView(BaseForm, PlaceForm, CreateView):
 		form.fields['profile'].widget = form.fields['profile'].hidden_widget()
 
 		return form
+
+	def get_initial(self):
+		initial = super().get_initial()
+		initial.update(self.request.GET.dict())
+		return initial
 
 class PlaceUpdateView(BaseForm, PlaceForm, UpdateView):
 	model = Place_Markers
@@ -148,6 +171,11 @@ class PlaceUpdateView(BaseForm, PlaceForm, UpdateView):
 		form.fields['profile'].widget = form.fields['profile'].hidden_widget()
 
 		return form
+
+	def get_initial(self):
+		initial = super().get_initial()
+		initial.update(self.request.GET.dict())
+		return initial
 	
 class PlaceDeleteView(BaseForm, DeleteView):
 	model = Place_Markers
@@ -158,21 +186,23 @@ class PlaceDeleteView(BaseForm, DeleteView):
 	
 class SuggestEventCreateView(BaseForm, EventForm, CreateView):
 	model = Event_Suggestions
-	fields = ['profile', 'cud', 'name', 'type', 'description', 'event_date', 'longitude', 'latitude']
+	fields = ['profile', 'cud', 'event_marker', 'name', 'type', 'description', 'event_date', 'longitude', 'latitude']
 	
 	def get_form(self, form_class=None):
 		form = super().get_form(form_class)
 		form.fields['profile'].widget = form.fields['profile'].hidden_widget()
+		form.fields['event_marker'].queryset = Event_Markers.objects.filter(profile=self.kwargs['profile_id'])
 
 		return form
 
 class SuggestPlaceCreateView(BaseForm, PlaceForm, CreateView):
 	model = Place_Suggestions
-	fields = ['profile', 'cud', 'name', 'type', 'description', 'longitude', 'latitude']
+	fields = ['profile', 'cud', 'place_marker', 'name', 'type', 'description', 'longitude', 'latitude']
 	
 	def get_form(self, form_class=None):
 		form = super().get_form(form_class)
 		form.fields['profile'].widget = form.fields['profile'].hidden_widget()
+		form.fields['place_marker'].queryset = Place_Markers.objects.filter(profile=self.kwargs['profile_id'])
 
 		return form
 

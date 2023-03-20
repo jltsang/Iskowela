@@ -54,6 +54,14 @@ h2 {
   padding: 4px 20px 4px 20px;
 }
 
+.add-btn-alt {
+  background: #49DFC6;
+  color: #000000;
+  border-radius: 20px;
+  font-weight: 600;
+  padding: 4px 20px 4px 20px;
+}
+
 .neg-btn {
   background: #F9594A;
   color: #000000;
@@ -305,4 +313,14 @@ table td, table th {
 .page-item.disabled .page-link {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.filter {
+  appearance: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #333;
+  font-size: 16px;
+  width: 100px;
 }

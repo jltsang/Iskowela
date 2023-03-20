@@ -30,7 +30,7 @@
 		<form method="POST">
 			{% csrf_token %}
 			<div class="d-flex border-bottom pb-4">
-                <a href="{% url 'markers' profile_id 2 %}" class="mr-3 align-self-center" style="color: black;"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                <a href="{% url 'markers' profile_id 1 %}" class="mr-3 align-self-center" style="color: black;"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                 </svg></a>
 				<h2>Suggest Event</h2>
@@ -42,13 +42,42 @@
 			<pre id="info"></pre>
             <div class="mt-4 d-flex">
 				<button class="btn add-btn mr-auto" type="submit">Post</button>
-                <a class="btn neg-btn" href="{% url 'markers' profile_id 2 %}">Cancel</a>
+                <a class="btn neg-btn" href="{% url 'markers' profile_id 1 %}">Cancel</a>
 			</div>
 		</form>
 	</div>
 </div>
 
 <script>
+    const cud_field = document.querySelector('#id_cud');
+    const marker_field = document.querySelector('#id_event_marker');
+	var label_marker = document.querySelector('label[for="id_event_marker"]');
+    const name_field = document.querySelector('#id_name');
+	var label_name = document.querySelector('label[for="id_name"]');
+    const type_field = document.querySelector('#id_type');
+	var label_type = document.querySelector('label[for="id_type"]');
+    const date_field = document.querySelector('#id_event_date');
+	var label_date = document.querySelector('label[for="id_event_date"]');
+    const map_field = document.querySelector('#map');
+
+    function updatePlaceMarkerVisibility() {
+        const value = parseInt(cud_field.value);
+		marker_field.parentElement.style.display = (value === 2 || value === 3) ? 'block' : 'none';
+		label_marker.style.display = (value === 2 || value === 3) ? 'block' : 'none';
+		name_field.parentElement.style.display = (value !== 2 && value !== 3) ? 'block' : 'none';
+		label_name.style.display = (value !== 2 && value !== 3) ? 'block' : 'none';
+		type_field.parentElement.style.display = (value !== 3) ? 'block' : 'none';
+		label_type.style.display = (value !== 3) ? 'block' : 'none';
+		date_field.parentElement.style.display = (value !== 3) ? 'block' : 'none';
+		label_date.style.display = (value !== 3) ? 'block' : 'none';
+		map_field.style.display = (value !== 3) ? 'block' : 'none';
+    }
+
+	if (cud_field){
+		cud_field.addEventListener('change', updatePlaceMarkerVisibility);
+		updatePlaceMarkerVisibility();
+	}
+
 	mapboxgl.accessToken = 'pk.eyJ1Ijoiamx0c2FuZyIsImEiOiJjbGVpODE2bDAwdzh1M3ZsZGVyM2RwM3NkIn0.tqAoS6z_fUkuy6BTdA3XJA';
 	/**
 	* Add the map to the page

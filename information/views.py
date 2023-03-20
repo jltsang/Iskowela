@@ -70,9 +70,17 @@ class BaseForm:
 
 	def get_object(self, queryset=None):
 		obj = super().get_object(queryset=queryset)
-		if obj.profile.id != self.kwargs['profile_id']:
+		if obj.profile.id != self.kwargs['profile_id'] or obj.profile.user != self.request.user:
 			raise Http404("You are not allowed to edit this place.")
 		return obj
+	
+class CreateForm:
+	def dispatch(self, request, *args, **kwargs):
+		profile_id = self.kwargs['profile_id']
+		profile = Profile.objects.get(id=profile_id)
+		if profile.user != self.request.user:
+			raise Http404("You are not allowed to create a new object for this profile.")
+		return super().dispatch(request, *args, **kwargs)
 
 def processguide_list(request, profile_id):
 	# get_ip_info(request)
@@ -107,7 +115,7 @@ def scholarship_list(request, profile_id):
 	}
 	return render(request, 'information/scholarships.html', context)
 
-class ProcessGuidesCreateView(BaseForm, CreateView):
+class ProcessGuidesCreateView(BaseForm, CreateForm, CreateView):
 	model = ProcessGuide
 	fields = ['profile', 'process_name', 'description']
 
@@ -133,7 +141,7 @@ class ProcessGuidesDeleteView(BaseForm, DeleteView):
 	def get_success_url(self):
 		return reverse_lazy("processguides", kwargs={"profile_id": self.object.profile.id})
 
-class ScholarshipsCreateView(BaseForm, CreateView):
+class ScholarshipsCreateView(BaseForm, CreateForm, CreateView):
 	model = Scholarships
 	fields = ['profile', 'scholarship_name', 'description']
 
@@ -159,7 +167,7 @@ class ScholarshipsDeleteView(BaseForm,DeleteView):
 	def get_success_url(self):
 		return reverse_lazy("scholarships", kwargs={"profile_id": self.object.profile.id})
 	
-class CoursesCreateView(BaseForm, CreateView):
+class CoursesCreateView(BaseForm, CreateForm, CreateView):
 	model = Courses
 	fields = ['profile', 'college_group', 'course_list']
 

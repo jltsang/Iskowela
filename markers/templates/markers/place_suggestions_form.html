@@ -49,6 +49,31 @@
 </div>
 
 <script>
+    const cud_field = document.querySelector('#id_cud');
+    const marker_field = document.querySelector('#id_place_marker');
+	var label_marker = document.querySelector('label[for="id_place_marker"]');
+    const name_field = document.querySelector('#id_name');
+	var label_name = document.querySelector('label[for="id_name"]');
+    const type_field = document.querySelector('#id_type');
+	var label_type = document.querySelector('label[for="id_type"]');
+    const map_field = document.querySelector('#map');
+
+    function updatePlaceMarkerVisibility() {
+        const value = parseInt(cud_field.value);
+		marker_field.parentElement.style.display = (value === 2 || value === 3) ? 'block' : 'none';
+		label_marker.style.display = (value === 2 || value === 3) ? 'block' : 'none';
+		name_field.parentElement.style.display = (value !== 2 && value !== 3) ? 'block' : 'none';
+		label_name.style.display = (value !== 2 && value !== 3) ? 'block' : 'none';
+		type_field.parentElement.style.display = (value !== 3) ? 'block' : 'none';
+		label_type.style.display = (value !== 3) ? 'block' : 'none';
+		map_field.style.display = (value !== 3) ? 'block' : 'none';
+    }
+
+	if (cud_field){
+		cud_field.addEventListener('change', updatePlaceMarkerVisibility);
+		updatePlaceMarkerVisibility();
+	}
+
 	mapboxgl.accessToken = 'pk.eyJ1Ijoiamx0c2FuZyIsImEiOiJjbGVpODE2bDAwdzh1M3ZsZGVyM2RwM3NkIn0.tqAoS6z_fUkuy6BTdA3XJA';
 	/**
 	* Add the map to the page
