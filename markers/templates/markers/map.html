@@ -126,24 +126,34 @@
         </div>
         <div id="listings" class="listings">
             <select id="type-filter">
-                <option value="all">All Types</option>
+                <optgroup label="Default">
+                    <option value="all">All</option>
+                    {% if mtype == 3 %}
+                        <option value="event">Events</option>
+                        <option value="place">Places</option>
+                    {% endif %}
+                </optgroup>
                 {% if mtype == 1 %}
-                    {% for instance in events %}
-                        <option value="{{ instance.get_type_display }}">{{ instance.get_type_display }}</option>
-                    {% endfor %}
-                {% elif mtype == 2 %}
-                    {% for instance in places %}
-                        <option value="{{ instance.get_type_display }}">{{ instance.get_type_display }}</option>
-                    {% endfor %}
-                {% elif mtype == 3 %}
-                    <optgroup label="Event Suggestions">
-                        {% for instance in event_suggestions %}
-                            <option value="{{ instance.get_type_display }}">{{ instance.get_type_display }}</option>
+                    <optgroup label="Event Filters">
+                        {% for type, display_name in event_types %}
+                            <option value="{{ display_name }}">{{ display_name }}</option>
                         {% endfor %}
                     </optgroup>
-                    <optgroup label="Place Suggestions">
-                        {% for instance in place_suggestions %}
-                            <option value="{{ instance.get_type_display }}">{{ instance.get_type_display }}</option>
+                {% elif mtype == 2 %}
+                    <optgroup label="Place Filters">
+                        {% for type, display_name in place_types %}
+                            <option value="{{ display_name }}">{{ display_name }}</option>
+                        {% endfor %}
+                    </optgroup>
+                {% elif mtype == 3 %}
+                    <optgroup label="Event Filters">
+                        {% for type, display_name in event_types %}
+                            <option value="{{ display_name }}">{{ display_name }}</option>
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="Place Filters">
+                        {% for type, display_name in place_types %}
+                            <option value="{{ display_name }}">{{ display_name }}</option>
                         {% endfor %}
                     </optgroup>
                 {% endif %}
@@ -736,12 +746,24 @@
                 "features": []
             };
             
-            filtered_stores.features = stores.features.filter(marker => 
-                chosenTypes.length === 0 || chosenTypes.includes(marker.properties.type)
-            );
+            if (chosenTypes.includes("event") || chosenTypes.includes("place")) {
+                filtered_stores.features = stores.features.filter(marker => 
+                    chosenTypes.includes(marker.properties.mtype)
+                );
 
-            buildLocationList(filtered_stores);
-            addMarkers(filtered_stores);
+                console.log(filtered_stores);
+                buildLocationList(filtered_stores);
+                addMarkers(filtered_stores);
+            }
+
+            else {
+                filtered_stores.features = stores.features.filter(marker => 
+                    chosenTypes.length === 0 || chosenTypes.includes(marker.properties.type)
+                );
+
+                buildLocationList(filtered_stores);
+                addMarkers(filtered_stores);
+            }
         }
         
 

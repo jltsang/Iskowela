@@ -71,6 +71,8 @@ def markers(request, profile_id, mtype):
 		'place_suggestions' : Place_Suggestions.objects.filter(profile = profile_id),
 		'toggles': Toggles.objects.get(profile = profile_id),
 		'profile_id': profile_id,
+		'place_types': Place_Markers.PlaceType.choices,
+		'event_types': Event_Markers.EventType.choices,
 		'active_profile': Profile.objects.get(id=profile_id),
 	}
 	return render(request, 'markers/map.html', context)
@@ -147,7 +149,12 @@ class PlaceDeleteView(BaseForm, DeleteView):
 
 	def get_success_url(self):
 		return reverse_lazy("markers", kwargs={"profile_id": self.object.profile.id, "mtype": 2})
+	
+class DeletePopup(BaseForm, DeleteView):
+	model = Place_Markers
 
+	def get_success_url(self):
+		return reverse_lazy("markers", kwargs={"profile_id": self.object.profile.id, "mtype": 2})
 	
 class SuggestEventCreateView(BaseForm, EventForm, CreateView):
 	model = Event_Suggestions
