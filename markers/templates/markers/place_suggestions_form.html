@@ -81,7 +81,7 @@
 	const map = new mapboxgl.Map({
 		container: 'map',
 		style: 'mapbox://styles/mapbox/streets-v12',
-		center: [121.098434, 14.648697],
+		center: [{{ active_profile.longitude }}, {{ active_profile.latitude }}],
 		zoom: 18,
 		pitch: 40,
 		bearing: 20,
