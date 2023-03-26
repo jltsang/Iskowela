@@ -10,7 +10,7 @@ from django.views.generic import (
 )
 from django.http import Http404
 import requests
-from analytics.views import get_ip
+from analytics.views import get_session
 
 
 class BaseForm:
@@ -44,7 +44,7 @@ class CreateForm:
 		return super().dispatch(request, *args, **kwargs)
 
 def processguide_list(request, profile_id):
-	get_ip(request, profile_id, "process")
+	get_session(request, profile_id, "process")
 	context = {
 		'title': 'Process Guides',
 		'processguides': ProcessGuide.objects.filter(profile = profile_id),
@@ -55,7 +55,7 @@ def processguide_list(request, profile_id):
 	return render(request, 'information/processguides.html', context)
 
 def course_list(request, profile_id):
-	get_ip(request, profile_id, "course")
+	get_session(request, profile_id, "course")
 	context = {
 		'title': 'Course List',
 		'courses': Courses.objects.filter(profile = profile_id),
@@ -66,7 +66,7 @@ def course_list(request, profile_id):
 	return render(request, 'information/courses.html', context)
 
 def scholarship_list(request, profile_id):
-	get_ip(request, profile_id, "scholarship")
+	get_session(request, profile_id, "scholarship")
 	context = {
 		'title': 'Scholarships',
 		'scholarships': Scholarships.objects.filter(profile = profile_id),
