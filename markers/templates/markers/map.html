@@ -136,6 +136,7 @@
     <div id="map" class="map"></div>
     <div class="sidebar">
         <div class="cntr pb-2">
+            
             <a class="btn btn-primary {% if mtype == 1 %}disabled{% endif %}" href="{% url 'markers' profile_id 1 %}">Events</a>
             <a class="btn btn-primary {% if mtype == 2 %}disabled{% endif %}" href="{% url 'markers' profile_id 2 %}">Places</a>
             {% if user.is_authenticated %}
@@ -188,6 +189,9 @@
                 <a class="btn btn-primary" href="{% url 'suggest-event' profile_id %}">Suggest Event</a>
             {% elif mtype == 2 %}
                 <a class="btn btn-primary" href="{% url 'suggest-place' profile_id %}">Suggest Location</a>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <a class="btn btn-primary" href="{% url 'pupdate' profile_id %}">Set Center</a>
             {% endif %}
         </div>
     </div>

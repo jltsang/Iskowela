@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from main.models import Toggles
 import requests
 from django.utils import timezone
@@ -11,10 +11,15 @@ from django.db.models import Count
 from users.models import Profile
 import json
 from django.db.models import Sum
+from django.contrib.auth.decorators import login_required
 
-
-
+@login_required
 def traffic_monitor(request, profile_id):
+    profile = get_object_or_404(Profile, id=profile_id)
+
+    if profile.user != request.user:
+        return render(request, '403.html', status=403)
+    
     dataSaved = Monitor.objects.filter(profile = profile_id).order_by('-datetime')
 
     p = Paginator(dataSaved, 10)

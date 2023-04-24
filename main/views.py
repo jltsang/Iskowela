@@ -32,10 +32,17 @@ class PostForm:
 
 	def get_object(self, queryset=None):
 		obj = super().get_object(queryset=queryset)
-		if obj.profile.id != self.kwargs['profile_id']:
+		if obj.profile.id != self.kwargs['profile_id'] or obj.profile.user != self.request.user:
 			raise Http404("You are not allowed to edit this place.")
-		
 		return obj
+
+class CreateForm:
+	def dispatch(self, request, *args, **kwargs):
+		profile_id = self.kwargs['profile_id']
+		profile = Profile.objects.get(id=profile_id)
+		if profile.user != self.request.user:
+			raise Http404("You are not allowed to create a new object for this profile.")
+		return super().dispatch(request, *args, **kwargs)
 
 def index(request, profile_id):
 	get_ip(request, profile_id, "home")
@@ -84,14 +91,14 @@ class SettingsUpdateView(UpdateView):
 	
 	def get_object(self, queryset=None):
 		obj = super().get_object(queryset=queryset)
-		if obj.profile.id != self.kwargs['profile_id']:
+		if obj.profile.id != self.kwargs['profile_id'] or obj.profile.user != self.request.user:
 			raise Http404("You are not allowed to edit this place.")
 		return obj
 	
 	def get_success_url(self):
 		return reverse_lazy('settings', kwargs={'profile_id': self.kwargs['profile_id'], 'pk': self.kwargs['pk']})
 
-class PostCreateView(PostForm, CreateView):
+class PostCreateView(PostForm, CreateForm, CreateView):
 	model = Post
 	fields = ['profile', 'title', 'content']
 
