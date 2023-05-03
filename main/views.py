@@ -12,7 +12,7 @@ from django.views.generic import (
 	DeleteView
 )
 from django.http import Http404
-from analytics.views import get_ip
+from analytics.views import get_session
 
 class PostForm:
 	def get_context_data(self, **kwargs):
@@ -45,7 +45,7 @@ class CreateForm:
 		return super().dispatch(request, *args, **kwargs)
 
 def index(request, profile_id):
-	get_ip(request, profile_id, "home")
+	get_session(request, profile_id, "home")
 
 	context = {
 		'active_profile': Profile.objects.get(id=profile_id),

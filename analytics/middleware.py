@@ -20,6 +20,7 @@ class TimeTrackingMiddleware:
             
                 # Record the current time
                 time_tracking.start_time = timezone.now()
+                time_tracking.last_update = timezone.now()
                 time_tracking.save()
             
         return response
@@ -37,15 +38,16 @@ class TimeTrackingUpdateMiddleware:
             if request.user.is_authenticated:
                 # Get the TimeTracking object for the current page
                 try:
-                    time_tracking = TimeTracking.objects.get(user=request.user, page=request.path)
+                    time_tracking = TimeTracking.objects.order_by('-last_update').first()
+
                 except TimeTracking.DoesNotExist:
                     return response
             
                 # Calculate the time spent on the page
-                time_spent = (timezone.now() - time_tracking.start_time).total_seconds()
+                time_spent = (timezone.now() - time_tracking.last_update).total_seconds()
             
                 # Update the TimeTracking object
-                time_tracking.time_spent = time_spent
+                time_tracking.time_spent += time_spent
                 time_tracking.save()
             
         return response

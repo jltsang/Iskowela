@@ -10,7 +10,7 @@ from django.views.generic import (
 )
 from django.forms import DateTimeInput
 from django.http import Http404
-from analytics.views import get_ip
+from analytics.views import get_session
 
 class BaseForm:
 	def get_context_data(self, **kwargs):
@@ -60,7 +60,7 @@ class CreateForm:
 		return super().dispatch(request, *args, **kwargs)
 
 def markers(request, profile_id, mtype):
-	get_ip(request, profile_id, "markers")
+	get_session(request, profile_id, "markers")
 	
 	context = {
 		'title': 'Markers',

@@ -32,6 +32,7 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('', portal_views.SchoolListView.as_view(), name="portal"),
+    path('search/', portal_views.SchoolSearchListView.as_view(), name='search'),
 	path('', include('main.urls')),
     path('admin/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),

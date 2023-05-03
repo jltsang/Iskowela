@@ -50,7 +50,7 @@ def traffic_monitor(request, profile_id):
 
     return render(request, 'analytics/traffic_monitor.html', context)
 
-def get_ip(request, profile_id, page):
+def get_session(request, profile_id, page):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
@@ -91,14 +91,11 @@ def chart(request, profile_id):
     markers = Monitor.objects.filter(page_visited = "markers", profile = profile_id).count()
     markers = int(markers)
 
-    page_list = ['Courses', 'Process Guides', 'Scholarships', 'Chatbot', 'Events/Places']
-    page_count = [course, process, scholarship, chatbot, markers]
 
     # Visitor Location Data
-    countries = Monitor.objects.filter(profile = profile_id).values('country').distinct()
-    country_list = list(countries.values_list('country',flat=True))
-    country_count = [Monitor.objects.filter(profile = profile_id, country= country).count() for country in country_list]
-
+    cities = Monitor.objects.filter(profile = profile_id).values('city').distinct()
+    city_list = list(cities.values_list('city',flat=True))
+    city_count = [Monitor.objects.filter(profile = profile_id, city=city).count() for city in city_list]
 
 
     # Overall site visit
@@ -114,15 +111,41 @@ def chart(request, profile_id):
         .order_by('datetime__date')
     )
     
-    
     # Time Spent Per Module View Data
     course_time = TimeTracking.objects.filter(page__contains="{}/courses/".format(profile_id)).aggregate(Sum('time_spent'))['time_spent__sum']
     scholarship_time = TimeTracking.objects.filter(page__icontains="{}/scholarships/".format(profile_id)).aggregate(Sum('time_spent'))['time_spent__sum']
     process_time = TimeTracking.objects.filter(page__icontains="{}/processguides/".format(profile_id)).aggregate(Sum('time_spent'))['time_spent__sum']
     chatbot_time = TimeTracking.objects.filter(page__icontains="{}/chatbot/".format(profile_id)).aggregate(Sum('time_spent'))['time_spent__sum']
     marker_time = TimeTracking.objects.filter(page__icontains="{}/markers/".format(profile_id)).aggregate(Sum('time_spent'))['time_spent__sum']
-     
-    time_spent = [course_time, process_time, scholarship_time, chatbot_time, marker_time]
+    
 
-    context = {'page_list':page_list, 'page_count':page_count, 'country_list': country_list, 'country_count': country_count, 'data': data, 'time_spent': time_spent}
+
+    page_list = []
+    page_count = []
+    time_spent = []
+
+    toggles = Toggles.objects.get(profile=profile_id)
+    if toggles.courses_toggle == True:
+        page_list.append('Courses')
+        page_count.append(course)
+        time_spent.append(course_time)
+    if toggles.processguides_toggle == True:
+        page_list.append('Process Guides')
+        page_count.append(process)
+        time_spent.append(process_time)
+    if toggles.processguides_toggle == True:
+        page_list.append('Scholarships')
+        page_count.append(scholarship)
+        time_spent.append(scholarship_time)
+    if toggles.chatbot_toggle == True:
+        page_list.append('Chatbot')
+        page_count.append(chatbot)
+        time_spent.append(chatbot_time)
+    if toggles.markers_toggle == True:
+        page_list.append('Events/Places')
+        page_count.append(markers)
+        time_spent.append(marker_time)
+    
+    
+    context = {'page_list':page_list, 'page_count':page_count, 'country_list': city_list, 'country_count': city_count, 'data': data, 'time_spent': time_spent}
     return context

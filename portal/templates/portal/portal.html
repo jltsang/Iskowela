@@ -22,8 +22,19 @@
 			<a class="navbar-brand" href="{% url 'portal' %}">Iskowela</a>
 			<div class="mx-auto"></div>
 
-			<div class="navbar-nav">
-			</div>
+			<form method="GET" action="{% url 'search' %}" class="form-inline">
+				<div class="input-group">
+					<input type="text" name="query" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
+					<select name="type" class="form-control mr-sm-2">
+						<option value="">All types</option>
+						<option value="public">Public</option>
+						<option value="private">Private</option>
+					</select>
+					<div class="input-group-append">
+						<button type="submit" class="btn btn-outline-light my-2 my-sm-0"><i class="fa fa-search"></i></button>
+					</div>
+				</div>
+			</form>
 
 			<div class="mx-auto"></div>
 
@@ -63,6 +74,10 @@
 							<td>{{ school.location }}</td>
 							<td>{{ school.type | capfirst }}</td>
 							<td><a href="{% url 'main-index' school.id %}" class="btn add-btn">View</a></td>
+						</tr>
+						{% empty %}
+						<tr>
+							<td colspan="5">No results found.</td>
 						</tr>
 						{% endfor %}
 					</tbody>
