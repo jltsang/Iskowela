@@ -51,7 +51,7 @@ def index(request, profile_id):
 		'active_profile': Profile.objects.get(id=profile_id),
 		'title': 'Home',
 		'toggles': Toggles.objects.get(profile=profile_id),
-		'posts': Post.objects.filter(profile=profile_id),
+		'posts': Post.objects.filter(profile=profile_id).order_by('-date_posted'),
 		'profile_id': profile_id,
 		'active_profile': Profile.objects.get(id=profile_id),
 	}

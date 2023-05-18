@@ -9,6 +9,7 @@ from django.views.generic import (
 from django.db.models import Avg
 from main.models import Toggles
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
 
 def index(request, profile_id):
 	context = {
@@ -60,6 +61,10 @@ class SSRCreateView(CreateView):
 
 	def get_success_url(self):
 		return reverse_lazy("ssr-create", kwargs={"profile_id": self.kwargs['profile_id']})
+	def form_valid(self, form):
+		profile = get_object_or_404(Profile, id=self.kwargs['profile_id'])
+		form.instance.profile = profile
+		return super().form_valid(form)
 
 class SSRDeleteView(DeleteView):
 	model = SSR

@@ -23,8 +23,8 @@ class Monitor(models.Model):
 class TimeTracking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     page = models.CharField(max_length=255)
-    start_time = models.DateTimeField()
-    last_update = models.DateTimeField(default= timezone.now())
+    start_time = models.DateTimeField(default=timezone.now())
+    last_update = models.DateTimeField()
     time_spent = models.IntegerField(default=0)
 
     def __str__(self):
