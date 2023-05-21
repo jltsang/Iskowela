@@ -4,7 +4,6 @@ import requests
 from django.utils import timezone
 from .models import Monitor, TimeTracking
 from django.core.paginator import Paginator
-from django.utils import timezone
 import datetime
 from django.contrib.gis.geoip2 import GeoIP2
 from django.db.models import Count
@@ -12,6 +11,32 @@ from users.models import Profile
 import json
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+
+@csrf_exempt
+def update_time_spent(request):
+   if request.method == 'POST':
+        # Get the TimeTracking object for the current page
+        try:
+            time_tracking = TimeTracking.objects.order_by('-last_update').first()
+        except TimeTracking.DoesNotExist:
+            return JsonResponse({'status': 'error'})
+
+        # Calculate the time spent on the page
+        time_spent = (timezone.now() - time_tracking.last_update).total_seconds()
+
+        # Update the TimeTracking object
+        time_tracking.time_spent += time_spent
+        time_tracking.last_update = timezone.now()
+        time_tracking.save()
+
+        return JsonResponse({'status': 'success'})
+   else:
+        return JsonResponse({'status': 'error'})
+
+
 
 @login_required
 def traffic_monitor(request, profile_id):

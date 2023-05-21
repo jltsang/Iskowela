@@ -12,7 +12,7 @@ class SSR(models.Model):
 	    (5, 'Excellent')
 	)
 
-	profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
+	profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=None)
 	email = models.EmailField()
 	interactive_map_comment = models.TextField(default='')
 	interactive_map_rating = models.IntegerField(choices=Rating_choices, default=3)

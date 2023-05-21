@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, reverse_lazy
 from chatbot import views as chatbot_views
 from information import views as information_views
 from markers import views as markers_views
@@ -36,7 +36,8 @@ urlpatterns = [
 	path('', include('main.urls')),
     path('admin/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
-    path('logout/', login_required(auth_views.LogoutView.as_view(template_name='users/logout.html')), name='logout'), #Signed in only
+    path('logout/', login_required(auth_views.LogoutView.as_view(template_name='users/logout.html', next_page=reverse_lazy('portal'))), name='logout'),
+ #Signed in only
 
     path('register/', user_views.register, name='register'), #Link to (create new admin)
     path('<int:profile_id>/profile/', user_views.profile, name='profile'),
@@ -106,6 +107,7 @@ urlpatterns = [
     path('queryPlacesByType/<int:school_id>/<str:place_type>/', chatbot_views.queryPlacesByType, name='queryPlacesByType'),
     path('queryEvents/<int:school_id>/', chatbot_views.queryEvents, name='queryEvents'),
     path('queryEvents/<int:school_id>/<str:event_name>/', chatbot_views.queryEvents, name='queryEvents'),
+    path('update-time-spent/', analytics_views.update_time_spent, name='update_time_spent'),
 ]
 
 if settings.DEBUG:

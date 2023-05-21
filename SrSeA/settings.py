@@ -61,7 +61,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'analytics.middleware.TimeTrackingMiddleware',
-    'analytics.middleware.TimeTrackingUpdateMiddleware',
 
 ]
 
