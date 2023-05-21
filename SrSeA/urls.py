@@ -79,7 +79,11 @@ urlpatterns = [
     path('<int:profile_id>/markers/4/<int:pk>/delete/', markers_views.SuggestPlaceDeleteView.as_view(), name='suggest-place-delete'),
 
     # ---------------------------------------------------------------------------------
-    path('<int:profile_id>/chatbot/', chatbot_views.index, name='chatbot-index'),
+    # path('<int:profile_id>/chatbot/', chatbot_views.index, name='chatbot-index'),
+    path('<int:profile_id>/chatbot/', chatbot_views.chatbot, name='chatbot'),
+    path('<int:profile_id>/send/', chatbot_views.send, name='send'),
+    path('getMessages/<int:user_id>/', chatbot_views.getMessages, name='getMessages'),
+
     path('<int:profile_id>/settings/<int:pk>', login_required(main_views.SettingsUpdateView.as_view()), name='settings'), 
 
     # ---------------------------------------------------------------------------------
@@ -89,6 +93,19 @@ urlpatterns = [
 
     path('<int:profile_id>/analytics/', analytics_views.traffic_monitor, name="analytics"),
     #path('<int:profile_id>/analytics/monitor/', , name="analytics-monitor"), 
+
+    path('queryScholarships/<int:school_id>/', chatbot_views.queryScholarships, name='queryScholarships'),
+    path('queryScholarships/<int:school_id>/<str:scholarship_name>/', chatbot_views.queryScholarships, name='queryScholarships'),
+    path('queryCourses/<int:school_id>/', chatbot_views.queryCourses, name='queryCourses'),
+    path('queryCourses/<int:school_id>/<str:college_group>/', chatbot_views.queryCourses, name='queryCourses'),
+    path('queryProcessGuides/<int:school_id>/', chatbot_views.queryProcessGuides, name='queryProcessGuides'),
+    path('queryProcessGuides/<int:school_id>/<str:process_name>/', chatbot_views.queryProcessGuides, name='queryProcessGuides'),
+    path('queryProcessGuides/<int:school_id>/<int:apply>/', chatbot_views.queryProcessGuides, name='queryProcessGuides'),
+    path('queryPlaces/<int:school_id>/', chatbot_views.queryPlaces, name='queryPlaces'),
+    path('queryPlaces/<int:school_id>/<str:place_name>/', chatbot_views.queryPlaces, name='queryPlaces'),
+    path('queryPlacesByType/<int:school_id>/<str:place_type>/', chatbot_views.queryPlacesByType, name='queryPlacesByType'),
+    path('queryEvents/<int:school_id>/', chatbot_views.queryEvents, name='queryEvents'),
+    path('queryEvents/<int:school_id>/<str:event_name>/', chatbot_views.queryEvents, name='queryEvents'),
 ]
 
 if settings.DEBUG:

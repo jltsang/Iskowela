@@ -26,10 +26,11 @@ h2 {
   margin-right: 4vw;
   border-radius: 10px;
   padding-top: 3vh;
+  overflow: auto;
 }
 
 .infolist {
-  height: 67vh;
+  height: 80%;
   margin-left: 15vw;
   margin-right: 15vw;
   border-radius: 10px;
@@ -324,4 +325,14 @@ table td, table th {
   color: #333;
   font-size: 16px;
   width: 100px;
+}
+
+.chatbot {
+  height: 70%;
+  margin-left: 15vw;
+  margin-right: 15vw;
+  border-radius: 10px;
+  padding-top: 3vh;
+  padding-bottom: 3vh;
+  overflow-y: auto;
 }

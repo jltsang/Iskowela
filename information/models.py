@@ -6,10 +6,15 @@ from users.models import Profile
 # Create your models here.
 
 class ProcessGuide(models.Model):
+    class Application(models.IntegerChoices):
+        OTHERS = 1
+        APPLY = 2
+                
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, default=1)
     process_name = models.TextField(default='')
     description = models.TextField(default='')
     last_updated = models.DateTimeField(default=timezone.now)
+    apply = models.IntegerField(choices=Application.choices, default=1)
     
     def __str__(self):
         return self.process_name
