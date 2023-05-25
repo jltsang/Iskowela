@@ -40,7 +40,7 @@ def send(request, profile_id):
 	new_message.save()
     
 	time.sleep(1)
-	rasa_url = 'http://localhost:5005/webhooks/rest/webhook'
+	rasa_url = 'http://rasa:5005/webhooks/rest/webhook'
 	payload = {
 		'message': "From " + str(profile_id) + ", " + message,
 		'sender': user_id

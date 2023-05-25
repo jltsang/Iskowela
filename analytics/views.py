@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from geoip2.errors import AddressNotFoundError
 
 @csrf_exempt
 def update_time_spent(request):
@@ -83,19 +84,28 @@ def get_session(request, profile_id, page):
         ip = request.META.get('REMOTE_ADDR') 
     if ip == '127.0.0.1': # Only define the IP if you are testing on localhost.
         ip = '202.92.130.117'
-    
-    g = GeoIP2()
-    location = g.city(ip)
 
+    g = GeoIP2()
+    try:
+        location = g.city(ip)
+        continent = location.get("continent_name")
+        country = location.get("country_name")
+        city = location.get("city")
+    except AddressNotFoundError:
+        continent = "Unknown"
+        country = "Unknown"
+        city = "Unknown"
+
+    profile = Profile.objects.get(id=profile_id)
     saveNow = Monitor(
-         profile=Profile.objects.get(id=profile_id),
-         continent=location["continent_name"],
-         country=location["country_name"],
-         city=location["city"],
-         datetime=timezone.now(),
-         ip=ip,
-         page_visited=page
-     )
+        profile=profile,
+        continent=continent,
+        country=country,
+        city=city,
+        datetime=timezone.now(),
+        ip=ip,
+        page_visited=page
+    )
     saveNow.save()
     
 
